@@ -2,16 +2,16 @@
 // Define component props and scripts here
 ---
 <style global>
-@import "./DeveloperStory.scss";
+@import "../../../styles/DeveloperStory.scss";
 </style>
 
 import React, { Component } from 'react';
 
-import { BodyText } from '../BodyText/BodyText';
-import Element from '../Element/Element';
-import { Image } from '../Image/Image';
+import { BodyText } from '../../BodyText/BodyText.astro';
+import Element from '../../Element/Element.astro';
+import { Image } from '../../Image/Image.astro';
 import { PropTypes } from 'prop-types';
-import { TripleBorder } from '../TripleBorder/TripleBorder';
+import { TripleBorder } from '../../TripleBorder/TripleBorder.astro';
 
 export class DeveloperStory extends Component {
   constructor(props) {
