@@ -1,0 +1,45 @@
+---
+// Define component props and scripts here
+---
+<style global>
+@import "./layout.css";
+</style>
+<style global>
+@import "./index.scss";
+</style>
+
+import React, { Component } from 'react';
+
+import Header from './Header/Header';
+import PropTypes from 'prop-types';
+
+class Layout extends Component {
+  state = {
+    siteLanguage: 'fi',
+  };
+
+  onMount() {
+    const siteLanguage =
+      window.location.pathname.indexOf('/en') !== -1 ? 'en' : 'fi';
+
+    state = { ...state, ...$1 };
+  }
+
+  render() {
+    const { siteLanguage } = this.state;
+
+    return (
+      <div class="main-wrapper">
+        <Header lang={siteLanguage} />
+
+        {this.props.children}
+      </div>
+    );
+  }
+}
+
+Layout.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export default Layout;

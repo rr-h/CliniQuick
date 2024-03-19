@@ -1,0 +1,86 @@
+---
+// Define component props and scripts here
+---
+<style global>
+@import "./Header.scss";
+</style>
+
+import React, { Component } from 'react';
+
+import { Link } from 'gatsby';
+import Navigation from '../Navigation/Navigation';
+import { TripleBorder } from '../TripleBorder/TripleBorder';
+
+class Header extends Component {
+  constructor(props) {
+    super(props);
+
+    let state = reactive({
+      top: 0,
+      headerClass: '',
+    };
+  }
+
+  onMount() {
+    window.addEventListener('scroll', this.handleScroll);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+
+  header = React.createRef();
+
+  handleScroll = () => {
+    let scroll = window.scrollY;
+
+    state = { ...state, ...$1 };
+  };
+
+  render() {
+    const { headerClass } = this.state;
+
+    return (
+      <div
+        ref={this.header}
+        class={`header ${headerClass}`}
+        style={{
+          backgroundColor: headerClass !== '' ? 'transparent' : 'white',
+        }}
+      >
+        <div
+          class="container"
+          style={{ alignItems: 'center', justifyContent: 'flex-start' }}
+        >
+          <Link
+            to={this.props.lang === 'en' ? '/en' : '/'}
+            class="header__logo"
+          >
+            {headerClass === '' ? (
+              <TripleBorder
+                class="nav-item-hover"
+                childrenClassName="triple-border__logo"
+              >
+                {'{() => fs}'}
+              </TripleBorder>
+            ) : (
+              <TripleBorder
+                hover
+                class="nav-item-hover"
+                childrenClassName="triple-border__logo"
+              >
+                fs
+              </TripleBorder>
+            )}
+          </Link>
+
+          {this.state.headerClass !== 'header--small' && (
+            <Navigation lang={this.props.lang} />
+          )}
+        </div>
+      </div>
+    );
+  }
+}
+
+export default Header;

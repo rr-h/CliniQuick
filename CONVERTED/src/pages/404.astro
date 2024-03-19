@@ -1,0 +1,60 @@
+---
+// Define component props and scripts here
+---
+import React, { Component } from 'react';
+
+import Arrow from '../components/Arrow/Arrow';
+import Element from '../components/Element/Element';
+import Footer from '../components/Footer/Footer';
+import Layout from '../components/layout';
+import SEO from '../components/seo';
+import colors from '../colors';
+
+class NotFoundPage extends Component {
+  state = {
+    siteLanguage: 'fi',
+  };
+
+  onMount() {
+    const siteLanguage =
+      window.location.pathname.indexOf('/en') !== -1 ? 'en' : 'fi';
+
+    state = { ...state, ...$1 };
+  }
+
+  render() {
+    const title =
+      this.state.siteLanguage === 'en' ? 'Page not found' : 'Sivua ei löytynyt';
+
+    return (
+      <Layout>
+        <SEO
+          title={`${title} | Full Stack Open 2019`}
+          lang={this.state.siteLanguage}
+        />
+
+        <Element class="container spacing--large spacing--after">
+          <h1>404 - {title}</h1>
+
+          <p class="col-10 spacing--small spacing--after">
+            Uncaught ReferenceError: unknown is not defined
+          </p>
+
+          <Arrow
+            class="col-10 arrow__container--with-link"
+            bold
+            thickBorder
+            link={this.state.siteLanguage === 'en' ? '/en' : '/'}
+            content={[
+              { backgroundColor: colors['main'], text: 'Go back home' },
+            ]}
+          />
+        </Element>
+
+        <Footer lang={this.state.siteLanguage} />
+      </Layout>
+    );
+  }
+}
+
+export default NotFoundPage;
