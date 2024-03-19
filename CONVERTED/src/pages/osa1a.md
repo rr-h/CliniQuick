@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-1.svg
+mainImage: "../../../images/part-1.svg"
 part: 1
 letter: a
 lang: fi
@@ -35,16 +35,16 @@ Chromen pitäisi aueta automaattisesti. Avaa konsoli **välittömästi**. Avaa m
 Sovelluksen koodi on hakemistossa <i>src</i>. Yksinkertaistetaan valmiina olevaa koodia siten, että tiedoston <i>index.js</i> sisällöksi tulee:
 
 ```js
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React from "react";
+import ReactDOM from "react-dom";
 
 const App = () => (
   <div>
     <p>Hello world</p>
   </div>
-)
+);
 
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
 Tiedostot <i>App.js</i>, <i>App.css</i>, <i>App.test.js</i>, <i>logo.svg</i> ja <i>serviceWorker.js</i> voi poistaa sillä niitä emme sovelluksessamme nyt tarvitse.
@@ -54,7 +54,7 @@ Tiedostot <i>App.js</i>, <i>App.css</i>, <i>App.test.js</i>, <i>logo.svg</i> ja 
 Tiedosto <i>index.js</i> määrittelee nyt React-[komponentin](https://reactjs.org/docs/components-and-props.html) nimeltään <i>App</i> ja viimeisen rivin komento
 
 ```js
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
 renderöi komponentin sisällön tiedoston <i>public/index.html</i> määrittelemään <i>div</i>-elementtiin, jonka <i>id:n</i> arvona on 'root'.
@@ -68,7 +68,7 @@ const App = () => (
   <div>
     <p>Hello world</p>
   </div>
-)
+);
 ```
 
 Kuten arvata saattaa, komponentti renderöityy <i>div</i>-tagina, jonka sisällä on <i>p</i>-tagin sisällä oleva teksti <i>Hello world</i>.
@@ -80,7 +80,7 @@ Teknisesti ottaen komponentti on määritelty Javascript-funktiona. Seuraava sii
   <div>
     <p>Hello world</p>
   </div>
-)
+);
 ```
 
 joka sijoitetaan vakioarvoiseen muuttujaan <i>App</i>
@@ -99,8 +99,8 @@ const App = () => {
     <div>
       <p>Hello world</p>
     </div>
-  )
-}
+  );
+};
 ```
 
 eli funktio palauttaa sisältämänsä lausekkeen arvon.
@@ -109,13 +109,13 @@ Komponentin määrittelevä funktio voi sisältää mitä tahansa Javascript-koo
 
 ```js
 const App = () => {
-  console.log('Hello from komponentti')
+  console.log("Hello from komponentti");
   return (
     <div>
       <p>Hello world</p>
     </div>
-  )
-}
+  );
+};
 ```
 
 Komponenttien sisällä on mahdollista renderöidä myös dynaamista sisältöä.
@@ -124,9 +124,9 @@ Muuta komponentti muotoon:
 
 ```js
 const App = () => {
-  const now = new Date()
-  const a = 10
-  const b = 20
+  const now = new Date();
+  const a = 10;
+  const b = 20;
 
   return (
     <div>
@@ -135,8 +135,8 @@ const App = () => {
         {a} plus {b} is {a + b}
       </p>
     </div>
-  )
-}
+  );
+};
 ```
 
 Aaltosulkeiden sisällä oleva Javascript-koodi evaluoidaan ja evaluoinnin tulos upotetaan määriteltyyn kohtaan komponentin tuottamaa HTML-koodia.
@@ -148,29 +148,25 @@ Näyttää siltä, että React-komponentti palauttaa HTML-koodia. Näin ei kuite
 Käännösvaiheen jälkeen ohjelmamme näyttää seuraavalta:
 
 ```js
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React from "react";
+import ReactDOM from "react-dom";
 
 const App = () => {
-  const now = new Date()
-  const a = 10
-  const b = 20
+  const now = new Date();
+  const a = 10;
+  const b = 20;
   return React.createElement(
-    'div',
+    "div",
     null,
-    React.createElement(
-      'p', null, 'Hello world, it is ', now.toString()
-    ),
-    React.createElement(
-      'p', null, a, ' plus ', b, ' is ', a + b
-    )
-  )
-}
+    React.createElement("p", null, "Hello world, it is ", now.toString()),
+    React.createElement("p", null, a, " plus ", b, " is ", a + b)
+  );
+};
 
 ReactDOM.render(
   React.createElement(App, null),
-  document.getElementById('root')
-)
+  document.getElementById("root")
+);
 ```
 
 Käännöksen hoitaa [Babel](https://babeljs.io/repl/). Create-react-app:illa luoduissa projekteissa käännös on konfiguroitu tapahtumaan automaattisesti. Tulemme tutustumaan aiheeseen tarkemmin kurssin [osassa 7](/osa7).
@@ -182,7 +178,7 @@ Käytännössä JSX on melkein kuin HTML:ää sillä erotuksella, että mukaan v
 JSX on "XML:n kaltainen", eli jokainen tagi tulee sulkea. Esimerkiksi rivinvaihto on tyhjä elementti, joka voidaan kirjottaa HTML:ssä seuraavasti
 
 ```html
-<br>
+<br />
 ```
 
 mutta JSX:ää kirjoittaessa tagi on pakko sulkea:
@@ -202,8 +198,8 @@ const Hello = () => {
     <div>
       <p>Hello world</p>
     </div>
-  )
-}
+  );
+};
 // highlight-end
 
 const App = () => {
@@ -212,10 +208,10 @@ const App = () => {
       <h1>Greetings</h1>
       <Hello /> // highlight-line
     </div>
-  )
-}
+  );
+};
 
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
 Olemme määritelleet uuden komponentin <i>Hello</i>, jota käytetään komponentista <i>App</i>. Komponenttia voidaan luonnollisesti käyttää monta kertaa:
@@ -231,13 +227,13 @@ const App = () => {
       <Hello />
       // highlight-end
     </div>
-  )
-}
+  );
+};
 ```
 
 Komponenttien tekeminen Reactissa on helppoa ja komponentteja yhdistelemällä monimutkaisempikin sovellus on mahdollista pitää kohtuullisesti ylläpidettävänä. Reactissa filosofiana onkin koostaa sovellus useista, pieneen asiaan keskittyvistä uudelleenkäytettävistä komponenteista.
 
-Vahva konventio on myös se, että sovelluksen ylimpänä oleva <i>juurikomponentti</i> on nimeltään <i>App</i>. Tosin kuten [osassa 6](/osa6) tulemme näkemään on tilanteita, joissa komponentti <i>App</i> ei ole suoraan juuressa, vaan se kääritään sopivan apukomponentin sisään.  
+Vahva konventio on myös se, että sovelluksen ylimpänä oleva <i>juurikomponentti</i> on nimeltään <i>App</i>. Tosin kuten [osassa 6](/osa6) tulemme näkemään on tilanteita, joissa komponentti <i>App</i> ei ole suoraan juuressa, vaan se kääritään sopivan apukomponentin sisään.
 
 ### props: tiedonvälitys komponenttien välillä
 
@@ -246,13 +242,14 @@ Komponenteille on mahdollista välittää dataa [propsien](https://reactjs.org/d
 Muutetaan komponenttia <i>Hello</i> seuraavasti
 
 ```js
-const Hello = (props) => { // highlight-line
+const Hello = (props) => {
+  // highlight-line
   return (
     <div>
       <p>Hello {props.name}</p> // highlight-line
     </div>
-  )
-}
+  );
+};
 ```
 
 komponentin määrittelevällä funktiolla on nyt parametri <i>props</i>. Parametri saa arvokseen olion, jonka kenttinä ovat kaikki eri "propsit", jotka komponentin käyttäjä määrittelee.
@@ -267,8 +264,8 @@ const App = () => {
       <Hello name="Maya" /> // highlight-line
       <Hello name="Pekka" /> // highlight-line
     </div>
-  )
-}
+  );
+};
 ```
 
 Propseja voi olla mielivaltainen määrä ja niiden arvot voivat olla "kovakoodattuja" merkkijonoja tai Javascript-lausekkeiden tuloksia. Jos propsin arvo muodostetaan Javascriptillä, tulee se olla aaltosulkeissa.
@@ -283,21 +280,21 @@ const Hello = (props) => {
         Hello {props.name}, you are {props.age} years old // highlight-line
       </p>
     </div>
-  )
-}
+  );
+};
 
 const App = () => {
-  const nimi = 'Pekka' // highlight-line
-  const ika = 10       // highlight-line
+  const nimi = "Pekka"; // highlight-line
+  const ika = 10; // highlight-line
 
   return (
     <div>
       <h1>Greetings</h1>
       <Hello name="Maya" age={26 + 10} /> // highlight-line
-      <Hello name={nimi} age={ika} />     // highlight-line
+      <Hello name={nimi} age={ika} /> // highlight-line
     </div>
-  )
-}
+  );
+};
 ```
 
 Komponentti <i>App</i> lähettää propseina muuttujan arvoja, summalausekkeen evaluoinnin tuloksen ja normaalin merkkijonon.
@@ -318,11 +315,11 @@ Kannattaa pitää mielessä, että **React-komponenttien nimien tulee alkaa isol
 const footer = () => {
   return (
     <div>
-      greeting app created by 
+      greeting app created by
       <a href="https://github.com/mluukkai">mluukkai</a>
     </div>
-  )
-}
+  );
+};
 ```
 
 ja ottaa se käyttöön
@@ -335,8 +332,8 @@ const App = () => {
       <Hello name="Maya" age={26 + 10} />
       <footer /> // highlight-line
     </div>
-  )
-}
+  );
+};
 ```
 
 sivulle ei kuitenkaan ilmesty näkyviin Footer-komponentissa määriteltyä sisältöä, vaan React luo sivulle ainoastaan tyhjän <i>footer</i>-elementin. Jos muutat komponentin nimen alkamaan isolla kirjaimella, React luo sivulle <i>div</i>-elementin, joka määriteltiin Footer-komponentissa.
@@ -361,12 +358,8 @@ Juurielementin käyttö ei ole ainoa toimiva vaihtoehto, myös <i>taulukollinen<
 
 ```js
 const App = () => {
-  return [
-    <h1>Greetings</h1>,
-    <Hello name="Maya" age={26 + 10} />,
-    <Footer />
-  ]
-}
+  return [<h1>Greetings</h1>, <Hello name="Maya" age={26 + 10} />, <Footer />];
+};
 ```
 
 Määritellessä sovelluksen juurikomponenttia, tämä ei kuitenkaan ole järkevää ja näyttää koodissakin pahalta.
@@ -375,8 +368,8 @@ Juurielementin pakollisesta käytöstä on se seuraus, että sovelluksen DOM-puu
 
 ```js
 const App = () => {
-  const name = 'Pekka'
-  const age = 10
+  const name = "Pekka";
+  const age = 10;
 
   return (
     <>
@@ -385,8 +378,8 @@ const App = () => {
       <Hello name={name} age={age} />
       <Footer />
     </>
-  )
-}
+  );
+};
 ```
 
 Nyt käännös menee läpi ja Reactin generoimaan DOM:iin ei tule ylimääräistä div-elementtiä.
@@ -398,7 +391,7 @@ Nyt käännös menee läpi ja Reactin generoimaan DOM:iin ei tule ylimääräist
 
 Tehtävät palautetaan GitHubin kautta ja merkitsemällä tehdyt tehtävät [palautussovellukseen](https://studies.cs.helsinki.fi/fullstackopen2019/).
 
-Voit palauttaa kurssin kaikki tehtävät samaan repositorioon, tai käyttää useita repositorioita. Jos palautat eri osien tehtäviä samaan repositorioon, käytä järkevää hakemistojen nimentää.  Jos käytät privaattirepositorioa tehtävien palautukseen liitä repositoriolle collaboratoriksi _mluukkai_
+Voit palauttaa kurssin kaikki tehtävät samaan repositorioon, tai käyttää useita repositorioita. Jos palautat eri osien tehtäviä samaan repositorioon, käytä järkevää hakemistojen nimentää. Jos käytät privaattirepositorioa tehtävien palautukseen liitä repositoriolle collaboratoriksi _mluukkai_
 
 Eräs varsin toimiva hakemistorakenne palautusrepositoriolle on seuraava
 
@@ -413,9 +406,9 @@ osa2
   maiden_tiedot
 ```
 
-Eli kutakin osaa kohti on oma hakemistonsa, joka vielä jakautuu tehtäväsarjat (kuten osan 1 unicafe) sisältäviin hakemistoihin. 
+Eli kutakin osaa kohti on oma hakemistonsa, joka vielä jakautuu tehtäväsarjat (kuten osan 1 unicafe) sisältäviin hakemistoihin.
 
-Kunkin tehtäväsarjan ohjelmasta kannattaa palauttaa kaikki sovelluksen sisältämät tiedostot (paitsi hakemisto <i>node\_modules</i>).
+Kunkin tehtäväsarjan ohjelmasta kannattaa palauttaa kaikki sovelluksen sisältämät tiedostot (paitsi hakemisto <i>node_modules</i>).
 
 Tehtävät palautetaan **yksi osa kerrallaan**. Kun olet palauttanut osan tehtävät, et voi enää palauttaa saman osan tekemättä jättämiäsi tehtäviä.
 
@@ -434,17 +427,17 @@ $ code .
 Luo create-react-app:illa uusi sovellus. Muuta <i>index.js</i> muotoon
 
 ```js
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React from "react";
+import ReactDOM from "react-dom";
 
 const App = () => {
-  const course = 'Half Stack application development'
-  const part1 = 'Fundamentals of React'
-  const exercises1 = 10
-  const part2 = 'Using props to pass data'
-  const exercises2 = 7
-  const part3 = 'State of a component'
-  const exercises3 = 14
+  const course = "Half Stack application development";
+  const part1 = "Fundamentals of React";
+  const exercises1 = 10;
+  const part2 = "Using props to pass data";
+  const exercises2 = 7;
+  const part3 = "State of a component";
+  const exercises3 = 14;
 
   return (
     <div>
@@ -460,10 +453,10 @@ const App = () => {
       </p>
       <p>Number of exercises {exercises1 + exercises2 + exercises3}</p>
     </div>
-  )
-}
+  );
+};
 
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
 ja poista ylimääräiset tiedostot (App.js, App.css, App.test.js, logo.svg, serviceWorker.js).

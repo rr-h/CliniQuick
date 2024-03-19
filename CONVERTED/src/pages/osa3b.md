@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-3.svg
+mainImage: "../../../images/part-3.svg"
 part: 3
 letter: b
 lang: fi
@@ -34,9 +34,9 @@ npm install cors --save
 Otetaan middleware käyttöön ja sallitaan kaikki origineista tulevat pyynnöt:
 
 ```js
-const cors = require('cors')
+const cors = require("cors");
 
-app.use(cors())
+app.use(cors());
 ```
 
 Nyt frontend toimii! Tosin muistiinpanojen tärkeäksi muuttavaa toiminnallisuutta backendissa ei vielä ole.
@@ -58,10 +58,10 @@ web: node index.js
 Muutetaan tiedoston <i>index.js</i> lopussa olevaa sovelluksen käyttämän portin määrittelyä seuraavasti:
 
 ```js
-const PORT = process.env.PORT || 3001  // highlight-line
+const PORT = process.env.PORT || 3001; // highlight-line
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-})
+  console.log(`Server running on port ${PORT}`);
+});
 ```
 
 Nyt käyttöön tulee [ympäristömuuttujassa](https://en.wikipedia.org/wiki/Environment_variable) _PORT_ määritelty portti tai 3001, jos ympäristömuuttuja _PORT_ ei ole määritelty. Heroku konfiguroi sovelluksen portin ympäristömuuttujan avulla.
@@ -124,7 +124,7 @@ Jotta saamme expressin näyttämään <i>staattista sisältöä</i> eli sivun <i
 Kun lisäämme muiden middlewarejen määrittelyn yhteyteen seuraavan
 
 ```js
-app.use(express.static('build'))
+app.use(express.static("build"));
 ```
 
 tarkastaa Express GET-tyyppisten HTTP-pyyntöjen yhteydessä ensin löytyykö pyynnön polkua vastaavan nimistä tiedostoa hakemistosta <i>build</i>. Jos löytyy, palauttaa express tiedoston.
@@ -134,13 +134,13 @@ Nyt HTTP GET -pyyntö osoitteeseen <i>www.palvelimenosoite.com/index.html</i> ta
 Koska tässä tapauksessa sekä frontend että backend toimivat samassa osoitteessa, voidaan React-sovelluksessa tapahtuva backendin _baseUrl_ määritellä [suhteellisena](https://www.w3.org/TR/WD-html40-970917/htmlweb.html#h-5.1.2) URL:ina, eli ilman palvelinta yksilöivää osaa:
 
 ```js
-import axios from 'axios'
-const baseUrl = '/notes' // highlight-line
+import axios from "axios";
+const baseUrl = "/notes"; // highlight-line
 
 const getAll = () => {
-  const request = axios.get(baseUrl)
-  return request.then(response => response.data)
-}
+  const request = axios.get(baseUrl);
+  return request.then((response) => response.data);
+};
 
 // ...
 ```
@@ -188,17 +188,19 @@ Tarvitsemme sovelluksellemme tietokannan. Ennen tietokannan käyttöönottoa kat
 ### Frontendin deployauksen suoraviivaistus
 
 Jotta uuden frontendin version generointi onnistuisi jatkossa ilman turhia manuaalisia askelia, luodaan uusia skriptejä <i>package.json</i>-tiedostoon
+
 ```json
 {
   "scripts": {
     "build:ui": "rm -rf build && cd ../../osa2/materiaali/notes-new && npm run build --prod && cp -r build ../../../osa3/notes-backend/",
     "deploy": "git push heroku master",
-    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push && npm run deploy",    
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push && npm run deploy",
     "logs:prod": "heroku logs --tail"
   }
 }
 ```
-Skripteistä _npm run build:ui_ kääntää ui:n tuotantoversioksi ja kopioi sen. _npm run deploy_ julkaisee herokuun. 
+
+Skripteistä _npm run build:ui_ kääntää ui:n tuotantoversioksi ja kopioi sen. _npm run deploy_ julkaisee herokuun.
 
 _npm run deploy:full_ yhdistää nuo molemmat sekä lisää vaadittavat <i>git</i>-komennot versionhallinnan päivittämistä varten. Lisätään lisäksi oma skripti _npm run logs:prod_ lokien lukemiseen, jolloin käytännössä kaikki toimii npm-skriptein.
 
@@ -212,8 +214,8 @@ Tehdään muutos ensin muuttamalla käsin **kaikki backendin routet**:
 
 ```js
 //...
-app.get('/api/notes', (request, response) => {
-  response.json(notes)
+app.get("/api/notes", (request, response) => {
+  response.json(notes);
 });
 //...
 ```
@@ -221,13 +223,13 @@ app.get('/api/notes', (request, response) => {
 Frontendin koodiin riittää seuraava muutos
 
 ```js
-import axios from 'axios'
-const baseUrl = '/api/notes'  // highlight-line
+import axios from "axios";
+const baseUrl = "/api/notes"; // highlight-line
 
 const getAll = () => {
-  const request = axios.get(baseUrl)
-  return request.then(response => response.data)
-}
+  const request = axios.get(baseUrl);
+  return request.then((response) => response.data);
+};
 
 // ...
 ```
@@ -253,7 +255,7 @@ Frontendiin tehtyjen muutosten seurauksena on nyt se, että kun suoritamme front
 Syynä tälle on se, että backendin osoite muutettiin suhteellisesti määritellyksi:
 
 ```js
-const baseUrl = '/api/notes'
+const baseUrl = "/api/notes";
 ```
 
 Koska frontend toimii osoitteessa <i>localhost:3000</i>, menevät backendiin tehtävät pyynnöt väärään osoitteeseen <i>localhost:3000/api/notes</i>. Backend toimii kuitenkin osoitteessa <i>localhost:3001</i>.
@@ -290,7 +292,7 @@ Sovelluksen tämänhetkinen koodi on kokonaisuudessaan [Githubissa](https://gith
 
 ### Tehtäviä
 
-Seuraavissa tehtävissä koodia ei tarvita montaa riviä. Tehtävät ovat kuitenkin haastavia, sillä nyt on tarkalleen hallittava, missä tapahtuu mitäkin, ja kaikki konfiguraatiot on tehtävä täsmälleen oikein. 
+Seuraavissa tehtävissä koodia ei tarvita montaa riviä. Tehtävät ovat kuitenkin haastavia, sillä nyt on tarkalleen hallittava, missä tapahtuu mitäkin, ja kaikki konfiguraatiot on tehtävä täsmälleen oikein.
 
 #### 3.9 puhelinluettelon backend step9
 
@@ -300,7 +302,7 @@ Joudut todennäköisesti tekemään frontendiin erinäisiä pieniä muutoksia ai
 
 #### 3.10 puhelinluettelon backend step10
 
-Vie sovelluksen backend internetiin, esim. Herokuun. 
+Vie sovelluksen backend internetiin, esim. Herokuun.
 
 **Huom.** komento _heroku_ toimii laitoksen koneilla ja fuksikannettavilla. Jos et jostain syystä saa [asennettua](https://devcenter.heroku.com/articles/heroku-cli) herokua koneellesi, voit käyttää komentoa [npx heroku-cli](https://www.npmjs.com/package/heroku-cli).
 
@@ -312,7 +314,7 @@ Seuraavassa loki eräästä tyypillisestä ongelmatilanteesta, jossa Heroku ei l
 
 ![](../../images/3/33.png)
 
-Syynä ongelmalle on se, että <i>expressiä</i> asennettaessa oli unohtunut antaa optio <i>--save</i>, joka tallentaa tiedon riippuvuudesta tiedostoon <i>package.json</i>. 
+Syynä ongelmalle on se, että <i>expressiä</i> asennettaessa oli unohtunut antaa optio <i>--save</i>, joka tallentaa tiedon riippuvuudesta tiedostoon <i>package.json</i>.
 
 Toinen tyypillinen ongelma on se, että sovellusta ei ole konfiguroitu käyttämään ympäristömuuttujana <em>PORT</em> määriteltyä porttia:
 

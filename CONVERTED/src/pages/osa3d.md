@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-3.svg
+mainImage: "../../../images/part-3.svg"
 part: 3
 letter: d
 lang: fi
@@ -10,19 +10,19 @@ lang: fi
 Sovelluksen tietokantaan tallettamalle datan muodolle on usein tarve asettaa joitain ehtoja. Sovelluksemme ei esim. hyväksy muistiinpanoja, joiden sisältö eli <i>content</i> kenttä puuttuu. Muistiinpanon oikeellisuus tallennetaan sen luovassa metodissa:
 
 ```js
-app.post('/api/notes', (request, response) => {
-  const body = request.body
+app.post("/api/notes", (request, response) => {
+  const body = request.body;
   // highlight-start
   if (body.content === undefined) {
-    return response.status(400).json({ error: 'content missing' })
+    return response.status(400).json({ error: "content missing" });
   }
   // highlight-end
 
   // ...
-})
+});
 ```
 
-Eli jos muistiinpanolla ei ole kenttää <i>content</i>, vastataan pyyntöön statuskoodilla <i>400 bad request</i>. 
+Eli jos muistiinpanolla ei ole kenttää <i>content</i>, vastataan pyyntöön statuskoodilla <i>400 bad request</i>.
 
 Routejen tapahtumakäsittelijöissä tehtävää tarkastusta järkevämpi tapa tietokantaan talletettavan tiedon oikean muodon määrittelylle ja tarkastamiselle on Mongoosen [validointitoiminnallisuuden](https://mongoosejs.com/docs/validation.html) käyttö.
 
@@ -34,55 +34,57 @@ const noteSchema = new mongoose.Schema({
   content: {
     type: String,
     minlength: 5,
-    required: true
+    required: true,
   },
-  date: { 
+  date: {
     type: Date,
-    required: true
+    required: true,
   },
-    // highlight-end
-  important: Boolean
-})
+  // highlight-end
+  important: Boolean,
+});
 ```
 
 Kentän <i>content</i> pituuden vaaditaan nyt olevan vähintään 5 merkkiä. Kentälle <i>date</i> taas on asetettu ehdoksi että sillä on oltava joku arvo, eli kenttä ei voi olla tyhjä. Sama ehto on asetettu myös kentälle <i>content</i>, sillä minimipituuden tarkistava ehto ei huomioi tilannetta, missä kentällä ei ole mitään arvoa. Kentälle <i>important</i> ei ole asetettu mitään ehtoa, joten se on määritelty edelleen yksinkertaisemmassa muodossa.
 
 Esimerkissä käytetyt validaattorit <i>minlength</i> ja <i>required</i> ovat Mongooseen [sisäänrakennettuja](https://mongoosejs.com/docs/validation.html#built-in-validators) validointisääntöjä. Mongoosen [custom validator](https://mongoosejs.com/docs/validation.html#custom-validators) -ominaisuus mahdollistaa mielivaltaisten validaattorien toteuttamisen, jos valmiiden joukosta ei löydy tarkoitukseen sopivaa.
 
-Jos tietokantaan yritetään tallettaa validointisäännön rikkova olio, heittää tallennusoperaatio poikkeuksen. Muutetaan uuden muistiinpanon luomisesta huolehtivaa käsittelijää siten, että se välittää mahdollisen poikkeuksen virheenkäsittelijämiddlewaren huolehdittavaksi:  
+Jos tietokantaan yritetään tallettaa validointisäännön rikkova olio, heittää tallennusoperaatio poikkeuksen. Muutetaan uuden muistiinpanon luomisesta huolehtivaa käsittelijää siten, että se välittää mahdollisen poikkeuksen virheenkäsittelijämiddlewaren huolehdittavaksi:
 
 ```js
-app.post('/api/notes', (request, response, next) => {
-  const body = request.body
+app.post("/api/notes", (request, response, next) => {
+  const body = request.body;
 
   const note = new Note({
     content: body.content,
     important: body.important || false,
     date: new Date(),
-  })
+  });
 
-  note.save()
-    .then(savedNote => {
-      response.json(savedNote.toJSON())
+  note
+    .save()
+    .then((savedNote) => {
+      response.json(savedNote.toJSON());
     })
-    .catch(error => next(error)) // highlight-line
-})
+    .catch((error) => next(error)); // highlight-line
+});
 ```
 
 Laajennetaan virheenkäsittelijää huomioimaan validointivirheet:
 
 ```js
 const errorHandler = (error, request, response, next) => {
-  console.error(error.message)
+  console.error(error.message);
 
-  if (error.name === 'CastError' && error.kind == 'ObjectId') {
-    return response.status(400).send({ error: 'malformatted id' })
-  } else if (error.name === 'ValidationError') { // highlight-line
-    return response.status(400).json({ error: error.message }) // highlight-line
+  if (error.name === "CastError" && error.kind == "ObjectId") {
+    return response.status(400).send({ error: "malformatted id" });
+  } else if (error.name === "ValidationError") {
+    // highlight-line
+    return response.status(400).json({ error: error.message }); // highlight-line
   }
 
-  next(error)
-}
+  next(error);
+};
 ```
 
 Validoinnin epäonnistuessa palautetaan validaattorin oletusarvoinen virheviesti:
@@ -94,35 +96,36 @@ Validoinnin epäonnistuessa palautetaan validaattorin oletusarvoinen virheviesti
 Useat routejen tapahtumankäsittelijöistä muuttivat palautettavan datan oikeaan formaattiin kutsumalla palautetuille olioille niiden metodia _toJSON_. Esimimerkiksi uuden muistiinpanon luomisessa metodia kutsutaan _then_:in parametrina palauttamalle oliolle:
 
 ```js
-app.post('/api/notes', (request, response, next) => {
+app.post("/api/notes", (request, response, next) => {
   // ...
 
-  note.save()
-    .then(savedNote => {
-      response.json(savedNote.toJSON())
+  note
+    .save()
+    .then((savedNote) => {
+      response.json(savedNote.toJSON());
     })
-    .catch(error => next(error)) 
-})
+    .catch((error) => next(error));
+});
 ```
 
 Voisimme tehdä saman myös hieman tyylikkäämmin [promiseja ketjuttamalla](https://javascript.info/promise-chaining):
 
 ```js
-app.post('/api/notes', (request, response) => {
+app.post("/api/notes", (request, response) => {
   // ...
 
   note
     .save()
     // highlight-start
-    .then(savedNote => {
-      return savedNote.toJSON()
+    .then((savedNote) => {
+      return savedNote.toJSON();
     })
-    .then(savedAndFormattedNote => {
-      response.json(savedAndFormattedNote)
-    }) 
+    .then((savedAndFormattedNote) => {
+      response.json(savedAndFormattedNote);
+    })
     // highlight-end
-    .catch(error => next(error)) 
-})
+    .catch((error) => next(error));
+});
 ```
 
 Eli ensimmäisen _then_:in takaisinkutsussa otamme Mongoosen palauttaman olion _savedNote_ ja formatoimme sen. Operaation tulos palautetaan returnilla. Kuten osassa 2 [todettiin](/osa2/palvelimella_olevan_datan_muokkaaminen#palvelimen-kanssa-tapahtuvan-kommunikoinnin-eristaminen-omaan-moduuliin), promisen then-metodi palauttaa myös promisen. Eli kun palautamme _savedNote.toJSON()_:n takaisinkutsufunktiosta, syntyy promise, jonka arvona on formatoitu muistiinpano. Pääsemme käsiksi arvoon rekisteröimällä _then_-kutsulla uuden tapahtumankäsittelijän.
@@ -130,24 +133,24 @@ Eli ensimmäisen _then_:in takaisinkutsussa otamme Mongoosen palauttaman olion _
 Selviämme vieläkin tiiviimmällä koodilla käyttämällä nuolifunktion lyhempää muotoa:
 
 ```js
-app.post('/api/notes', (request, response) => {
+app.post("/api/notes", (request, response) => {
   // ...
 
   note
     .save()
-    .then(savedNote => savedNote.toJSON()) // highlight-line
-    .then(savedAndFormattedNote => {
-      response.json(savedAndFormattedNote)
-    }) 
-    .catch(error => next(error)) 
-})
+    .then((savedNote) => savedNote.toJSON()) // highlight-line
+    .then((savedAndFormattedNote) => {
+      response.json(savedAndFormattedNote);
+    })
+    .catch((error) => next(error));
+});
 ```
 
 Esimerkkimme tapauksessa promisejen ketjutuksesta ei ole suurta hyötyä. Tilanne alkaa muuttua, jos joudumme tekemään useita peräkkäisiä asynkronisia operaatiota. Emme kuitenkaan mene asiaan sen tarkemmin. Tutustumme seuraavassa osassa Javascriptin <i>async/await</i>-syntaksiin, jota käyttämällä peräkkäisten asynkronisten operaatioiden tekeminen helpottuu oleellisesti.
 
 ### Tietokantaa käyttävän version vieminen tuotantoon
 
-Sovelluksen pitäisi toimia tuotannossa, eli Herokussa lähes sellaisenaan. Frontendin muutosten takia on tehtävä siitä uusi tuotantoversio ja kopioitava se backendiin. 
+Sovelluksen pitäisi toimia tuotannossa, eli Herokussa lähes sellaisenaan. Frontendin muutosten takia on tehtävä siitä uusi tuotantoversio ja kopioitava se backendiin.
 
 Huomaa, että vaikka määrittelimme sovelluskehitystä varten ympäristömuuttujille arvot tiedostossa <i>.env</i>, tietokantaurlin kertovan ympäristömuuttujan arvo asetetaan Herokuun komentorivillä komennolla _heroku config:set_
 
@@ -159,7 +162,7 @@ Sovelluksen pitäisi nyt toimia. Aina kaikki ei kuitenkaan mene suunnitelmien mu
 
 ![](../../images/3/51a.png)
 
-eli tietokannan osoite olikin jostain syystä määrittelemätön. Komento <i>heroku config</i> paljasti että olin vahingossa määritellyt ympäristömuuttujan <em>MONGO\_URL</em> kun koodi oletti sen olevan nimeltään <em>MONGODB\_URI</em>.
+eli tietokannan osoite olikin jostain syystä määrittelemätön. Komento <i>heroku config</i> paljasti että olin vahingossa määritellyt ympäristömuuttujan <em>MONGO_URL</em> kun koodi oletti sen olevan nimeltään <em>MONGODB_URI</em>.
 
 Sovelluksen tämän hetkinen koodi on kokonaisuudessaan [Githubissa](https://github.com/fullstackopen-2019/part3-notes-backend/tree/part3-5), branchissä <i>part3-5</i>.
 
@@ -178,9 +181,9 @@ Mongoose ei tarjoa tilanteeseen sopivaa valmista validaattoria. Käytä npm:llä
 
 Jos HTTP POST -pyyntö yrittää lisätä nimeä, joka on jo puhelinluettelossa, tulee vastata sopivalla statuskoodilla ja lisätä vastaukseen asianmukainen virheilmoitus.
 
-#### 3.20*: puhelinluettelo ja tietokanta, step8
+#### 3.20\*: puhelinluettelo ja tietokanta, step8
 
-Laajenna validaatiota siten, että tietokantaan talletettavan nimen on oltava pituudeltaan vähintään 3 merkkiä ja puhelinnumeron vähitään 8 merkkiä. 
+Laajenna validaatiota siten, että tietokantaan talletettavan nimen on oltava pituudeltaan vähintään 3 merkkiä ja puhelinnumeron vähitään 8 merkkiä.
 
 Laajenna sovelluksen frontendia siten, että se antaa jonkinlaisen virheilmoituksen validoinnin epäonnistuessa. Virheidenkäsittely hoidetaan lisäämällä <em>catch</em>-lohko uuden henkilön lisäämisen yhteyteen:
 
@@ -240,41 +243,29 @@ Konfiguraatiot tallentuvat tiedostoon _.eslintrc.js_:
 
 ```js
 module.exports = {
-    'env': {
-        'commonjs': true,
-        'es6': true,
-        'node': true
-    },
-    'extends': 'eslint:recommended',
-    'globals': {
-        'Atomics': 'readonly',
-        'SharedArrayBuffer': 'readonly'
-    },
-    'parserOptions': {
-        'ecmaVersion': 2018
-    },
-    'rules': {
-        'indent': [
-            'error',
-            4
-        ],
-        'linebreak-style': [
-            'error',
-            'unix'
-        ],
-        'quotes': [
-            'error',
-            'single'
-        ],
-        'semi': [
-            'error',
-            'never'
-        ]
-    }
-}
+  env: {
+    commonjs: true,
+    es6: true,
+    node: true,
+  },
+  extends: "eslint:recommended",
+  globals: {
+    Atomics: "readonly",
+    SharedArrayBuffer: "readonly",
+  },
+  parserOptions: {
+    ecmaVersion: 2018,
+  },
+  rules: {
+    indent: ["error", 4],
+    "linebreak-style": ["error", "unix"],
+    quotes: ["error", "single"],
+    semi: ["error", "never"],
+  },
+};
 ```
-Muutetaan heti konfiguraatioista sisennystä määrittelevä sääntö, siten että sisennystaso on 2 välilyöntiä
 
+Muutetaan heti konfiguraatioista sisennystä määrittelevä sääntö, siten että sisennystaso on 2 välilyöntiä
 
 ```js
 "indent": [
@@ -298,7 +289,7 @@ Kannattaa ehkä tehdä linttaustakin varten _npm-skripti_:
     "start": "node index.js",
     "watch": "nodemon index.js",
     "lint": "eslint ."
-  },
+  }
   // ...
 }
 ```
@@ -337,7 +328,7 @@ Otetaan käyttöön sääntö [eqeqeq](https://eslint.org/docs/rules/eqeqeq) jok
   "rules": {
     // ...
     "eqeqeq": "error"
-  },
+  }
 }
 ```
 
@@ -352,13 +343,9 @@ Estetään rivien lopussa olevat [turhat välilyönnit](https://eslint.org/docs/
     // ...
     "eqeqeq": "error",
     "no-trailing-spaces": "error",
-    "object-curly-spacing": [
-        "error", "always"
-    ],
-    "arrow-spacing": [
-        "error", { "before": true, "after": true }
-    ]
-  },
+    "object-curly-spacing": ["error", "always"],
+    "arrow-spacing": ["error", { "before": true, "after": true }]
+  }
 }
 ```
 
@@ -378,14 +365,10 @@ Yksittäisen sääntö on helppo kytkeä [pois päältä](https://eslint.org/doc
     // ...
     "eqeqeq": "error",
     "no-trailing-spaces": "error",
-    "object-curly-spacing": [
-        "error", "always"
-    ],
-    "arrow-spacing": [
-        "error", { "before": true, "after": true }
-    ],
+    "object-curly-spacing": ["error", "always"],
+    "arrow-spacing": ["error", { "before": true, "after": true }],
     "no-console": 0 // highlight-line
-  },
+  }
 }
 ```
 

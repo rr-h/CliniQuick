@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-1.svg
+mainImage: "../../../images/part-1.svg"
 part: 1
 letter: b
 lang: fi
@@ -30,15 +30,15 @@ Tietyissä piireissä on myös ollut suosittua yrittää "simuloida" Javascripti
 Javascriptissä on muutama tapa määritellä muuttujia:
 
 ```js
-const x = 1
-let y = 5
+const x = 1;
+let y = 5;
 
-console.log(x, y)   // tulostuu 1, 5
-y += 10
-console.log(x, y)   // tulostuu 1, 15
-y = 'teksti'
-console.log(x, y)   // tulostuu 1, teksti
-x = 4               // aiheuttaa virheen
+console.log(x, y); // tulostuu 1, 5
+y += 10;
+console.log(x, y); // tulostuu 1, 15
+y = "teksti";
+console.log(x, y); // tulostuu 1, teksti
+x = 4; // aiheuttaa virheen
 ```
 
 [const](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const) ei oikeastaan määrittele muuttujaa vaan <i>vakion</i>, jonka arvoa ei voi enää muuttaa. [let](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let) taas määrittelee normaalin muuttujan.
@@ -54,16 +54,16 @@ Lisää aiheesta esim. youtubessa [var, let and const - ES6 JavaScript Features]
 [Taulukko](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) ja muutama esimerkki sen käytöstä
 
 ```js
-const t = [1, -1, 3]
+const t = [1, -1, 3];
 
-t.push(5)
+t.push(5);
 
-console.log(t.length) // tulostuu 4
-console.log(t[1])     // tulostuu -1
+console.log(t.length); // tulostuu 4
+console.log(t[1]); // tulostuu -1
 
-t.forEach(value => {
-  console.log(value)  // tulostuu 1, -1, 3, 5 omille riveilleen
-})                    
+t.forEach((value) => {
+  console.log(value); // tulostuu 1, -1, 3, 5 omille riveilleen
+});
 ```
 
 Huomattavaa esimerkissä on se, että taulukon sisältöä voi muuttaa, vaikka se on määritelty _const_:ksi. Koska taulukko on olio, viittaa muuttuja koko ajan samaan olioon. Olion sisältö muuttuu sitä mukaa kuin taulukkoon lisätään uusia alkioita.
@@ -71,9 +71,9 @@ Huomattavaa esimerkissä on se, että taulukon sisältöä voi muuttaa, vaikka s
 Eräs tapa käydä taulukon alkiot läpi on esimerkissä käytetty _forEach_, joka saa parametrikseen nuolisyntaksilla määritellyn <i>funktion</i>
 
 ```js
-value => {
-  console.log(value)
-}
+(value) => {
+  console.log(value);
+};
 ```
 
 forEach kutsuu funktiota <i>jokaiselle taulukon alkiolle</i> antaen taulukon yksittäisen alkion aina parametrina. forEachin parametrina oleva funktio voi saada myös [muita parametreja](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach).
@@ -81,12 +81,12 @@ forEach kutsuu funktiota <i>jokaiselle taulukon alkiolle</i> antaen taulukon yks
 Edellisessä esimerkissä taulukkoon lisättiin uusi alkio metodilla [push](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/push). Reactin yhteydessä sovelletaan usein funktionaalisen ohjelmoinnin tekniikoita, jonka eräs piirre on käyttää <i>muuttumattomia</i> (engl. [immutable](https://en.wikipedia.org/wiki/Immutable_object)) tietorakenteita. React-koodissa kannattaakin mieluummin käyttää metodia [concat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/concat), joka ei lisää alkiota taulukkoon vaan luo uuden taulukon, jossa on lisättävä alkio sekä vanhan taulukon sisältö:
 
 ```js
-const t = [1, -1, 3]
+const t = [1, -1, 3];
 
-const t2 = t.concat(5)
+const t2 = t.concat(5);
 
-console.log(t)  // tulostuu [1, -1, 3]
-console.log(t2) // tulostuu [1, -1, 3, 5]
+console.log(t); // tulostuu [1, -1, 3]
+console.log(t2); // tulostuu [1, -1, 3, 5]
 ```
 
 Metodikutsu _t.concat(5)_ ei siis lisää uutta alkiota vanhaan taulukkoon, vaan palauttaa uuden taulukon, joka sisältää vanhan taulukon alkioiden lisäksi uuden alkion.
@@ -94,10 +94,10 @@ Metodikutsu _t.concat(5)_ ei siis lisää uutta alkiota vanhaan taulukkoon, vaan
 Taulukoille on määritelty runsaasti hyödyllisiä operaatioita. Katsotaan pieni esimerkki metodin [map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map) käytöstä.
 
 ```js
-const t = [1, 2, 3]
+const t = [1, 2, 3];
 
-const m1 = t.map(value => value * 2)
-console.log(m1)   // tulostuu [2, 4, 6]
+const m1 = t.map((value) => value * 2);
+console.log(m1); // tulostuu [2, 4, 6]
 ```
 
 Map muodostaa taulukon perusteella <i>uuden taulukon</i>, jonka jokainen alkio luodaan map:in parametrina olevan funktion avulla, esimerkin tapauksessa kertomalla alkuperäinen luku kahdella.
@@ -105,8 +105,8 @@ Map muodostaa taulukon perusteella <i>uuden taulukon</i>, jonka jokainen alkio l
 Map voi muuttaa taulukon myös täysin erilaiseen muotoon:
 
 ```js
-const m2 = t.map(value => '<li>' + value + '</li>')
-console.log(m2)  
+const m2 = t.map((value) => "<li>" + value + "</li>");
+console.log(m2);
 // tulostuu [ '<li>1</li>', '<li>2</li>', '<li>3</li>' ]
 ```
 
@@ -115,12 +115,12 @@ Eli lukuja sisältävästä taulukosta tehdään map-metodin avulla HTML-koodia 
 Taulukon yksittäisiä alkioita on helppo sijoittaa muuttujiin [destrukturoivan](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) sijoituslauseen avulla:
 
 ```js
-const t = [1, 2, 3, 4, 5]
+const t = [1, 2, 3, 4, 5];
 
-const [first, second, ...rest] = t
+const [first, second, ...rest] = t;
 
-console.log(first, second)  // tulostuu 1, 2
-console.log(rest)           // tulostuu [3, 4 ,5]
+console.log(first, second); // tulostuu 1, 2
+console.log(rest); // tulostuu [3, 4 ,5]
 ```
 
 Eli muuttujiin _first_ ja _second_ tulee sijoituksen ansiosta taulukon kaksi ensimmäistä lukua. Muuttujaan _rest_ "kerätään" sijoituksesta jäljellejääneet luvut omaksi taulukoksi.
@@ -131,25 +131,25 @@ Javascriptissä on muutama tapa määritellä olioita. Erittäin yleisesti käyt
 
 ```js
 const object1 = {
-  name: 'Arto Hellas',
+  name: "Arto Hellas",
   age: 35,
-  education: 'Filosofian tohtori',
-}
+  education: "Filosofian tohtori",
+};
 
 const object12 = {
-  name: 'Full Stack -websovelluskehitys',
-  level: 'aineopinto',
+  name: "Full Stack -websovelluskehitys",
+  level: "aineopinto",
   size: 5,
-}
+};
 
 const object3 = {
   name: {
-    first: 'Juha',
-    last: 'Tauriainen',
+    first: "Juha",
+    last: "Tauriainen",
   },
   grades: [2, 3, 5, 3],
-  department: 'TKTL',
-}
+  department: "TKTL",
+};
 ```
 
 Kenttien arvot voivat olla tyypiltään mitä vaan, lukuja, merkkijonoja, taulukoita, olioita...
@@ -157,16 +157,16 @@ Kenttien arvot voivat olla tyypiltään mitä vaan, lukuja, merkkijonoja, tauluk
 Olioiden kenttiin viitataan pistenotaatiolla, tai hakasulkeilla:
 
 ```js
-console.log(object1.name)         // tulostuu Arto Hellas
-const fieldName = 'age' 
-console.log(object1[fieldName])   // tulostuu 35
+console.log(object1.name); // tulostuu Arto Hellas
+const fieldName = "age";
+console.log(object1[fieldName]); // tulostuu 35
 ```
 
 Olioille voidaan lisätä kenttiä myös lennossa joko pistenotaation tai hakasulkeiden avulla:
 
 ```js
-object1.address = 'Tapiola'
-object1['secret number'] = 12341
+object1.address = "Tapiola";
+object1["secret number"] = 12341;
 ```
 
 Jälkimmäinen lisäyksistä on pakko tehdä hakasulkeiden avulla, sillä pistenotaatiota käytettäessä <i>secret number</i> ei kelpaa kentän nimeksi.
@@ -181,39 +181,39 @@ Olemme jo tutustuneet ns. nuolifunktioiden määrittelyyn. Täydellinen eli "pit
 
 ```js
 const sum = (p1, p2) => {
-  console.log(p1)
-  console.log(p2)
-  return p1 + p2
-}
+  console.log(p1);
+  console.log(p2);
+  return p1 + p2;
+};
 ```
 
 ja funktiota kutsutaan kuten olettaa saattaa
 
 ```js
-const result = sum(1, 5)
-console.log(result)
+const result = sum(1, 5);
+console.log(result);
 ```
 
 Jos parametreja on vain yksi, voidaan sulut jättää määrittelystä pois:
 
 ```js
-const square = p => {
-  console.log(p)
-  return p * p
-}
+const square = (p) => {
+  console.log(p);
+  return p * p;
+};
 ```
 
 Jos funktio sisältää ainoastaan yhden lausekkeen, ei aaltosulkeita tarvita. Tällöin funktio palauttaa ainoan lausekkeensa arvon. Eli jos poistetaan konsoliin tulostus, voidaan edellinen funktio ilmaista lyhyemmin seuraavasti:
 
 ```js
-const square = p => p * p
+const square = (p) => p * p;
 ```
 
 Tämä muoto on erityisen kätevä käsiteltäessä taulukkoja esim. map-metodin avulla:
 
 ```js
-const t = [1, 2, 3]
-const tSquared = t.map(p => p * p)
+const t = [1, 2, 3];
+const tSquared = t.map((p) => p * p);
 // tSquared on nyt [1, 4, 9]
 ```
 
@@ -223,20 +223,20 @@ Määrittelytapoja on kaksi, funktiolle voidaan antaa [function declaration](htt
 
 ```js
 function product(a, b) {
-  return a * b
+  return a * b;
 }
 
-const vastaus = product(2, 6)
+const vastaus = product(2, 6);
 ```
 
 Toinen tapa on tehdä määrittely [funktiolausekkeena](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/function). Tällöin funktiolle ei tarvitse antaa nimeä ja määrittely voi sijaita muun koodin seassa:
 
 ```js
-const average = function(a, b) {
-  return (a + b) / 2
-}
+const average = function (a, b) {
+  return (a + b) / 2;
+};
 
-const vastaus = average(2, 5)
+const vastaus = average(2, 5);
 ```
 
 Määrittelemme tällä kurssilla kaikki funktiot nuolisyntaksin avulla.
@@ -252,9 +252,9 @@ Määrittelemme tällä kurssilla kaikki funktiot nuolisyntaksin avulla.
 
 ```js
 const Header = (props) => {
-  console.log(props) // highlight-line
-  return <h1>{props.course}</h1>
-}
+  console.log(props); // highlight-line
+  return <h1>{props.course}</h1>;
+};
 ```
 
   <h4>1.3: kurssitiedot step3</h4>
@@ -263,57 +263,48 @@ Siirrytään käyttämään sovelluksessamme oliota. Muuta komponentin <i>App</i
 
 ```js
 const App = () => {
-  const course = 'Half Stack application development'
+  const course = "Half Stack application development";
   const part1 = {
-    name: 'Fundamentals of React',
-    exercises: 10
-  }
+    name: "Fundamentals of React",
+    exercises: 10,
+  };
   const part2 = {
-    name: 'Using props to pass data',
-    exercises: 7
-  }
+    name: "Using props to pass data",
+    exercises: 7,
+  };
   const part3 = {
-    name: 'State of a component',
-    exercises: 14
-  }
+    name: "State of a component",
+    exercises: 14,
+  };
 
-
-  return (
-    <div>
-      ...
-    </div>
-  )
-}
+  return <div>...</div>;
+};
 ```
 
   <h4>1.4: kurssitiedot step4</h4>
 
-Ja laitetaan oliot taulukkoon, eli muuta  <i>App</i> :in muuttujamäärittelyt seuraavaan muotoon ja muuta sovelluksen kaikki osat vastaavasti:
+Ja laitetaan oliot taulukkoon, eli muuta <i>App</i> :in muuttujamäärittelyt seuraavaan muotoon ja muuta sovelluksen kaikki osat vastaavasti:
 
 ```js
 const App = () => {
-  const course = 'Half Stack application development'
+  const course = "Half Stack application development";
   const parts = [
     {
-      name: 'Fundamentals of React',
-      exercises: 10
+      name: "Fundamentals of React",
+      exercises: 10,
     },
     {
-      name: 'Using props to pass data',
-      exercises: 7
+      name: "Using props to pass data",
+      exercises: 7,
     },
     {
-      name: 'State of a component',
-      exercises: 14
-    }
-  ]
+      name: "State of a component",
+      exercises: 14,
+    },
+  ];
 
-  return (
-    <div>
-      ...
-    </div>
-  )
-}
+  return <div>...</div>;
+};
 ```
 
 **HUOM:** tässä vaiheessa <i>voit olettaa, että taulukossa on aina kolme alkiota</i>, eli taulukkoa ei ole pakko käydä läpi looppaamalla. Palataan taulukossa olevien olioiden perusteella tapahtuvaan komponenttien renderöintiin asiaan tarkemmin kurssin [seuraavassa osassa](../osa2).
@@ -341,29 +332,25 @@ Viedään muutos vielä yhtä askelta pidemmälle, eli tehdään kurssista ja se
 ```js
 const App = () => {
   const course = {
-    name: 'Half Stack application development',
+    name: "Half Stack application development",
     parts: [
       {
-        name: 'Fundamentals of React',
-        exercises: 10
+        name: "Fundamentals of React",
+        exercises: 10,
       },
       {
-        name: 'Using props to pass data',
-        exercises: 7
+        name: "Using props to pass data",
+        exercises: 7,
       },
       {
-        name: 'State of a component',
-        exercises: 14
-      }
-    ]
-  }
+        name: "State of a component",
+        exercises: 14,
+      },
+    ],
+  };
 
-  return (
-    <div>
-      ...
-    </div>
-  )
-}
+  return <div>...</div>;
+};
 ```
 
 </div>
@@ -380,61 +367,61 @@ Voimme liittää oliolle metodeja määrittelemällä niille kenttiä, jotka ova
 
 ```js
 const arto = {
-  name: 'Arto Hellas',
+  name: "Arto Hellas",
   age: 35,
-  education: 'Filosofian tohtori',
-  greet: function() {
-    console.log('hello, my name is', this.name)
+  education: "Filosofian tohtori",
+  greet: function () {
+    console.log("hello, my name is", this.name);
   },
-}
+};
 
-arto.greet()  // tulostuu hello, my name is Arto Hellas
+arto.greet(); // tulostuu hello, my name is Arto Hellas
 ```
 
 metodeja voidaan liittää olioille myös niiden luomisen jälkeen:
 
 ```js
 const arto = {
-  name: 'Arto Hellas',
+  name: "Arto Hellas",
   age: 35,
-  education: 'Filosofian tohtori',
-  greet: function() {
-    console.log('hello, my name is', this.name)
+  education: "Filosofian tohtori",
+  greet: function () {
+    console.log("hello, my name is", this.name);
   },
-}
+};
 
 // highlight-start
-arto.growOlder = function() {
-  this.age += 1
-}
+arto.growOlder = function () {
+  this.age += 1;
+};
 // highlight-end
 
-console.log(arto.age)   // tulostuu 35
-arto.growOlder()
-console.log(arto.age)   // tulostuu 36
+console.log(arto.age); // tulostuu 35
+arto.growOlder();
+console.log(arto.age); // tulostuu 36
 ```
 
 Muutetaan olioa hiukan
 
 ```js
 const arto = {
-  name: 'Arto Hellas',
+  name: "Arto Hellas",
   age: 35,
-  education: 'Filosofian tohtori',
-  greet: function() {
-    console.log('hello, my name is', this.name)
+  education: "Filosofian tohtori",
+  greet: function () {
+    console.log("hello, my name is", this.name);
   },
   // highlight-start
-  doAddition: function(a, b) {
-    console.log(a + b)
+  doAddition: function (a, b) {
+    console.log(a + b);
   },
   // highlight-end
-}
+};
 
-arto.doAddition(1, 4) // tulostuu 5
+arto.doAddition(1, 4); // tulostuu 5
 
-const referenceToAddition = arto.doAddition
-referenceToAddition(10, 15) // tulostuu 25
+const referenceToAddition = arto.doAddition;
+referenceToAddition(10, 15); // tulostuu 25
 ```
 
 Oliolla on nyt metodi _doAddition_, joka osaa laskea parametrina annettujen lukujen summan. Metodia voidaan kutsua normaaliin tapaan olion kautta <em>arto.doAddition(1, 4)</em> tai tallettamalla <i>metodiviite</i> muuttujaan ja kutsumalla metodia muuttujan kautta <em>referenceToAddition(10, 15)</em>.
@@ -442,10 +429,10 @@ Oliolla on nyt metodi _doAddition_, joka osaa laskea parametrina annettujen luku
 Jos yritämme samaa metodille _greet_, aiheutuu ongelmia:
 
 ```js
-arto.greet()       // tulostuu hello, my name is Arto Hellas
+arto.greet(); // tulostuu hello, my name is Arto Hellas
 
-const referenceToGreet = arto.greet
-referenceToGreet() // konsoliin tulostuu virheilmoitus
+const referenceToGreet = arto.greet;
+referenceToGreet(); // konsoliin tulostuu virheilmoitus
 ```
 
 Kutsuttaessa metodia viitteen kautta, on metodi kadottanut tiedon siitä mikä oli alkuperäinen _this_. Toisin kuin melkein kaikissa muissa kielissä, Javascriptissa [this](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this):n arvo määrittyy sen mukaan <i>miten metodia on kutsuttu</i>. Kutsuttaessa metodia viitteen kautta, _this_:in arvoksi tulee ns. [globaali objekti](https://developer.mozilla.org/en-US/docs/Glossary/Global_object) ja lopputulos ei ole yleensä ollenkaan se, mitä sovelluskehittäjä olettaa.
@@ -456,13 +443,13 @@ Eräs this:in katoamiseen johtava tilanne tulee esim. jos pyydetään Artoa terv
 
 ```js
 const arto = {
-  name: 'Arto Hellas',
-  greet: function() {
-    console.log('hello, my name is', this.name)
+  name: "Arto Hellas",
+  greet: function () {
+    console.log("hello, my name is", this.name);
   },
-}
+};
 
-setTimeout(arto.greet, 1000)  // highlight-line
+setTimeout(arto.greet, 1000); // highlight-line
 ```
 
 Javascriptissa this:in arvo siis määräytyy siitä miten metodia on kutsuttu. setTimeoutia käytettäessä metodia kutsuu Javascript-moottori ja this viittaa Timeout-olioon.
@@ -470,7 +457,7 @@ Javascriptissa this:in arvo siis määräytyy siitä miten metodia on kutsuttu. 
 On useita mekanismeja, joiden avulla alkuperäinen _this_ voidaan säilyttää, eräs näistä on metodin [bind](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind) käyttö:
 
 ```js
-setTimeout(arto.greet.bind(arto), 1000)
+setTimeout(arto.greet.bind(arto), 1000);
 ```
 
 Komento <em>arto.greet.bind(arto)</em> luo uuden funktion, missä se on sitonut _this_:in tarkoittamaan Artoa riippumatta siitä missä ja miten metodia kutsutaan.
@@ -490,19 +477,19 @@ Seuraavassa on määritelty "luokka" Person ja sille kaksi Person-oliota:
 ```js
 class Person {
   constructor(name, age) {
-    this.name = name
-    this.age = age
+    this.name = name;
+    this.age = age;
   }
   greet() {
-    console.log('hello, my name is', this.name)
+    console.log("hello, my name is", this.name);
   }
 }
 
-const arto = new Person('Arto Hellas', 35)
-arto.greet()
+const arto = new Person("Arto Hellas", 35);
+arto.greet();
 
-const juhq = new Person('Juha Tauriainen', 48)
-juhq.greet()
+const juhq = new Person("Juha Tauriainen", 48);
+juhq.greet();
 ```
 
 Syntaksin osalta luokat ja niistä luodut oliot muistuttavat erittäin paljon esim. Javan luokkia ja olioita. Käyttäytymiseltäänkin ne ovat aika lähellä Javan olioita. Perimmiltään kyseessä on kuitenkin edelleen Javascriptin [prototyyppiperintään](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Inheritance) perustuvista olioista. Molempien olioiden todellinen tyyppi on _Object_ sillä Javascriptissä ei perimmiltään ole muita tyyppejä kuin [Boolean, Null, Undefined, Number, String, Symbol ja Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures)

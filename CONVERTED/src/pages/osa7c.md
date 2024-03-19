@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-7.svg
+mainImage: "../../../images/part-7.svg"
 part: 7
 letter: c
 lang: fi
@@ -41,16 +41,18 @@ Kun veimme Reactilla toteutetun frontendin tuotantoon osan 3 luvussa [Frontendin
 Hakemiston juuressa oleva sovelluksen "päätiedosto" <i>index.html</i> lataa <i>script</i>-tagin avulla bundlatun Javascript-tiedoston (jos ollaan tarkkoja, on bundlattuja Javascript-tiedostoja kaksi kappaletta):
 
 ```html
-<!doctype html><html lang="en">
-<head>
-  <meta charset="utf-8"/>
-  <title>React App</title>
-  <link href="/static/css/main.f9a47af2.chunk.css" rel="stylesheet"></head>
-<body>
-  <div id="root"></div>
-  <script src="/static/js/1.578f4ea1.chunk.js"></script>
-  <script src="/static/js/main.8209a8f2.chunk.js"></script>
-</body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>React App</title>
+    <link href="/static/css/main.f9a47af2.chunk.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="/static/js/1.578f4ea1.chunk.js"></script>
+    <script src="/static/js/main.8209a8f2.chunk.js"></script>
+  </body>
 </html>
 ```
 
@@ -95,16 +97,16 @@ npm install --save-dev webpack webpack-cli
 Webpackin toiminta konfiguroidaan tiedostoon <i>webpack.config.js</i>, laitetaan sen alustavaksi sisällöksi seuraava
 
 ```js
-const path = require('path')
+const path = require("path");
 
 const config = {
-  entry: './src/index.js',
+  entry: "./src/index.js",
   output: {
-    path: path.resolve(__dirname, 'build'),
-    filename: 'main.js'
-  }
-}
-module.exports = config
+    path: path.resolve(__dirname, "build"),
+    filename: "main.js",
+  },
+};
+module.exports = config;
 ```
 
 Määritellään sitten npm-skripti <i>build</i> jonka avulla bundlaus suoritetaan
@@ -120,9 +122,9 @@ Määritellään sitten npm-skripti <i>build</i> jonka avulla bundlaus suoriteta
 Lisätään hieman koodia tiedostoon <i>src/index.js</i>:
 
 ```js
-const hello = name => {
-  console.log(`hello ${name}`)
-}
+const hello = (name) => {
+  console.log(`hello ${name}`);
+};
 ```
 
 Kun nyt suoritamme komennon _npm run build_ webpack bundlaa koodin. Tuloksena on hakemistoon <i>build</i> sijoitettava tiedosto <i>main.js</i>:
@@ -135,22 +137,22 @@ Lisätään hakemistoon <i>src</i> tiedosto <i>App.js</i> ja sille sisältö
 
 ```js
 const App = () => {
-  return null
-}
+  return null;
+};
 
-export default App
+export default App;
 ```
 
 Importataan ja käytetään modulia <i>App</i> tiedostossa <i>index.js</i>
 
 ```js
-import App from './App';
+import App from "./App";
 
-const hello = name => {
-  console.log(`hello ${name}`)
-}
+const hello = (name) => {
+  console.log(`hello ${name}`);
+};
 
-App()
+App();
 ```
 
 Kun nyt suoritamme bundlauksen komennolla _npm run build_ huomaamme webpackin havainneen molemmat tiedostot:
@@ -190,17 +192,17 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _App
 Katsotaan nyt tarkemmin konfiguraation <i>webpack.config.js</i> tämänhetkistä sisältöä:
 
 ```js
-const path = require('path')
+const path = require("path");
 
 const config = {
-  entry: './src/index.js',
+  entry: "./src/index.js",
   output: {
-    path: path.resolve(__dirname, 'build'),
-    filename: 'main.js'
-  }
-}
+    path: path.resolve(__dirname, "build"),
+    filename: "main.js",
+  },
+};
 
-module.exports = config
+module.exports = config;
 ```
 
 Konfiguraatio on Javascriptia ja tapahtuu eksporttaamalla määrittelyt sisältävä olio Noden moduulisyntaksilla.
@@ -220,29 +222,27 @@ npm install --save react react-dom
 Liitetään tavanomaiset loitsut tiedostoon <i>index.js</i>
 
 ```js
-import React from 'react'
-import ReactDOM from 'react-dom'
-import App from './App'
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
 
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
 ja muutetaan <i>App.js</i> muotoon
 
 ```js
-import React from 'react'
+import React from "react";
 
-const App = () => (
-  <div>hello webpack</div>
-)
+const App = () => <div>hello webpack</div>;
 
-export default App
+export default App;
 ```
 
 Tarvitsemme sovellukselle myös "pääsivuna" toimivan tiedoston <i>build/index.html</i> joka lataa <i>script</i>-tagin avulla bundlatun Javascriptin:
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -265,8 +265,8 @@ Webpack mainitsee että saatamme tarvita <i>loaderin</i> tiedoston <i>App.js</i>
 
 ```js
 const App = () => {
-  return <div>hello webpack</div>
-}
+  return <div>hello webpack</div>;
+};
 ```
 
 ei ole "normaalia" Javascriptia, vaan JSX:n tarjoama syntaktinen oikotie määritellä <i>div</i>-tagiä vastaava React-elementti.
@@ -277,25 +277,25 @@ Määritellään projektiimme Reactin käyttämän JSX:n normaaliksi Javascripti
 
 ```js
 const config = {
-  entry: './src/index.js',
+  entry: "./src/index.js",
   output: {
-    path: path.resolve(__dirname, 'build'),
-    filename: 'main.js',
+    path: path.resolve(__dirname, "build"),
+    filename: "main.js",
   },
   // highlight-start
   module: {
     rules: [
       {
         test: /\.js$/,
-        loader: 'babel-loader',
+        loader: "babel-loader",
         query: {
-          presets: ['@babel/preset-react'],
+          presets: ["@babel/preset-react"],
         },
       },
     ],
   },
   // highlight-end
-}
+};
 ```
 
 Loaderit määritellään kentän <i>module</i> alle sijoitettavaan taulukkoon <i>rules</i>.
@@ -327,15 +327,15 @@ Jos katsomme bundlattua koodia ja editoimme hieman koodin ulkoasua, huomaamme, e
 ```js
 const App = () =>
   react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-    'div',
+    "div",
     null,
-    'hello webpack'
-  )
+    "hello webpack"
+  );
 ```
 
 Eli JSX-syntaksin sijaan komponentit luodaan pelkällä Javascriptilla käyttäen Reactin funktiota [createElement](https://reactjs.org/docs/react-without-jsx.html).
 
-Sovellusta voi nyt kokeilla avaamalla tiedoston <i>build/index.html</i>  selaimen <i>open file</i> -toiminnolla:
+Sovellusta voi nyt kokeilla avaamalla tiedoston <i>build/index.html</i> selaimen <i>open file</i> -toiminnolla:
 
 ![](../../images/7/22.png)
 
@@ -348,7 +348,7 @@ npm install --save-dev @babel/polyfill
 Muutetaan vielä tiedostoon <i>webpack.config.js</i> entry-kohdan määrittelyä seuraavasti:
 
 ```js
-  entry: ['@babel/polyfill', './src/index.js']
+entry: ["@babel/polyfill", "./src/index.js"];
 ```
 
 Tässä on jo melkein kaikki mitä tarvitsemme React-sovelluskehitykseen.
@@ -397,7 +397,7 @@ Kun nyt transpiloimme koodin, muuttuu se vanhan koulukunnan Javascriptiksi. Komp
 
 ```js
 var App = function App() {
-  return _react2.default.createElement('div', null, 'hello webpack')
+  return _react2.default.createElement("div", null, "hello webpack");
 };
 ```
 
@@ -418,18 +418,14 @@ Määritellään tyyli käytettäväksi komponentissa <i>App</i>
 
 ```js
 const App = () => {
-  return (
-    <div className="container">
-      hello webpack
-    </div>
-  )
-}
+  return <div className="container">hello webpack</div>;
+};
 ```
 
 ja importataan se tiedostossa <i>index.js</i>
 
 ```js
-import './index.css'
+import "./index.css";
 ```
 
 Transpilointi hajoaa
@@ -443,15 +439,15 @@ CSS:ää varten onkin otettava käyttöön [css](https://webpack.js.org/loaders/
   rules: [
     {
       test: /\.js$/,
-      loader: 'babel-loader',
+      loader: "babel-loader",
       query: {
-        presets: ['@babel/preset-react', '@babel/preset-env'],
+        presets: ["@babel/preset-react", "@babel/preset-env"],
       },
     },
     // highlight-start
     {
       test: /\.css$/,
-      loaders: ['style-loader', 'css-loader'],
+      loaders: ["style-loader", "css-loader"],
     },
     // highlight-end
   ];
@@ -499,14 +495,14 @@ Lisätään tiedostoon <i>webpack.config.js</i> kenttä <i>devServer</i>
 
 ```js
 const config = {
-  entry: './src/index.js',
+  entry: "./src/index.js",
   output: {
-    path: path.resolve(__dirname, 'build'),
-    filename: 'main.js',
+    path: path.resolve(__dirname, "build"),
+    filename: "main.js",
   },
   // highlight-start
   devServer: {
-    contentBase: path.resolve(__dirname, 'build'),
+    contentBase: path.resolve(__dirname, "build"),
     compress: true,
     port: 3000,
   },
@@ -522,20 +518,20 @@ Päivitysprosessi on nopea, dev-serveriä käytettäessä webpack ei bundlaa koo
 Laajennetaan koodia muuttamalla komponentin <i>App</i> määrittelyä seuraavasti:
 
 ```js
-import React, {useState} from 'react'
+import React, { useState } from "react";
 
 const App = () => {
-  const [counter, setCounter] = useState(0)
+  const [counter, setCounter] = useState(0);
 
   return (
     <div className="container">
       hello webpack {counter} clicks
-      <button onClick={() => setCounter(counter + 1)} >press</button>
+      <button onClick={() => setCounter(counter + 1)}>press</button>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
 ```
 
 Kannattaa huomata, että virheviestit eivät renderöidy selaimeen kuten create-react-app:illa tehdyissä sovelluksissa, eli on seurattava tarkasti konsolia:
@@ -550,21 +546,21 @@ Erotetaan napin klikkauksenkäsittelijä omaksi funktioksi ja talletetaan tilaan
 
 ```js
 const App = () => {
-  const [counter, setCounter] = useState(0)
-  const [values, setValues] = useState() // highlight-line
+  const [counter, setCounter] = useState(0);
+  const [values, setValues] = useState(); // highlight-line
 
   const handleClick = () => {
-    setCounter(counter + 1)
-    setValues(values.concat(counter)) // highlight-line
-  }
+    setCounter(counter + 1);
+    setValues(values.concat(counter)); // highlight-line
+  };
 
   return (
     <div className="container">
       hello webpack {counter} clicks
-      <button onClick={handleClick} >press</button>
+      <button onClick={handleClick}>press</button>
     </div>
-  )
-}
+  );
+};
 ```
 
 Sovellus ei enää toimi, ja konsoli kertoo virheestä
@@ -590,14 +586,14 @@ Source map saadaan generoitua lisäämällä konfiguraatioon kenttä <i>devtool<
 
 ```js
 const config = {
-  entry: './src/index.js',
+  entry: "./src/index.js",
   output: {
     // ...
   },
   devServer: {
     // ...
   },
-  devtool: 'source-map', // highlight-line
+  devtool: "source-map", // highlight-line
   // ..
 };
 ```
@@ -616,10 +612,10 @@ Korjataan bugi alustamalla tila <i>values</i> tyhjäksi taulukoksi:
 
 ```js
 const App = () => {
-  const [counter, setCounter] = useState(0)
-  const [values, setValues] = useState([])
+  const [counter, setCounter] = useState(0);
+  const [values, setValues] = useState([]);
   // ...
-}
+};
 ```
 
 ### Koodin minifiointi
@@ -694,44 +690,47 @@ Bundlattu tiedosto laitetaan sitten käyttämään todellista, osoitteessa <http
 Asennetaan <i>axios</i>, käynnistetään json-server ja tehdään tarvittavat lisäykset sovellukseen. Vaihtelun vuoksi muistiinpanojen hakeminen palvelimelta on toteutettu [custom hookin](/osa5/custom_hookit) _useNotes_ avulla:
 
 ```js
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 // highlight-start
 const useNotes = (url) => {
-  const [notes, setNotes] = useState([])
+  const [notes, setNotes] = useState([]);
 
   useEffect(() => {
-    axios.get(url).then(response => {
-      setNotes(response.data)
-    })
-  }, [url])
+    axios.get(url).then((response) => {
+      setNotes(response.data);
+    });
+  }, [url]);
 
-  return notes
-}
+  return notes;
+};
 // highlight-end
 
 const App = () => {
-  const [counter, setCounter] = useState(0)
-  const [values, setValues] = useState([])
-  const url = 'http://localhost:3001/notes'
-  const notes = useNotes(url) // highlight-line
+  const [counter, setCounter] = useState(0);
+  const [values, setValues] = useState([]);
+  const url = "http://localhost:3001/notes";
+  const notes = useNotes(url); // highlight-line
 
   const handleClick = () => {
-    setCounter(counter + 1)
-    setValues(values.concat(counter))
-  }
+    setCounter(counter + 1);
+    setValues(values.concat(counter));
+  };
 
   return (
     <div className="container">
       hello webpack {counter} clicks
-      <button onClick={handleClick} >press</button>
-      <div>{notes.length} notes on server {url}</div> // highlight-line
+      <button onClick={handleClick}>press</button>
+      <div>
+        {notes.length} notes on server {url}
+      </div>{" "}
+      // highlight-line
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
 ```
 
 Koodissa on nyt kovakoodattuna sovelluskehityksessä käytettävän palvelimen osoite. Miten saamme osoitteen hallitusti muutettua osoittamaan internetissä olevaan backendiin bundlatessamme koodin?
@@ -739,92 +738,96 @@ Koodissa on nyt kovakoodattuna sovelluskehityksessä käytettävän palvelimen o
 Muutetaan <i>webpack.config.js</i> oliosta [funktioksi](https://webpack.js.org/configuration/configuration-types/#exporting-a-function):
 
 ```js
-const path = require('path');
+const path = require("path");
 
 const config = (env, argv) => {
   return {
-    entry: './src/index.js',
+    entry: "./src/index.js",
     output: {
       // ...
     },
     devServer: {
       // ...
     },
-    devtool: 'source-map',
+    devtool: "source-map",
     module: {
       // ...
     },
     plugins: [
       // ...
     ],
-  }
-}
+  };
+};
 
-module.exports = config
+module.exports = config;
 ```
 
 Määrittely on muuten täysin sama, mutta aiemmin eksportattu olio on nyt määritellyn funktion paluuarvo. Funktio saa parametrit <i>env</i> ja <i>argv</i>, joista jälkimmäisen avulla saamme selville npm-skriptissä määritellyn <i>moden</i>.
 
-Webpackin [DefinePlugin](https://webpack.js.org/plugins/define-plugin/):in avulla voimme määritellä globaaleja <i>vakioarvoja</i>, joita on mahdollista käyttää bundlattavassa koodissa. Määritellään nyt vakio <i>BACKEND\_URL</i>, joka saa eri arvon riippuen siitä ollaanko kehitysympäristössä vai tehdäänkö tuotantoon sopivaa bundlea:
+Webpackin [DefinePlugin](https://webpack.js.org/plugins/define-plugin/):in avulla voimme määritellä globaaleja <i>vakioarvoja</i>, joita on mahdollista käyttää bundlattavassa koodissa. Määritellään nyt vakio <i>BACKEND_URL</i>, joka saa eri arvon riippuen siitä ollaanko kehitysympäristössä vai tehdäänkö tuotantoon sopivaa bundlea:
 
 ```js
-const path = require('path')
-const webpack = require('webpack') // highlight-line
+const path = require("path");
+const webpack = require("webpack"); // highlight-line
 
 const config = (env, argv) => {
-  console.log('argv', argv.mode)
+  console.log("argv", argv.mode);
 
   // highlight-start
-  const backend_url = argv.mode === 'production'
-    ? 'https://radiant-plateau-25399.herokuapp.com/api/notes'
-    : 'http://localhost:3001/notes'
+  const backend_url =
+    argv.mode === "production"
+      ? "https://radiant-plateau-25399.herokuapp.com/api/notes"
+      : "http://localhost:3001/notes";
   // highlight-end
 
   return {
-    entry: './src/index.js',
+    entry: "./src/index.js",
     output: {
-      path: path.resolve(__dirname, 'build'),
-      filename: 'main.js'
+      path: path.resolve(__dirname, "build"),
+      filename: "main.js",
     },
     devServer: {
-      contentBase: path.resolve(__dirname, 'build'),
+      contentBase: path.resolve(__dirname, "build"),
       compress: true,
       port: 3000,
     },
-    devtool: 'source-map',
+    devtool: "source-map",
     module: {
       // ...
     },
     // highlight-start
     plugins: [
       new webpack.DefinePlugin({
-        BACKEND_URL: JSON.stringify(backend_url)
-      })
-    ]
+        BACKEND_URL: JSON.stringify(backend_url),
+      }),
+    ],
     // highlight-end
-  }
-}
+  };
+};
 
-module.exports = config
+module.exports = config;
 ```
 
 Määriteltyä vakiota käytetään koodissa seuraavasti:
 
 ```js
 const App = () => {
-  const [counter, setCounter] = useState(0)
-  const [values, setValues] = useState([])
-  const notes = useNotes(BACKEND_URL) // highlight-line
+  const [counter, setCounter] = useState(0);
+  const [values, setValues] = useState([]);
+  const notes = useNotes(BACKEND_URL); // highlight-line
 
   // ...
   return (
     <div className="container">
       hello webpack {counter} clicks
-      <button onClick={handleClick} >press</button>
-      <div>{notes.length} notes on server {BACKEND_URL}</div> // highlight-line
+      <button onClick={handleClick}>press</button>
+      <div>
+        {notes.length} notes on server {BACKEND_URL}
+      </div>{" "}
+      // highlight-line
     </div>
-  )
-}
+  );
+};
 ```
 
 Jos kehitys- ja tuotantokonfiguraatio eriytyvät paljon, saattaa olla hyvä idea [eriyttää konfiguraatiot](https://webpack.js.org/guides/production/) omiin tiedostoihinsa.
@@ -856,10 +859,10 @@ Polyfillaus on mahdollista hoitaa [Webpackin ja Babelin avulla](https://babeljs.
 Esim. kirjaston [promise-polyfill](https://www.npmjs.com/package/promise-polyfill) tarjoaman polyfillin käyttö on todella helppoa, koodiin lisätään seuraava:
 
 ```js
-import PromisePolyfill from 'promise-polyfill'
+import PromisePolyfill from "promise-polyfill";
 
 if (!window.Promise) {
-  window.Promise = PromisePolyfill
+  window.Promise = PromisePolyfill;
 }
 ```
 
@@ -876,6 +879,7 @@ Create-react-app käyttää taustalla webpackia. Jos peruskonfiguraatio ei riit�
 Jos create-react-app:illa tehdyn sovelluksen ejektoi, paluuta ei ole, sen jälkeen kaikesta konfiguroinnista on huolehdittava itse. Konfiguraatiot eivät ole triviaaleimmasta päästä ja create-react-appin ja ejektoinnin sijaan parempi vaihtoehto saattaa joskus olla tehdä itse koko webpack-konfiguraatio.
 
 Ejektoidun sovelluksen konfiguraatioiden lukeminen on suositeltavaa ja sangen opettavaista!
+
 </div>
 
 <div class="tasks">

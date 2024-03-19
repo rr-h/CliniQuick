@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-7.svg
+mainImage: "../../../images/part-7.svg"
 part: 7
 letter: d
 lang: fi
@@ -18,11 +18,11 @@ Tutustutaan nyt luokkakomponenttien tärkeimpiin ominaisuuksiin toteuttamalla j�
 Luokkakomponentin ensimmäinen versio näyttää seuraavalta
 
 ```js
-import React from 'react'
+import React from "react";
 
 class App extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
 
   render() {
@@ -30,33 +30,34 @@ class App extends React.Component {
       <div>
         <h1>anecdote of the day</h1>
       </div>
-    )
+    );
   }
 }
 
-export default App
+export default App;
 ```
 
 Komponentilla on nyt [konstruktori](https://reactjs.org/docs/react-component.html#constructor) missä ei toistaiseksi tehdä mitään sekä metodi [render](https://reactjs.org/docs/react-component.html#render). Kuten arvata saattaa, _render_ määrittelee sen miten komponentti piirtyy ruudulle.
 
-Määritellään komponenttiin tila anekdoottien listalle sekä näkyvissä olevalle anekdootille. Toisin kuin [useState](https://reactjs.org/docs/hooks-state.html)-hookia käytettäessä, luokkakomponenteilla on ainoastaan yksi tila. Eli jos tila koostuu useista "osista", tulee osat tallettaa tilan kenttiin.  Tila alustetaan konstruktorissa:
+Määritellään komponenttiin tila anekdoottien listalle sekä näkyvissä olevalle anekdootille. Toisin kuin [useState](https://reactjs.org/docs/hooks-state.html)-hookia käytettäessä, luokkakomponenteilla on ainoastaan yksi tila. Eli jos tila koostuu useista "osista", tulee osat tallettaa tilan kenttiin. Tila alustetaan konstruktorissa:
 
 ```js
 class App extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     // highlight-start
     this.state = {
       anecdotes: [],
-      current: 0
-    }
+      current: 0,
+    };
     // highlight-end
   }
 
   render() {
-    if (this.state.anecdotes.length === 0 ) { // highlight-line
-      return <div>no anecdotes...</div>
+    if (this.state.anecdotes.length === 0) {
+      // highlight-line
+      return <div>no anecdotes...</div>;
     }
 
     return (
@@ -67,7 +68,7 @@ class App extends React.Component {
         </div>
         <button>next</button>
       </div>
-    )
+    );
   }
 }
 ```
@@ -76,25 +77,25 @@ Komponentin tila on siis instanssimuuttujassa _this.state_. Tila on olio, jolla 
 
 Funktionaalisten komponenteille oikea paikka hakea palvelimella olevaa dataa ovat [effect hookit](https://reactjs.org/docs/hooks-effect.html), jotka suoritetaan aina komponentin renderöitymisen yhteydessä tai tarvittaessa harvemmin, esim. ainoastaan ensimmäisen renderöinnin yhteydessä.
 
-Luokkakomponenttien [elinkaarimetodit](https://reactjs.org/docs/state-and-lifecycle.html#adding-lifecycle-methods-to-a-class) tarjoavat vastaavan toiminnallisuuden. Oikea paikka käynnistää tietojen haku palvelimelta on  elinkaarimetodi [componentDidMount](https://reactjs.org/docs/react-component.html#componentdidmount), joka suoritetaan kertaalleen heti komponentin ensimmäisen renderöitymisen jälkeen:
+Luokkakomponenttien [elinkaarimetodit](https://reactjs.org/docs/state-and-lifecycle.html#adding-lifecycle-methods-to-a-class) tarjoavat vastaavan toiminnallisuuden. Oikea paikka käynnistää tietojen haku palvelimelta on elinkaarimetodi [componentDidMount](https://reactjs.org/docs/react-component.html#componentdidmount), joka suoritetaan kertaalleen heti komponentin ensimmäisen renderöitymisen jälkeen:
 
 ```js
 class App extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       anecdotes: [],
-      current: 0
-    }
+      current: 0,
+    };
   }
 
   // highlight-start
   componentDidMount = () => {
-    axios.get('http://localhost:3001/anecdotes').then(response => {
-      this.setState({ anecdotes: response.data })
-    })
-  }
+    axios.get("http://localhost:3001/anecdotes").then((response) => {
+      this.setState({ anecdotes: response.data });
+    });
+  };
   // highlight-end
 
   // ...
@@ -110,32 +111,30 @@ Viimeistellään vielä komponentti siten, että näytettävä anekdootti on mah
 ```js
 class App extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       anecdotes: [],
-      current: 0
-    }
+      current: 0,
+    };
   }
 
   componentDidMount = () => {
-    axios.get('http://localhost:3001/anecdotes').then(response => {
-      this.setState({ anecdotes: response.data })
-    })
-  }
+    axios.get("http://localhost:3001/anecdotes").then((response) => {
+      this.setState({ anecdotes: response.data });
+    });
+  };
 
   // highlight-start
   handleClick = () => {
-    const current = Math.round(
-      Math.random() * this.state.anecdotes.length
-    )
-    this.setState({ current })
-  }
+    const current = Math.round(Math.random() * this.state.anecdotes.length);
+    this.setState({ current });
+  };
   // highlight-end
 
   render() {
-    if (this.state.anecdotes.length === 0 ) {
-      return <div>no anecdotes...</div>
+    if (this.state.anecdotes.length === 0) {
+      return <div>no anecdotes...</div>;
     }
 
     return (
@@ -144,7 +143,7 @@ class App extends React.Component {
         <div>{this.state.anecdotes[this.state.current].content}</div>
         <button onClick={this.handleClick}>next</button> // highlight-line
       </div>
-    )
+    );
   }
 }
 ```
@@ -153,21 +152,21 @@ Vertailun vuoksi sama sovellus funktionaalisena komponenttina:
 
 ```js
 const App = () => {
-  const [anecdotes, setAnecdotes] = useState([])
-  const [current, setCurrent] = useState(0)
+  const [anecdotes, setAnecdotes] = useState([]);
+  const [current, setCurrent] = useState(0);
 
-  useEffect(() =>{
-    axios.get('http://localhost:3001/anecdotes').then(response => {
-      setAnecdotes(response.data)
-    })
-  },[])
+  useEffect(() => {
+    axios.get("http://localhost:3001/anecdotes").then((response) => {
+      setAnecdotes(response.data);
+    });
+  }, []);
 
   const handleClick = () => {
-    setCurrent(Math.round(Math.random() * anecdotes.length))
-  }
+    setCurrent(Math.round(Math.random() * anecdotes.length));
+  };
 
   if (anecdotes.length === 0) {
-    return <div>no anecdotes...</div>
+    return <div>no anecdotes...</div>;
   }
 
   return (
@@ -176,8 +175,8 @@ const App = () => {
       <div>{anecdotes[current].content}</div>
       <button onClick={handleClick}>next</button>
     </div>
-  )
-}
+  );
+};
 ```
 
 Esimerkkimme tapauksessa erot eivät ole suuret. Suurin ero funktionaalisissa ja luokkakompontenteissa lienee se, että luokkakomponentin tila on aina yksittäinen olio, ja tilaa muutetaan metodin _setState_ avulla kun taas funktionaalisessa komponentissa tila voi koostua useista muuttujista, joilla kaikilla on oma päivitysfunktio.
@@ -201,7 +200,6 @@ Tämän kurssin [edellisessä versiossa](https://fullstackopen.github.io/osa7/) 
 Vaikka Websovellusten E2E on ollut teknologioiden puolesta mahdollista jo yli kymmenen vuotta, erityisesti Single Page App(SPA) -periaatteella toteutettujen sovellusten testaaminen on ollut valitettavan hankalaa. SPA-testit ovat usein olleet epäluotettavia eli englanniksi [flaky](https://hackernoon.com/flaky-tests-a-war-that-never-ends-9aa32fdef359): osa testeistä on mennyt välillä läpi ja välillä ei, vaikka koodi olisi ollut muuttumaton.
 
 Vuoden 2018 aikana [Cypress](https://www.cypress.io/)-niminen kirjasto on nopeasti kasvattanut suosiotaan E2E-testauksessa. Cypress on poikkeuksellisen helppokäyttöinen, tunkkauksen määrä esim. Seleniumin käyttöön verrattuna on lähes olematon. Cypressin toimintaperiaate poikkeaa radikaalisti useimmista E2E-testaukseen sopivista kirjastoista, sillä Cypress-testit ajetaan kokonaisuudessaan selaimen sisällä. Muissa lähestymistavoissa testit suoritetaan Node-prosessissa, joka on yhteydessä selaimeen sen tarjoamien ohjelmointirajapintojen kautta.
-
 
 Tehdään muutamia testejä osissa 2-5 kehitetylle muistiinpanosovellukselle.
 
@@ -230,7 +228,7 @@ ja määritellään npm-skripti käynnistämistä varten.
 
 Cypress-testit olettavat että testattava järjestelmä on käynnissä kun testit suoritetaan.
 
-Tehdään backendille npm-skripti jonka avulla se saadaan käynnistettyä siten, että <i>NODE\_ENV</i> saa arvon <i>test</i>
+Tehdään backendille npm-skripti jonka avulla se saadaan käynnistettyä siten, että <i>NODE_ENV</i> saa arvon <i>test</i>
 
 ```js
 {
@@ -252,7 +250,6 @@ Tehdään backendille npm-skripti jonka avulla se saadaan käynnistettyä siten,
 
 Kun backend ja frontend ovat käynnissä, voidaan käynnistää Cypress komennolla
 
-
 ```js
 npm run cypress:open
 ```
@@ -260,12 +257,12 @@ npm run cypress:open
 Sovellukselle tulee hakemisto <i>cypress</i> jonka alihakemistoon <i>integrations</i> on tarkoitus sijoittaa testit. Cypress luo valmiiksi joukon esimerkkitestejä, poistetaan ne ja luodaan ensimmäinen oma testi tiedostoon <i>note_app_spec.js</i>:
 
 ```js
-describe('Note ', function() {
-  it('front page can be opened', function() {
-    cy.visit('http://localhost:3000')
-    cy.contains('Notes')
-  })
-})
+describe("Note ", function () {
+  it("front page can be opened", function () {
+    cy.visit("http://localhost:3000");
+    cy.contains("Notes");
+  });
+});
 ```
 
 Testin suoritus avaa selaimen ja näyttää miten sovellus käyttäytyy testin edetessä:
@@ -277,12 +274,14 @@ Testi näyttää rakenteen puolesta melko tutulta. <i>describe</i>-lohkoja käyt
 Olisimme voineet määritellä testin myös käyttäen nuolifunktioita
 
 ```js
-describe('Note app', () => { // highlight-line
-  it('front page can be opened', () => { // highlight-line
-    cy.visit('http://localhost:3000')
-    cy.contains('Notes')
-  })
-})
+describe("Note app", () => {
+  // highlight-line
+  it("front page can be opened", () => {
+    // highlight-line
+    cy.visit("http://localhost:3000");
+    cy.contains("Notes");
+  });
+});
 ```
 
 Mochan dokumentaatio kuitenkin [suosittelee](https://mochajs.org/#arrow-functions) että nuolifunktioita ei käytetä, ne saattavat aiheuttaa ongelmia joissain tilanteissa.
@@ -290,19 +289,19 @@ Mochan dokumentaatio kuitenkin [suosittelee](https://mochajs.org/#arrow-function
 Jos contains ei löydä sivulta etsimäänsä tekstiä, testi ei mene läpi. Eli jos lisäämme seuraavan testin
 
 ```js
-describe('Note app', function() {
-  it('front page can be opened',  function() {
-    cy.visit('http://localhost:3000')
-    cy.contains('Notes')
-  })
+describe("Note app", function () {
+  it("front page can be opened", function () {
+    cy.visit("http://localhost:3000");
+    cy.contains("Notes");
+  });
 
-// highlight-start
-  it('front page contains random text', function() {
-    cy.visit('http://localhost:3000')
-    cy.contains('wtf is this app?')
-  })
-// highlight-end
-})
+  // highlight-start
+  it("front page contains random text", function () {
+    cy.visit("http://localhost:3000");
+    cy.contains("wtf is this app?");
+  });
+  // highlight-end
+});
 ```
 
 havaitsee Cypress ongelman
@@ -312,15 +311,14 @@ havaitsee Cypress ongelman
 Laajennetaan testiä siten, että testi yrittää kirjautua sovellukseen. Aloitetaan kirjautumislomakkeen avaamisella.
 
 ```js
-describe('Note app',  function() {
+describe("Note app", function () {
   // ...
 
-  it('login form can be opened', function() {
-    cy.visit('http://localhost:3000')
-    cy.contains('log in')
-      .click()
-  })
-})
+  it("login form can be opened", function () {
+    cy.visit("http://localhost:3000");
+    cy.contains("log in").click();
+  });
+});
 ```
 
 Testi hakee ensin napin sen sisällön perusteella ja klikaa nappia komennolla [click](https://docs.cypress.io/api/commands/click.html#Syntax).
@@ -328,22 +326,21 @@ Testi hakee ensin napin sen sisällön perusteella ja klikaa nappia komennolla [
 Koska molemmat testit aloittavat samalla tavalla, eli avaamalla sivun <i>http://localhost:3000</i>, kannattaa yhteinen osa eristää ennen jokaista testiä suoritettavaan <i>beforeEach</i>-lohkoon:
 
 ```js
-describe('Note app', function() {
+describe("Note app", function () {
   // highlight-start
-  beforeEach(function() {
-    cy.visit('http://localhost:3000')
-  })
+  beforeEach(function () {
+    cy.visit("http://localhost:3000");
+  });
   // highlight-end
 
-  it('front page can be opened', function() {
-    cy.contains('Notes')
-  })
+  it("front page can be opened", function () {
+    cy.contains("Notes");
+  });
 
-  it('login form can be opened', function() {
-    cy.contains('log in')
-      .click()
-  })
-})
+  it("login form can be opened", function () {
+    cy.contains("log in").click();
+  });
+});
 ```
 
 Ilmoittautumislomake sisältää kaksi <i>input</i>-kenttää, joihin testin tulisi kirjoittaa.
@@ -353,17 +350,13 @@ Komento [get](https://docs.cypress.io/api/commands/get.html#Syntax) mahdollistaa
 Voimme hakea lomakkeen ensimmäisen ja viimeisen input-kentän ja kirjoittaa niihin komennolla [type](https://docs.cypress.io/api/commands/type.html#Syntax) seuraavasti:
 
 ```js
-it('user can login', function () {
-  cy.contains('log in')
-    .click()
-  cy.get('input:first')
-    .type('mluukkai')
-  cy.get('input:last')
-    .type('salainen')
-  cy.contains('login')
-    .click()
-  cy.contains('Matti Luukkainen logged in')
-})  
+it("user can login", function () {
+  cy.contains("log in").click();
+  cy.get("input:first").type("mluukkai");
+  cy.get("input:last").type("salainen");
+  cy.contains("login").click();
+  cy.contains("Matti Luukkainen logged in");
+});
 ```
 
 Testi toimii mutta on kuitenkin sikäli ongelmallinen, että jos sovellukseen tulee jossain vaiheessa lisää input-kenttiä testi saattaa hajota, sillä se luottaa tarvitsemiensa kenttien olevan ensimmäisenä ja viimeisenä.
@@ -403,62 +396,53 @@ const LoginForm = ({ ... }) => {
 Testi muuttuu muotoon
 
 ```js
-describe('Note app',  function() {
+describe("Note app", function () {
   // ..
-  it('user can login', function() {
-    cy.contains('log in')
-      .click()
-    cy.get('#username')  // highlight-line
-      .type('mluukkai')
-    cy.get('#password')  // highlight-line
-      .type('salainen')
-    cy.contains('login')
-      .click()
-    cy.contains('Matti Luukkainen logged in')
-  })
-})
+  it("user can login", function () {
+    cy.contains("log in").click();
+    cy.get("#username") // highlight-line
+      .type("mluukkai");
+    cy.get("#password") // highlight-line
+      .type("salainen");
+    cy.contains("login").click();
+    cy.contains("Matti Luukkainen logged in");
+  });
+});
 ```
 
 Luodaan vielä testi, joka lisää sovellukseen uuden muistiinpanon:
 
 ```js
-describe('Note app', function() {
+describe("Note app", function () {
   // ..
-  describe('when logged in', function() {
-    beforeEach(function() {
-      cy.contains('log in')
-        .click()
-      cy.get('#username')
-        .type('mluukkai')
-      cy.get('#password')
-        .type('salainen')
-      cy.contains('login')
-        .click()
-    })
+  describe("when logged in", function () {
+    beforeEach(function () {
+      cy.contains("log in").click();
+      cy.get("#username").type("mluukkai");
+      cy.get("#password").type("salainen");
+      cy.contains("login").click();
+    });
 
-    it('name of the user is shown', function() {
-      cy.contains('Matti Luukkainen logged in')
-    })
+    it("name of the user is shown", function () {
+      cy.contains("Matti Luukkainen logged in");
+    });
 
     // highlight-start
-    it('a new note can be created', function() {
-      cy.contains('new note')
-        .click()
-      cy.get('input')
-        .type('a note created by cypress')
-      cy.contains('save')
-        .click()
-      cy.contains('a note created by cypress')
-    })
+    it("a new note can be created", function () {
+      cy.contains("new note").click();
+      cy.get("input").type("a note created by cypress");
+      cy.contains("save").click();
+      cy.contains("a note created by cypress");
+    });
     // highlight-end
-  })
-})
+  });
+});
 ```
 
 Koska kaksi testeistä luottaa siihen että käyttäjä on kirjautunut, on niiden yhteinen osa jälleen eriytetty <i>beforeEach</i> osaan. Testi luottaa siihen, että uutta muistiinpanoa luotaessa sivulla on ainoastaan yksi input-kenttä, eli se hakee kentän seuraavasti
 
 ```js
-cy.get('input')
+cy.get("input");
 ```
 
 jos kenttiä on useampia, testi hajoaa
@@ -473,22 +457,21 @@ Jos testatessa on tarvetta muokata tietokantaa, muuttuu tilanne heti haastavamma
 
 Yleinen ratkaisu on nollata tietokanta ja mahdollisesti alustaa se sopivasti aina ennen testien suorittamista. E2E-testauksessa lisähaasteen luo se, että testeistä ei ole mahdollista päästä suoraan käsiksi tietokantaan.
 
-
 Ratkaistaan ongelma luomalla backendiin testejä varten API endpoint, jonka avulla testit voivat tarvittaessa nollata kannan. Tehdään testejä varten oma <i>router</i>
 
 ```js
-const router = require('express').Router()
-const Note = require('../models/note')
-const User = require('../models/user')
+const router = require("express").Router();
+const Note = require("../models/note");
+const User = require("../models/user");
 
-router.post('/reset', async (request, response) => {
-  await Note.deleteMany({})
-  await User.deleteMany({})
+router.post("/reset", async (request, response) => {
+  await Note.deleteMany({});
+  await User.deleteMany({});
 
-  response.status(204).end()
-})
+  response.status(204).end();
+});
 
-module.exports = router
+module.exports = router;
 ```
 
 ja lisätään se backendiin ainoastaan <i>jos sovellusta suoritetaan test-moodissa</i>:
@@ -496,21 +479,21 @@ ja lisätään se backendiin ainoastaan <i>jos sovellusta suoritetaan test-moodi
 ```js
 // ...
 
-app.use('/api/login', loginRouter)
-app.use('/api/users', usersRouter)
-app.use('/api/notes', notesRouter)
+app.use("/api/login", loginRouter);
+app.use("/api/users", usersRouter);
+app.use("/api/notes", notesRouter);
 
 // highlight-start
-if (process.env.NODE_ENV === 'test') {
-  const testingRouter = require('./controllers/testing')
-  app.use('/api/testing', testingRouter)
+if (process.env.NODE_ENV === "test") {
+  const testingRouter = require("./controllers/testing");
+  app.use("/api/testing", testingRouter);
 }
 // highlight-end
 
-app.use(middleware.unknownEndpoint)
-app.use(middleware.errorHandler)
+app.use(middleware.unknownEndpoint);
+app.use(middleware.errorHandler);
 
-module.exports = app
+module.exports = app;
 ```
 
 eli lisäyksen jälkeen HTTP POST -operaatio backendin endpointiin <i>/api/testing/reset</i> tyhjentää tietokannan.
@@ -520,115 +503,101 @@ Backendin testejä varten muokattu koodi on kokonaisuudessaan [githubissa](https
 Tällä hetkellä sovelluksen käyttöliittymän ei ole mahdollista luoda käyttäjiä järjestelmään. Testien alustuksessa on siis suoraan luotava testikäyttäjä backendiin.
 
 ```js
-describe('Note app', function() {
-  beforeEach(function() {
-    cy.request('POST', 'http://localhost:3001/api/testing/reset') // highlight-line
+describe("Note app", function () {
+  beforeEach(function () {
+    cy.request("POST", "http://localhost:3001/api/testing/reset"); // highlight-line
     const user = {
-      name: 'Matti Luukkainen',
-      username: 'mluukkai',
-      password: 'salainen'
-    }
-    cy.request('POST', 'http://localhost:3001/api/users/', user)  // highlight-line
-    cy.visit('http://localhost:3000')
-  })
+      name: "Matti Luukkainen",
+      username: "mluukkai",
+      password: "salainen",
+    };
+    cy.request("POST", "http://localhost:3001/api/users/", user); // highlight-line
+    cy.visit("http://localhost:3000");
+  });
 
-  it('front page can be opened', function() {
-    cy.contains('Notes')
-  })
-})
+  it("front page can be opened", function () {
+    cy.contains("Notes");
+  });
+});
 ```
 
 Testi tekee alustuksen aikana HTTP-pyyntöjä backendiin komennolla [request](https://docs.cypress.io/api/commands/request.html). Siirretään aiemmin tehty uuden muistiinpanon testi describe-lohkon sisälle:
 
 ```js
-describe('Note app', function() {
+describe("Note app", function () {
   // ...
 
-  describe('when logged in', function() {
-    beforeEach(function() {
-      cy.contains('log in')
-        .click()
-      cy.get('#username')
-        .type('mluukkai')
-      cy.get('#password')
-        .type('salainen')
-      cy.contains('login')
-        .click()
-    })
+  describe("when logged in", function () {
+    beforeEach(function () {
+      cy.contains("log in").click();
+      cy.get("#username").type("mluukkai");
+      cy.get("#password").type("salainen");
+      cy.contains("login").click();
+    });
 
-    it('name of the user is shown', function() {
-      cy.contains('Matti Luukkainen logged in')
-    })
+    it("name of the user is shown", function () {
+      cy.contains("Matti Luukkainen logged in");
+    });
 
-    it('a new note can be created', function() {
-      cy.contains('new note')
-        .click()
-      cy.get('input')
-        .type('a note created by cypress')
-      cy.contains('save')
-        .click()
-      cy.contains('a note created by cypress')
-    })
-  })
-})
+    it("a new note can be created", function () {
+      cy.contains("new note").click();
+      cy.get("input").type("a note created by cypress");
+      cy.contains("save").click();
+      cy.contains("a note created by cypress");
+    });
+  });
+});
 ```
 
 Toisin kuin aiemmin, nyt testaus alkaa aina samasta tilasta, eli tietokannassa on yksi käyttäjä ja ei yhtään muistinpanoa.
 
-Tehdään vielä testi, joka tarkastaa että muistiinpanojen tärkeyttä voi muuttaa.  Muutetaan ensin sovelluksen frontendia siten, että uusi muistiinpano on oletusarvoisesti epätärkeä, eli kenttä <i>important</i> saa arvon <i>false</i>:
+Tehdään vielä testi, joka tarkastaa että muistiinpanojen tärkeyttä voi muuttaa. Muutetaan ensin sovelluksen frontendia siten, että uusi muistiinpano on oletusarvoisesti epätärkeä, eli kenttä <i>important</i> saa arvon <i>false</i>:
 
 ```js
 const App = () => {
   // ...
   const addNote = (event) => {
-    event.preventDefault()
-    noteFormRef.current.toggleVisibility()
+    event.preventDefault();
+    noteFormRef.current.toggleVisibility();
     const noteObject = {
       content: newNote,
-      important: false  // highlight-line
-    }
+      important: false, // highlight-line
+    };
 
-    noteService
-      .create(noteObject).then(returnedNote => {
-        setNotes(notes.concat(returnedNote))
-        setNewNote('')
-      })
-  }
+    noteService.create(noteObject).then((returnedNote) => {
+      setNotes(notes.concat(returnedNote));
+      setNewNote("");
+    });
+  };
 
   // ...
-}
+};
 ```
 
 On useita eri tapoja testata asia. Seuraavassa etsitään ensin muistiinpano ja klikataan sen nappia <i>make important</i>. Tämän jälkeen tarkistetaan että muistiinpano sisältää napin <i>make not important</i>.
 
 ```js
-describe('Note app', function() {
+describe("Note app", function () {
   // ...
 
-  describe('when logged in', function() {
+  describe("when logged in", function () {
     // ...
 
-    describe('and a note is created', function () {
+    describe("and a note is created", function () {
       beforeEach(function () {
-        cy.contains('new note')
-          .click()
-        cy.get('input')
-          .type('another note cypress')
-        cy.contains('tallenna')
-          .click()
-      })
+        cy.contains("new note").click();
+        cy.get("input").type("another note cypress");
+        cy.contains("tallenna").click();
+      });
 
-      it('it can be made important', function () {
-        cy.contains('another note cypress')
-          .contains('make important')
-          .click()
+      it("it can be made important", function () {
+        cy.contains("another note cypress").contains("make important").click();
 
-        cy.contains('another note cypress')
-          .contains('make not important')
-      })
-    })
-  })
-})
+        cy.contains("another note cypress").contains("make not important");
+      });
+    });
+  });
+});
 ```
 
 Testit ja frontendin koodi on kokonaisuudessaan [githubissa](https://github.com/fullstackopen-2019/part2-notes/tree/part7-1), branchissa <i>part7-1</i>.

@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-4.svg
+mainImage: "../../../images/part-4.svg"
 part: 4
 letter: d
 lang: fi
@@ -34,44 +34,45 @@ npm install jsonwebtoken --save
 Tehdään kirjautumisesta vastaava koodi tiedostoon _controllers/login.js_
 
 ```js
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
-const loginRouter = require('express').Router()
-const User = require('../models/user')
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const loginRouter = require("express").Router();
+const User = require("../models/user");
 
-loginRouter.post('/', async (request, response) => {
-  const body = request.body
+loginRouter.post("/", async (request, response) => {
+  const body = request.body;
 
-  const user = await User.findOne({ username: body.username })
-  const passwordCorrect = user === null
-    ? false
-    : await bcrypt.compare(body.password, user.passwordHash)
+  const user = await User.findOne({ username: body.username });
+  const passwordCorrect =
+    user === null
+      ? false
+      : await bcrypt.compare(body.password, user.passwordHash);
 
   if (!(user && passwordCorrect)) {
     return response.status(401).json({
-      error: 'invalid username or password'
-    })
+      error: "invalid username or password",
+    });
   }
 
   const userForToken = {
     username: user.username,
     id: user._id,
-  }
+  };
 
-  const token = jwt.sign(userForToken, process.env.SECRET)
+  const token = jwt.sign(userForToken, process.env.SECRET);
 
   response
     .status(200)
-    .send({ token, username: user.username, name: user.name })
-})
+    .send({ token, username: user.username, name: user.name });
+});
 
-module.exports = loginRouter
+module.exports = loginRouter;
 ```
 
 Koodi aloittaa etsimällä pyynnön mukana olevaa <i>usernamea</i> vastaavan käyttäjän tietokannasta. Seuraavaksi katsotaan onko pyynnön mukana oleva <i>password</i> oikea. Koska tietokantaan ei ole talletettu salasanaa, vaan salasanasta laskettu <i>hash</i>, tehdään vertailu metodilla _bcrypt.compare_:
 
 ```js
-await bcrypt.compare(body.password, user.passwordHash)
+await bcrypt.compare(body.password, user.passwordHash);
 ```
 
 Jos käyttäjää ei ole olemassa tai salasana on väärä, vastataan kyselyyn statuskoodilla [401 unauthorized](https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.2) ja kerrotaan syy vastauksen bodyssä.
@@ -82,9 +83,9 @@ Jos salasana on oikein, luodaan metodin _jwt.sign_ avulla token, joka sisältä�
 const userForToken = {
   username: user.username,
   id: user._id,
-}
+};
 
-const token = jwt.sign(userForToken, process.env.SECRET)
+const token = jwt.sign(userForToken, process.env.SECRET);
 ```
 
 Token on digitaalisesti allekirjoitettu käyttämällä <i>salaisuutena</i> ympäristömuuttujassa <i>SECRET</i> olevaa merkkijonoa. Digitaalinen allekirjoitus varmistaa sen, että ainoastaan salaisuuden tuntevilla on mahdollisuus generoida validi token. Ympäristömuuttujalle pitää muistaa asettaa arvo tiedostoon <i>.env</i>.
@@ -94,11 +95,11 @@ Onnistuneeseen pyyntöön vastataan statuskoodilla <i>200 ok</i> ja generoitu to
 Kirjautumisesta huolehtiva koodi on vielä liitettävä sovellukseen lisäämällä tiedostoon <i>app.js</i> muiden routejen käyttöönoton yhteyteen
 
 ```js
-const loginRouter = require('./controllers/login')
+const loginRouter = require("./controllers/login");
 
 //...
 
-app.use('/api/login', loginRouter)
+app.use("/api/login", loginRouter);
 ```
 
 Kokeillaan kirjautumista, käytetään VS Coden REST-clientiä:
@@ -140,56 +141,56 @@ Bearer eyJhbGciOiJIUzI1NiIsInR5c2VybmFtZSI6Im1sdXVra2FpIiwiaW
 Muistiinpanojen luominen muuttuu seuraavasti:
 
 ```js
-const jwt = require('jsonwebtoken') //highlight-line
+const jwt = require("jsonwebtoken"); //highlight-line
 
 // ...
-  //highlight-start
-const getTokenFrom = request => {
-  const authorization = request.get('authorization')
-  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    return authorization.substring(7)
-  }
-  return null
-}
-  //highlight-end
-
-notesRouter.post('/', async (request, response, next) => {
-  const body = request.body
-
 //highlight-start
-  const token = getTokenFrom(request)
-  
-  try {
-    const decodedToken = jwt.verify(token, process.env.SECRET)
-
-    if (!token || !decodedToken.id) {
-      return response.status(401).json({ error: 'token missing or invalid' })
-    }
+const getTokenFrom = (request) => {
+  const authorization = request.get("authorization");
+  if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
+    return authorization.substring(7);
+  }
+  return null;
+};
 //highlight-end
 
-    const user = await User.findById(decodedToken.id) //highlight-line
+notesRouter.post("/", async (request, response, next) => {
+  const body = request.body;
+
+  //highlight-start
+  const token = getTokenFrom(request);
+
+  try {
+    const decodedToken = jwt.verify(token, process.env.SECRET);
+
+    if (!token || !decodedToken.id) {
+      return response.status(401).json({ error: "token missing or invalid" });
+    }
+    //highlight-end
+
+    const user = await User.findById(decodedToken.id); //highlight-line
 
     const note = new Note({
       content: body.content,
       important: body.important === undefined ? false : body.important,
       date: new Date(),
-      user: user._id
-    })
+      user: user._id,
+    });
 
-    const savedNote = await note.save()
-    user.notes = user.notes.concat(savedNote._id) //highlight-line
-    await user.save()  //highlight-line
-    response.json(savedNote.toJSON())
-  } catch(exception) {
-    next(exception)
+    const savedNote = await note.save();
+    user.notes = user.notes.concat(savedNote._id); //highlight-line
+    await user.save(); //highlight-line
+    response.json(savedNote.toJSON());
+  } catch (exception) {
+    next(exception);
   }
-})
+});
 ```
 
 Apufunktio _getTokenFrom_ eristää tokenin headerista <i>authorization</i>. Tokenin oikeellisuus varmistetaan metodilla _jwt.verify_. Metodi myös dekoodaa tokenin, eli palauttaa olion, jonka perusteella token on laadittu:
 
 ```js
-const decodedToken = jwt.verify(token, process.env.SECRET)
+const decodedToken = jwt.verify(token, process.env.SECRET);
 ```
 
 Tokenista dekoodatun olion sisällä on kentät <i>username</i> ja <i>id</i> eli se kertoo palvelimelle kuka pyynnön on tehnyt.
@@ -199,8 +200,8 @@ Jos tokenia ei ole tai tokenista dekoodattu olio ei sisällä käyttäjän ident
 ```js
 if (!token || !decodedToken.id) {
   return response.status(401).json({
-    error: 'token missing or invalid'
-  })
+    error: "token missing or invalid",
+  });
 }
 ```
 
@@ -232,28 +233,30 @@ Syynä tokenin dekoodaamisen aiheuttamalle virheelle on monia. Token voi olla vi
 
 ```js
 const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' })
-}
+  response.status(404).send({ error: "unknown endpoint" });
+};
 
 const errorHandler = (error, request, response, next) => {
-  if (error.name === 'CastError' && error.kind === 'ObjectId') {
+  if (error.name === "CastError" && error.kind === "ObjectId") {
     return response.status(400).send({
-      error: 'malformatted id'
-    })
-  } else if (error.name === 'ValidationError') {
+      error: "malformatted id",
+    });
+  } else if (error.name === "ValidationError") {
     return response.status(400).json({
-      error: error.message 
-    })
-  } else if (error.name === 'JsonWebTokenError') {  // highlight-line
-    return response.status(401).json({ // highlight-line
-      error: 'invalid token' // highlight-line
-    }) // highlight-line
+      error: error.message,
+    });
+  } else if (error.name === "JsonWebTokenError") {
+    // highlight-line
+    return response.status(401).json({
+      // highlight-line
+      error: "invalid token", // highlight-line
+    }); // highlight-line
   }
 
-  logger.error(error.message)
+  logger.error(error.message);
 
-  next(error)
-}
+  next(error);
+};
 ```
 
 Sovelluksen tämänhetkinen koodi on kokonaisuudessaan [githubissa](https://github.com/fullstackopen-2019/part3-notes-backend/tree/part4-8), branchissä <i>part4-8</i>.
@@ -287,7 +290,7 @@ Tee sovellukseen mahdollisuus luoda käyttäjiä tekemällä HTTP POST -pyyntö 
 **HUOM** joillain windows-käyttäjillä on ollut ongelmia <i>bcryptin</i> kanssa. Jos törmäät ongelmiin, poista kirjasto komennolla
 
 ```bash
-npm uninstall bcrypt --save 
+npm uninstall bcrypt --save
 ```
 
 ja asenna sen sijaan [bcryptjs](https://www.npmjs.com/package/bcryptjs)
@@ -298,7 +301,7 @@ Käyttäjien lista voi näyttää esim. seuraavalta:
 
 ![](../../images/4/22.png)
 
-#### 4.16*: blogilistan laajennus, step5
+#### 4.16\*: blogilistan laajennus, step5
 
 Laajenna käyttäjätunnusten luomista siten, että käyttäjätunnuksen sekä salasanan tulee olla olemassa ja vähintään 3 merkkiä pitkiä. Käyttäjätunnuksen on oltava järjestelmässä uniikki.
 
@@ -330,7 +333,7 @@ Toteuta osan 4 luvun [Token-perustainen kirjautuminen](/osa4#/token_perustainen_
 
 Muuta blogien lisäämistä siten, että se on mahdollista vain, jos lisäyksen tekevässä HTTP POST -pyynnössä on mukana validi token. Tokenin haltija määritellään blogin lisääjäksi.
 
-#### 4.20*: blogilistan laajennus, step9
+#### 4.20\*: blogilistan laajennus, step9
 
 Osan 4 [esimerkissä](/osa4#/token_perustainen_kirjautuminen) token otetaan headereista apufunktion _getTokenFrom_ avulla.
 
@@ -339,20 +342,20 @@ Jos käytit samaa ratkaisua, refaktoroi tokenin erottaminen [middlewareksi](/osa
 Eli kun rekisteröit middlewaren ennen routeja tiedostossa <i>app.js</i>
 
 ```js
-app.use(middleware.tokenExtractor)
+app.use(middleware.tokenExtractor);
 ```
 
 pääsevät routet tokeniin käsiksi suoraan viittaamalla _request.token_:
 
 ```js
-blogsRouter.post('/', async (request, response) => {
+blogsRouter.post("/", async (request, response) => {
   // ..
-  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  const decodedToken = jwt.verify(request.token, process.env.SECRET);
   // ..
-})
+});
 ```
 
-#### 4.21*: blogilistan laajennus, step10
+#### 4.21\*: blogilistan laajennus, step10
 
 Muuta blogin poistavaa operaatiota siten, että poisto onnistuu ainoastaan jos poisto-operaation tekijä (eli se kenen token on pyynnön mukana) on sama kuin blogin lisääjä.
 
@@ -400,6 +403,5 @@ kayttaja -> kayttaja:
 -->
 
 Tämä oli osan viimeinen tehtävä ja on aika pushata koodi githubiin sekä merkata tehdyt tehtävät [palautussovellukseen](https://studies.cs.helsinki.fi/fullstackopen2019).
-
 
 </div>

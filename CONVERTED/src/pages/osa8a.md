@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-8.svg
+mainImage: "../../../images/part-8.svg"
 part: 8
 letter: a
 lang: fi
@@ -44,7 +44,6 @@ query FetchBlogsQuery {
   }
 }
 ```
-
 
 Palvelimen vastaus pyyntöön olisi suunnilleen seuraavanlainen JSON-olio:
 
@@ -97,7 +96,7 @@ type Person {
   phone: String
   street: String!
   city: String!
-  id: ID! 
+  id: ID!
 }
 
 type Query {
@@ -109,11 +108,11 @@ type Query {
 
 Skeema määrittelee kaksi [tyyppiä](https://graphql.org/learn/schema/#type-system). Tyypeistä ensimmäinen <i>Person</i> määrittelee, että henkilöillä on viisi kenttää. Kentistä neljä on tyyppiä <i>String</i>, joka on yksi GraphQL:n määrittelemistä [valmiista tyypeistä](https://graphql.org/learn/schema/#scalar-types). String-arvoisista kentistä muilla paitsi puhelinnumerolla (<i>phone</i>) on oltava arvo, tämä on merkitty skeemaan huutomerkillä. Kentän <i>id</i> tyyppi on <i>ID</i>. Arvoltaan <i>ID</i>-tyyppiset kentät ovat merkkijonoja, mutta GraphQL takaa, että ne ovat uniikkeja.
 
-Toinen skeeman määrittelemistä tyypeistä on [Query](https://graphql.org/learn/schema/#the-query-and-mutation-types). Käytännössä jokaisessa GraphQL-skeemassa määritellään tyyppi Query, joka kertoo mitä kyselyjä API:iin voidaan tehdä. 
+Toinen skeeman määrittelemistä tyypeistä on [Query](https://graphql.org/learn/schema/#the-query-and-mutation-types). Käytännössä jokaisessa GraphQL-skeemassa määritellään tyyppi Query, joka kertoo mitä kyselyjä API:iin voidaan tehdä.
 
-Puhelinluettelo määrittelee kolme erilaista kyselyä ja _personCount_ palauttaa kokonaisluvun. _allPersons_ palauttaa listan <i>Person</i>-tyyppisiä olioita. <i>findPerson</i> saa merkkijonomuotoisen parametrin ja palauttaa <i>Person</i>-olion. 
+Puhelinluettelo määrittelee kolme erilaista kyselyä ja _personCount_ palauttaa kokonaisluvun. _allPersons_ palauttaa listan <i>Person</i>-tyyppisiä olioita. <i>findPerson</i> saa merkkijonomuotoisen parametrin ja palauttaa <i>Person</i>-olion.
 
-Queryjen paluuarvon ja parametrin määrittelyssä on jälleen käytetty välillä huutomerkkiä merkkaamaan <i>pakollisuutta</i>, eli _personCount_ palauttaa varmasti kokonaisluvun. Kyselylle _findPerson_ on pakko antaa parametriksi merkkijono. Kysely palauttaa <i>Person</i>-olion tai arvon <i>null</i>. _allPersons_ palauttaa listan <i>Person</i>-olioita, listalla ei ole <i>null</i>-arvoja. 
+Queryjen paluuarvon ja parametrin määrittelyssä on jälleen käytetty välillä huutomerkkiä merkkaamaan <i>pakollisuutta</i>, eli _personCount_ palauttaa varmasti kokonaisluvun. Kyselylle _findPerson_ on pakko antaa parametriksi merkkijono. Kysely palauttaa <i>Person</i>-olion tai arvon <i>null</i>. _allPersons_ palauttaa listan <i>Person</i>-olioita, listalla ei ole <i>null</i>-arvoja.
 
 Skeema siis määrittelee mitä kyselyjä client pystyy palvelimelta tekemään, minkälaisia parametreja kyselyillä voi olla sekä sen, minkä muotoista kyselyjen palauttama data on.
 
@@ -135,7 +134,7 @@ Olettaen että sovellukseen olisi talletettu kolmen henkilön tiedot, vastaus ky
 }
 ```
 
-Kaikkien henkilöiden tiedot hakeva _allPersons_ on hieman monimutkaisempi. Koska kysely palauttaa listan <i>Person</i>-olioita, on kyselyn yhteydessä määriteltävä <i>mitkä kentät</i> kyselyn [halutaan palauttavan](https://graphql.org/learn/queries/#fields): 
+Kaikkien henkilöiden tiedot hakeva _allPersons_ on hieman monimutkaisempi. Koska kysely palauttaa listan <i>Person</i>-olioita, on kyselyn yhteydessä määriteltävä <i>mitkä kentät</i> kyselyn [halutaan palauttavan](https://graphql.org/learn/queries/#fields):
 
 ```js
 query {
@@ -147,7 +146,6 @@ query {
 ```
 
 Vastaus voisi näyttää seuraavalta:
-
 
 ```js
 {
@@ -187,15 +185,15 @@ Vielä esimerkki parametria edellyttävästä kyselystä, joka hakee yksittäise
 ```js
 query {
   findPerson(name: "Arto Hellas") {
-    phone 
-    city 
+    phone
+    city
     street
     id
   }
 }
 ```
 
-Kyselyn parametri siis annetaan suluissa, ja sen jälkeen määritellään aaltosuluissa paluuarvona tulevan olion halutut kentät. 
+Kyselyn parametri siis annetaan suluissa, ja sen jälkeen määritellään aaltosuluissa paluuarvona tulevan olion halutut kentät.
 
 Vastaus on muotoa:
 
@@ -217,7 +215,7 @@ Kyselyn paluuarvoa ei oltu merkitty pakolliseksi, eli jos etsitään tuntematont
 ```js
 query {
   findPerson(name: "Donald Trump") {
-    phone 
+    phone
   }
 }
 ```
@@ -232,15 +230,15 @@ vastaus on <i>null</i>
 }
 ```
 
-Kuten huomaamme, GraphQL-kyselyn ja siihen vastauksena tulevan JSON:in muodoilla on vahva yhteys, voidaan ajatella että kysely kuvailee sen minkälaista dataa vastauksena halutaan. Ero REST:issä tehtäviin pyyntöihin on suuri, REST:iä käytettäessä pyynnon url ja sen tyyppi (GET, POST, PUT, DELETE) ei kerro mitään palautettavan datan muodosta. 
+Kuten huomaamme, GraphQL-kyselyn ja siihen vastauksena tulevan JSON:in muodoilla on vahva yhteys, voidaan ajatella että kysely kuvailee sen minkälaista dataa vastauksena halutaan. Ero REST:issä tehtäviin pyyntöihin on suuri, REST:iä käytettäessä pyynnon url ja sen tyyppi (GET, POST, PUT, DELETE) ei kerro mitään palautettavan datan muodosta.
 
 GraphQL:n skeema kuvaa ainoastaan palvelimen ja sitä käyttävien clientien välillä liikkuvan tiedon muodon. Tieto voi olla organisoituna ja talletettuna palvelimeen ihan missä muodossa tahansa.
 
-Nimestään huolimatta GraphQL:llä ei itseasiassa ole mitään tekemistä tietokantojen kanssa, se ei ota mitään kantaa siihen miten data on tallennettu. GraphQL-periaattella toimivan API:n käyttämä data voi siis olla talletettu relaatiotietokantaan, dokumenttitietokantaan tai muille palvelimille, joita GraphQL-palvelin käyttää vaikkapa REST:in välityksellä. 
+Nimestään huolimatta GraphQL:llä ei itseasiassa ole mitään tekemistä tietokantojen kanssa, se ei ota mitään kantaa siihen miten data on tallennettu. GraphQL-periaattella toimivan API:n käyttämä data voi siis olla talletettu relaatiotietokantaan, dokumenttitietokantaan tai muille palvelimille, joita GraphQL-palvelin käyttää vaikkapa REST:in välityksellä.
 
 ### Apollo server
 
-Toteutetaan nyt GraphQL-palvelin tämän hetken johtavaa kirjastoa [Apollo -serveriä](https://www.apollographql.com/docs/apollo-server/) käyttäen. 
+Toteutetaan nyt GraphQL-palvelin tämän hetken johtavaa kirjastoa [Apollo -serveriä](https://www.apollographql.com/docs/apollo-server/) käyttäen.
 
 Luodaan uusi npm-projekti komennolla _npm init_ ja asennetaan tarvittavat riippuvuudet
 
@@ -251,7 +249,7 @@ npm install --save apollo-server graphql
 Alustava toteutus on seuraavassa
 
 ```js
-const { ApolloServer, gql } = require('apollo-server')
+const { ApolloServer, gql } = require("apollo-server");
 
 let persons = [
   {
@@ -259,29 +257,29 @@ let persons = [
     phone: "040-123543",
     street: "Tapiolankatu 5 A",
     city: "Espoo",
-    id: "3d594650-3436-11e9-bc57-8b80ba54c431"
+    id: "3d594650-3436-11e9-bc57-8b80ba54c431",
   },
   {
     name: "Matti Luukkainen",
     phone: "040-432342",
     street: "Malminkaari 10 A",
     city: "Helsinki",
-    id: '3d599470-3436-11e9-bc57-8b80ba54c431'
+    id: "3d599470-3436-11e9-bc57-8b80ba54c431",
   },
   {
     name: "Venla Ruuska",
     street: "Nallemäentie 22 C",
     city: "Helsinki",
-    id: '3d599471-3436-11e9-bc57-8b80ba54c431'
+    id: "3d599471-3436-11e9-bc57-8b80ba54c431",
   },
-]
+];
 
 const typeDefs = gql`
   type Person {
     name: String!
     phone: String
     street: String!
-    city: String! 
+    city: String!
     id: ID!
   }
 
@@ -290,37 +288,36 @@ const typeDefs = gql`
     allPersons: [Person!]!
     findPerson(name: String!): Person
   }
-`
+`;
 
 const resolvers = {
   Query: {
     personCount: () => persons.length,
     allPersons: () => persons,
-    findPerson: (root, args) =>
-      persons.find(p => p.name === args.name)
-  }
-}
+    findPerson: (root, args) => persons.find((p) => p.name === args.name),
+  },
+};
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-})
+});
 
 server.listen().then(({ url }) => {
-  console.log(`Server ready at ${url}`)
-})
+  console.log(`Server ready at ${url}`);
+});
 ```
 
-Toteutuksen ytimessä on _ApolloServer_, joka saa kaksi parametria 
+Toteutuksen ytimessä on _ApolloServer_, joka saa kaksi parametria
 
 ```js
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-})
+});
 ```
 
-parametreista ensimmäinen _typeDefs_ sisältää sovelluksen käyttämän GraphQL-skeeman. 
+parametreista ensimmäinen _typeDefs_ sisältää sovelluksen käyttämän GraphQL-skeeman.
 
 Toinen parametri on olio, joka sisältää palvelimen [resolverit](https://www.apollographql.com/docs/apollo-server/data/data/#resolver-map), eli käytännössä koodin, joka määrittelee <i>miten</i> GraphQL-kyselyihin vastataan.
 
@@ -331,10 +328,9 @@ const resolvers = {
   Query: {
     personCount: () => persons.length,
     allPersons: () => persons,
-    findPerson: (root, args) =>
-      persons.find(p => p.name === args.name)
-  }
-}
+    findPerson: (root, args) => persons.find((p) => p.name === args.name),
+  },
+};
 ```
 
 kuten huomataan, vastaavat resolverit rakenteeltaan skeemassa määriteltyjä kyselyitä:
@@ -349,7 +345,7 @@ type Query {
 
 eli jokaista skeemassa määriteltyä kyselyä kohti on määritelty oma kentän <i>Query</i> alle tuleva kenttänsä.
 
-Kyselyn 
+Kyselyn
 
 ```js
 query {
@@ -360,12 +356,12 @@ query {
 resolveri on funktio
 
 ```js
-() => persons.length
+() => persons.length;
 ```
 
-eli kyselyyn palautetaan vastauksena henkilöt tallentavan taulukon _persons_ pituus. 
+eli kyselyyn palautetaan vastauksena henkilöt tallentavan taulukon _persons_ pituus.
 
-Kaikki luettelossa olevat henkilöt hakevan kyselyn 
+Kaikki luettelossa olevat henkilöt hakevan kyselyn
 
 ```js
 query {
@@ -378,14 +374,14 @@ query {
 resolveri on funktio, joka palauttaa <i>kaikki</i> taulukon _persons_ oliot
 
 ```js
-() => persons
+() => persons;
 ```
 
 ### GraphQL-playground
 
 Kun Apollo -serveriä suoritetaan sovelluskehitysmoodissa, käynnistää se osoitteeseen [http://localhost:4000/graphql](http://localhost:4000/graphql) sovelluskehittäjälle erittäin hyödyllisen [GraphQL-playground](https://www.apollographql.com/docs/apollo-server/testing/graphql-playground/)-näkymän, joka avulla on mahdollista tehdä kyselyjä palvelimelle.
 
-Kokeillaan 
+Kokeillaan
 
 ![](../../images/8/1.png)
 
@@ -393,7 +389,7 @@ Playgroundin kanssa pitää olla välillä tarkkana. Jos kysely on syntaktisesti
 
 ![](../../images/8/2.png)
 
-Edellisen kyselyn tulos näkyy edelleen playgroundin oikeassa osassa kyselyn virheellisyydestä huolimatta. 
+Edellisen kyselyn tulos näkyy edelleen playgroundin oikeassa osassa kyselyn virheellisyydestä huolimatta.
 
 Osoittamalla oikeaa kohtaa virheelliseltä riviltä saa virheilmoituksen näkyville
 
@@ -412,8 +408,8 @@ Yksittäisen henkilön hakevan kyselyn
 ```js
 query {
   findPerson(name: "Arto Hellas") {
-    phone 
-    city 
+    phone
+    city
     street
   }
 }
@@ -422,11 +418,11 @@ query {
 resolveri on funktio, joka poikkeaa kahdesta aiemmasta resolverista siinä että se saa <i>kaksi parametria</i>:
 
 ```js
-(root, args) => persons.find(p => p.name === args.name)
+(root, args) => persons.find((p) => p.name === args.name);
 ```
 
 Parametreista toinen _args_ sisältää kyselyn parametrit. Resolveri siis palauttaa taulukosta
- _persons_ henkilön, jonka nimi on sama kuin <i>args.name</i> arvo. Ensimmäisenä olevaa parametria _root_ resolveri ei tarvitse.
+_persons_ henkilön, jonka nimi on sama kuin <i>args.name</i> arvo. Ensimmäisenä olevaa parametria _root_ resolveri ei tarvitse.
 
 Itse asiassa kaikki resolverifunktiot saavat [neljä parametria](https://www.apollographql.com/docs/graphql-tools/resolvers.html#Resolver-function-signature). Javascriptissa parametrit voidaan kuitenkin jättää määrittelemättä, jos niitä ei tarvita. Tulemme käyttämään resolverien ensimmäistä ja kolmatta parametria vielä myöhemmin tässä osassa.
 
@@ -437,8 +433,8 @@ Kun teemme kyselyn, esim
 ```js
 query {
   findPerson(name: "Arto Hellas") {
-    phone 
-    city 
+    phone
+    city
     street
   }
 }
@@ -446,17 +442,16 @@ query {
 
 osaa palvelin liittää vastaukseen täsmälleen ne kentät, joita kysely pyytää. Miten tämä tapahtuu?
 
-GraphQL-palvelimen tulee määritellä resolverit <i>jokaiselle</i> skeemassa määritellyn tyypin kentälle. Olemme nyt määritelleet resolverit ainoastaan tyypin <i>Query</i> kentille, eli kaikille sovelluksen tarjoamille kyselyille. 
+GraphQL-palvelimen tulee määritellä resolverit <i>jokaiselle</i> skeemassa määritellyn tyypin kentälle. Olemme nyt määritelleet resolverit ainoastaan tyypin <i>Query</i> kentille, eli kaikille sovelluksen tarjoamille kyselyille.
 
 Koska skeemassa olevan tyypin <i>Person</i> kentille ei ole määritelty resolvereita, Apollo on määritellyt niille [oletusarvoisen resolverin](https://www.apollographql.com/docs/graphql-tools/resolvers.html#Default-resolver), joka toimii samaan tapaan kuin seuraavassa itse määritelty resolveri:
-
 
 ```js
 const resolvers = {
   Query: {
     personCount: () => persons.length,
     allPersons: () => persons,
-    findPerson: (root, args) => persons.find(p => p.name === args.name)
+    findPerson: (root, args) => persons.find((p) => p.name === args.name),
   },
   // highlight-start
   Person: {
@@ -464,13 +459,13 @@ const resolvers = {
     phone: (root) => root.phone,
     street: (root) => root.street,
     city: (root) => root.city,
-    id: (root) => root.id
-  }
+    id: (root) => root.id,
+  },
   // highlight-end
-}
+};
 ```
 
-Oletusarvoinen resolveri siis palauttaa olion vastaavan kentän arvon. Itse olioon se pääsee käsiksi resolverin ensimmäisen parametrin _root_ kautta. 
+Oletusarvoinen resolveri siis palauttaa olion vastaavan kentän arvon. Itse olioon se pääsee käsiksi resolverin ensimmäisen parametrin _root_ kautta.
 
 Jos oletusarvoisen resolverin toiminnallisuus riittää, ei omaa resolveria tarvitse määritellä. On myös mahdollista määritellä ainoastaan joillekin tyypin yksittäiselle kentille oma resolverinsa ja antaa oletusarvoisen resolverin hoitaa muut kentät.
 
@@ -491,7 +486,7 @@ Muutetaan skeemaa hiukan
   // highlight-start
 type Address {
   street: String!
-  city: String! 
+  city: String!
 }
   // highlight-end
 
@@ -509,16 +504,16 @@ type Query {
 }
 ```
 
-eli henkilöllä on nyt kenttä, jonka tyyppi on <i>Address</i>, joka koostuu kadusta ja kaupungista. 
+eli henkilöllä on nyt kenttä, jonka tyyppi on <i>Address</i>, joka koostuu kadusta ja kaupungista.
 
 Osoitetta tarvitsevat kyselyt muuttuvat muotoon
 
 ```js
 query {
   findPerson(name: "Arto Hellas") {
-    phone 
+    phone
     address {
-      city 
+      city
       street
     }
   }
@@ -550,13 +545,13 @@ let persons = [
     phone: "040-123543",
     street: "Tapiolankatu 5 A",
     city: "Espoo",
-    id: "3d594650-3436-11e9-bc57-8b80ba54c431"
+    id: "3d594650-3436-11e9-bc57-8b80ba54c431",
   },
   // ...
-]
+];
 ```
 
-Nyt siis palvelimen tallettamat henkilö-oliot eivät ole muodoltaan täysin samanlaisia kuin GraphQL-skeeman määrittelemät tyypin <i>Person</i> -oliot. 
+Nyt siis palvelimen tallettamat henkilö-oliot eivät ole muodoltaan täysin samanlaisia kuin GraphQL-skeeman määrittelemät tyypin <i>Person</i> -oliot.
 
 Toisin kuin tyypille <i>Person</i> ei tyypille <i>Address</i> ole määritelty <i>id</i>-kenttää, sillä osoitteita ei ole talletettu palvelimella omaan tietorakenteeseensa.
 
@@ -567,20 +562,19 @@ const resolvers = {
   Query: {
     personCount: () => persons.length,
     allPersons: () => persons,
-    findPerson: (root, args) =>
-      persons.find(p => p.name === args.name)
+    findPerson: (root, args) => persons.find((p) => p.name === args.name),
   },
   // highlight-start
   Person: {
     address: (root) => {
-      return { 
+      return {
         street: root.street,
-        city: root.city
-      }
-    }
-  }
+        city: root.city,
+      };
+    },
+  },
   // highlight-end
-}
+};
 ```
 
 Eli aina palautettaessa <i>Person</i>-oliota, palautetaan niiden kentät <i>name</i>, <i>phone</i> sekä <i>id</i> käyttäen oletusarvoista resolveria, kenttä <i>address</i> muodostetaan itse määritellyn resolverin avulla. Resolverifunktion parametrina _root_ on käsittelyssä oleva henkilö-olio, eli osoitteen katu ja kaupunki saadaan sen kentistä.
@@ -609,7 +603,7 @@ Mutaatio siis saa parametreina käyttäjän tiedot. Parametreista <i>phone</i> o
 Myös mutaatioita varten on määriteltävä resolveri:
 
 ```js
-const uuid = require('uuid/v1')
+const uuid = require("uuid/v1");
 
 // ...
 
@@ -617,17 +611,17 @@ const resolvers = {
   // ...
   Mutation: {
     addPerson: (root, args) => {
-      const person = { ...args, id: uuid() }
-      persons = persons.concat(person)
-      return person
-    }
-  }
-}
+      const person = { ...args, id: uuid() };
+      persons = persons.concat(person);
+      return person;
+    },
+  },
+};
 ```
 
-Mutaatio siis lisää parametreina _args_ saamansa olion taulukkoon _persons_ ja palauttaa lisätyn olion. 
+Mutaatio siis lisää parametreina _args_ saamansa olion taulukkoon _persons_ ja palauttaa lisätyn olion.
 
-Kentälle <i>id</i> saadaan luotua uniikki tunniste kirjaston [uuid](https://github.com/kelektiv/node-uuid#readme) avulla. 
+Kentälle <i>id</i> saadaan luotua uniikki tunniste kirjaston [uuid](https://github.com/kelektiv/node-uuid#readme) avulla.
 
 Uusi henkilö voidaan lisätä seuraavalla mutaatiolla
 
@@ -684,18 +678,18 @@ eli tyypin <i>Person</i> kentän <i>address</i> resolveri muotoilee vastauksena 
 
 ### Virheiden käsittely
 
-Jos yritämme luoda uuden henkilön, mutta parametrit eivät vastaa skeemassa määriteltyä (esim. katuosoite puuttuu), antaa palvelin virheilmoituksen: 
+Jos yritämme luoda uuden henkilön, mutta parametrit eivät vastaa skeemassa määriteltyä (esim. katuosoite puuttuu), antaa palvelin virheilmoituksen:
 
 ![](../../images/8/5.png)
 
-GraphQL:n [validoinnin](https://graphql.org/learn/validation/) avulla pystytään siis jo automaattisesti hoitamaan osa virheenkäsittelyä. 
+GraphQL:n [validoinnin](https://graphql.org/learn/validation/) avulla pystytään siis jo automaattisesti hoitamaan osa virheenkäsittelyä.
 
 Kaikkea GraphQL ei kuitenkaan pysty hoitamaan automaattisesti. Esimerkiksi tarkemmat säännöt mutaatiolla lisättävän datan kenttien muodolle on lisättävä itse. Niistä aiheutuvat virheet tulee hoitaa [GraphQL:n poikkeuskäsittelymekanismilla](https://www.apollographql.com/docs/apollo-server/data/errors/).
 
 Estetään saman nimen lisääminen puhelinluetteloon useampaan kertaan:
 
 ```js
-const { ApolloServer, UserInputError, gql } = require('apollo-server') // highlight-line
+const { ApolloServer, UserInputError, gql } = require("apollo-server"); // highlight-line
 
 // ...
 
@@ -704,19 +698,19 @@ const resolvers = {
   Mutation: {
     addPerson: (root, args) => {
       // highlight-start
-      if (persons.find(p => p.name === args.name)) {
-        throw new UserInputError('Name must be unique', {
+      if (persons.find((p) => p.name === args.name)) {
+        throw new UserInputError("Name must be unique", {
           invalidArgs: args.name,
-        })
+        });
       }
       // highlight-end
 
-      const person = { ...args, id: uuid() }
-      persons = persons.concat(person)
-      return person
-    }
-  }
-}
+      const person = { ...args, id: uuid() };
+      persons = persons.concat(person);
+      return person;
+    },
+  },
+};
 ```
 
 Eli jos lisättävä nimi on jo luettelossa heitetään poikkeus _UserInputError_.
@@ -733,7 +727,7 @@ Tehdään sovellukseen vielä sellainen lisäys, että kaikki henkilöt palautta
 query {
   allPersons(phone: YES) {
     name
-    phone 
+    phone
   }
 }
 ```
@@ -816,15 +810,15 @@ ja sen toteuttaa seuraava resolveri:
 Mutation: {
   // ...
   editNumber: (root, args) => {
-    const person = persons.find(p => p.name === args.name)
+    const person = persons.find((p) => p.name === args.name);
     if (!person) {
-      return null
+      return null;
     }
 
-    const updatedPerson = { ...person, phone: args.phone }
-    persons = persons.map(p => p.name === args.name ? updatedPerson : p)
-    return updatedPerson
-  }   
+    const updatedPerson = { ...person, phone: args.phone };
+    persons = persons.map((p) => (p.name === args.name ? updatedPerson : p));
+    return updatedPerson;
+  };
 }
 ```
 
@@ -919,7 +913,7 @@ Tehtävissä toteutetaan yksinkertaisen kirjaston GraphQL:ää tarjoava backend.
 
 Toteuta kyselyt _bookCount_ ja _authorCount_ jotka palauttavat kirjojen ja kirjailijoiden lukumäärän.
 
-Kyselyn 
+Kyselyn
 
 ```js
 query {
@@ -947,10 +941,10 @@ Seuraava kysely siis pitäisi pystyä tekemään
 
 ```js
 query {
-  allBooks { 
-    title 
+  allBooks {
+    title
     author
-    published 
+    published
     genres
   }
 }

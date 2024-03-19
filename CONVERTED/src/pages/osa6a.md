@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-6.svg
+mainImage: "../../../images/part-6.svg"
 part: 6
 letter: a
 lang: fi
@@ -31,7 +31,6 @@ Tutustutaan Reduxiin tekemällä jälleen kerran laskurin toteuttava sovellus:
 
 ![](../../images/6/1.png)
 
-
 Tehdään uusi create-react-app-sovellus ja asennetaan siihen <i></i>redux</i> komennolla
 
 ```bash
@@ -46,7 +45,7 @@ Storen tilaa muutetaan [actionien](https://redux.js.org/basics/actions) avulla. 
 
 ```js
 {
-  type: 'INCREMENT'
+  type: "INCREMENT";
 }
 ```
 
@@ -58,16 +57,16 @@ Määritellään nyt sovelluksellemme reduceri:
 
 ```js
 const counterReducer = (state, action) => {
-  if (action.type === 'INCREMENT') {
-    return state + 1
-  } else if (action.type === 'DECREMENT') {
-    return state - 1
-  } else if (action.type === 'ZERO') {
-    return 0
+  if (action.type === "INCREMENT") {
+    return state + 1;
+  } else if (action.type === "DECREMENT") {
+    return state - 1;
+  } else if (action.type === "ZERO") {
+    return 0;
   }
 
-  return state
-}
+  return state;
+};
 ```
 
 Ensimmäinen parametri on siis storessa oleva <i>tila</i>. Reducer palauttaa <i>uuden tilan</i> actionin tyypin mukaan.
@@ -78,34 +77,34 @@ Määritellään myös parametrille <i>state</i> [oletusarvoksi](https://develop
 ```js
 const counterReducer = (state = 0, action) => {
   switch (action.type) {
-    case 'INCREMENT':
-      return state + 1
-    case 'DECREMENT':
-      return state - 1
-    case 'ZERO':
-      return 0
+    case "INCREMENT":
+      return state + 1;
+    case "DECREMENT":
+      return state - 1;
+    case "ZERO":
+      return 0;
     default: // jos ei mikään ylläolevista tullaan tänne
-    return state
+      return state;
   }
-}
+};
 ```
 
 Reduceria ei ole tarkoitus kutsua koskaan suoraan sovelluksen koodista. Reducer ainoastaan annetaan parametrina storen luovalle _createStore_-funktiolle:
 
 ```js
-import { createStore } from 'redux'
+import { createStore } from "redux";
 
 const counterReducer = (state = 0, action) => {
   // ...
-}
+};
 
-const store = createStore(counterReducer)
+const store = createStore(counterReducer);
 ```
 
 Store käyttää nyt reduceria käsitelläkseen <i>actioneja</i>, jotka <i>dispatchataan</i> eli "lähetetään" storelle sen [dispatch](https://redux.js.org/api-reference/store#dispatch-action)-metodilla:
 
 ```js
-store.dispatch({type: 'INCREMENT'})
+store.dispatch({ type: "INCREMENT" });
 ```
 
 Storen tilan saa selville metodilla [getState](https://redux.js.org/api-reference/store#getstate).
@@ -113,15 +112,15 @@ Storen tilan saa selville metodilla [getState](https://redux.js.org/api-referenc
 Esim. seuraava koodi
 
 ```js
-const store = createStore(counterReducer)
-console.log(store.getState())
-store.dispatch({type: 'INCREMENT'})
-store.dispatch({type: 'INCREMENT'})
-store.dispatch({type: 'INCREMENT'})
-console.log(store.getState())
-store.dispatch({type: 'ZERO'})
-store.dispatch({type: 'DECREMENT'})
-console.log(store.getState())
+const store = createStore(counterReducer);
+console.log(store.getState());
+store.dispatch({ type: "INCREMENT" });
+store.dispatch({ type: "INCREMENT" });
+store.dispatch({ type: "INCREMENT" });
+console.log(store.getState());
+store.dispatch({ type: "ZERO" });
+store.dispatch({ type: "DECREMENT" });
+console.log(store.getState());
 ```
 
 tulostaisi konsoliin
@@ -140,26 +139,26 @@ Jos esim. lisäisimme seuraavan funktion subscribe:lla, tulostuisi <i>jokainen s
 
 ```js
 store.subscribe(() => {
-  const storeNow = store.getState()
-  console.log(storeNow)
-})
+  const storeNow = store.getState();
+  console.log(storeNow);
+});
 ```
 
 eli koodi
 
 ```js
-const store = createStore(counterReducer)
+const store = createStore(counterReducer);
 
 store.subscribe(() => {
-  const storeNow = store.getState()
-  console.log(storeNow)
-})
+  const storeNow = store.getState();
+  console.log(storeNow);
+});
 
-store.dispatch({ type: 'INCREMENT' })
-store.dispatch({ type: 'INCREMENT' })
-store.dispatch({ type: 'INCREMENT' })
-store.dispatch({ type: 'ZERO' })
-store.dispatch({ type: 'DECREMENT' })
+store.dispatch({ type: "INCREMENT" });
+store.dispatch({ type: "INCREMENT" });
+store.dispatch({ type: "INCREMENT" });
+store.dispatch({ type: "ZERO" });
+store.dispatch({ type: "DECREMENT" });
 ```
 
 aiheuttaisi tulostuksen
@@ -172,60 +171,49 @@ aiheuttaisi tulostuksen
 -1
 </pre>
 
-
 Laskurisovelluksemme koodi on seuraavassa. Kaikki koodi on kirjoitettu samaan tiedostoon, jolloin <i>store</i> on suoraan React-koodin käytettävissä. Tutustumme React/Redux-koodin parempiin strukturointitapoihin myöhemmin.
 
 ```js
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { createStore } from 'redux'
+import React from "react";
+import ReactDOM from "react-dom";
+import { createStore } from "redux";
 
 const counterReducer = (state = 0, action) => {
   switch (action.type) {
-    case 'INCREMENT':
-      return state + 1
-    case 'DECREMENT':
-      return state - 1
-    case 'ZERO':
-      return 0
+    case "INCREMENT":
+      return state + 1;
+    case "DECREMENT":
+      return state - 1;
+    case "ZERO":
+      return 0;
     default:
-      return state
+      return state;
   }
-}
+};
 
-const store = createStore(counterReducer)
+const store = createStore(counterReducer);
 
 const App = () => {
   return (
     <div>
-      <div>
-        {store.getState()}
-      </div>
-      <button 
-        onClick={e => store.dispatch({ type: 'INCREMENT' })}
-      >
+      <div>{store.getState()}</div>
+      <button onClick={(e) => store.dispatch({ type: "INCREMENT" })}>
         plus
       </button>
-      <button
-        onClick={e => store.dispatch({ type: 'DECREMENT' })}
-      >
+      <button onClick={(e) => store.dispatch({ type: "DECREMENT" })}>
         minus
       </button>
-      <button 
-        onClick={e => store.dispatch({ type: 'ZERO' })}
-      >
-        zero
-      </button>
+      <button onClick={(e) => store.dispatch({ type: "ZERO" })}>zero</button>
     </div>
-  )
-}
+  );
+};
 
 const renderApp = () => {
-  ReactDOM.render(<App />, document.getElementById('root'))
-}
+  ReactDOM.render(<App />, document.getElementById("root"));
+};
 
-renderApp()
-store.subscribe(renderApp)
+renderApp();
+store.subscribe(renderApp);
 ```
 
 Koodissa on pari huomionarvoista seikkaa. <i>App</i> renderöi laskurin arvon kysymällä sitä storesta metodilla _store.getState()_. Nappien tapahtumankäsittelijät <i>dispatchaavat</i> suoraan oikean tyyppiset actionit storelle.
@@ -240,50 +228,50 @@ Sovelluksen ensimmäinen versio seuraavassa
 
 ```js
 const noteReducer = (state = [], action) => {
-  if (action.type === 'NEW_NOTE') {
-    state.push(action.data)
-    return state
+  if (action.type === "NEW_NOTE") {
+    state.push(action.data);
+    return state;
   }
 
-  return state
-}
+  return state;
+};
 
-const store = createStore(noteReducer)
+const store = createStore(noteReducer);
 
 store.dispatch({
-  type: 'NEW_NOTE',
+  type: "NEW_NOTE",
   data: {
-    content: 'the app state is in redux store',
+    content: "the app state is in redux store",
     important: true,
-    id: 1
-  }
-})
+    id: 1,
+  },
+});
 
 store.dispatch({
-  type: 'NEW_NOTE',
+  type: "NEW_NOTE",
   data: {
-    content: 'state changes are made with actions',
+    content: "state changes are made with actions",
     important: false,
-    id: 2
-  }
-})
+    id: 2,
+  },
+});
 
 const App = () => {
-  return(
+  return (
     <div>
       <ul>
-        {store.getState().map(note=>
+        {store.getState().map((note) => (
           <li key={note.id}>
-            {note.content} <strong>{note.important ? 'important' : ''}</strong>
+            {note.content} <strong>{note.important ? "important" : ""}</strong>
           </li>
-        )}
-        </ul>
+        ))}
+      </ul>
     </div>
-  )
-}
+  );
+};
 ```
 
-Toistaiseksi sovelluksessa ei siis ole toiminnallisuutta uusien muistiinpanojen lisäämiseen, voimme kuitenkin tehdä sen dispatchaamalla <i>NEW\_NOTE</i>-tyyppisiä actioneja koodista.
+Toistaiseksi sovelluksessa ei siis ole toiminnallisuutta uusien muistiinpanojen lisäämiseen, voimme kuitenkin tehdä sen dispatchaamalla <i>NEW_NOTE</i>-tyyppisiä actioneja koodista.
 
 Actioneissa on nyt tyypin lisäksi kenttä <i>data</i>, joka sisältää lisättävän muistiinpanon:
 
@@ -304,31 +292,31 @@ Reducerimme alustava versio on yksinkertainen:
 
 ```js
 const noteReducer = (state = [], action) => {
-  if (action.type === 'NEW_NOTE') {
-    state.push(action.data)
-    return state
+  if (action.type === "NEW_NOTE") {
+    state.push(action.data);
+    return state;
   }
 
-  return state
-}
+  return state;
+};
 ```
 
-Tila on nyt taulukko. <i>NEW\_NOTE</i>-tyyppisen actionin seurauksena tilaan lisätään uusi muistiinpano metodilla [push](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/push).
+Tila on nyt taulukko. <i>NEW_NOTE</i>-tyyppisen actionin seurauksena tilaan lisätään uusi muistiinpano metodilla [push](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/push).
 
 Sovellus näyttää toimivan, mutta määrittelemämme reduceri on huono, se rikkoo Reduxin reducerien [perusolettamusta](https://github.com/reactjs/redux/blob/master/docs/basics/Reducers.md#handling-actions) siitä, että reducerien tulee olla [puhtaita funktioita](https://en.wikipedia.org/wiki/Pure_function).
 
 Puhtaat funktiot ovat sellaisia, että ne <i>eivät aiheuta mitään sivuvaikutuksia</i> ja niiden tulee aina palauttaa sama vastaus samoilla parametreilla kutsuttaessa.
 
-Lisäsimme tilaan uuden muistiinpanon metodilla _state.push(action.data)_  joka <i>muuttaa</i> state-olion tilaa. Tämä ei ole sallittua. Ongelma korjautuu helposti käyttämällä metodia [concat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/concat), joka luo <i>uuden taulukon</i>, jonka sisältönä on vanhan taulukon alkiot sekä lisättävä alkio:
+Lisäsimme tilaan uuden muistiinpanon metodilla _state.push(action.data)_ joka <i>muuttaa</i> state-olion tilaa. Tämä ei ole sallittua. Ongelma korjautuu helposti käyttämällä metodia [concat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/concat), joka luo <i>uuden taulukon</i>, jonka sisältönä on vanhan taulukon alkiot sekä lisättävä alkio:
 
 ```js
 const noteReducer = (state = [], action) => {
-  if (action.type === 'NEW_NOTE') {
-    return state.concat(action.data)
+  if (action.type === "NEW_NOTE") {
+    return state.concat(action.data);
   }
 
-  return state
-}
+  return state;
+};
 ```
 
 Reducen tilan tulee koostua muuttumattomista eli [immutable](https://en.wikipedia.org/wiki/Immutable_object) olioista. Jos tilaan tulee muutos, ei vanhaa oliota muuteta, vaan se <i>korvataan uudella muuttuneella oliolla</i>. Juuri näin toimimme uudistuneessa reducerissa, vanha taulukko korvaantuu uudella.
@@ -344,7 +332,7 @@ Laajennetaan reduceria siten, että se osaa käsitellä muistiinpanon tärkeytee
 }
 ```
 
-Koska meillä ei ole vielä koodia joka käyttää ominaisuutta, laajennetaan reduceria testivetoisesti. Aloitetaan tekemällä testi actionin <i>NEW\_NOTE</i> käsittelylle.
+Koska meillä ei ole vielä koodia joka käyttää ominaisuutta, laajennetaan reduceria testivetoisesti. Aloitetaan tekemällä testi actionin <i>NEW_NOTE</i> käsittelylle.
 
 Jotta testaus olisi helpompaa, siirretään reducerin koodi ensin omaan moduuliinsa tiedostoon <i>src/reducers/noteReducer.js</i>. Otetaan käyttöön myös kirjasto [deep-freeze](https://github.com/substack/deep-freeze), jonka avulla voimme varmistaa, että reducer on määritelty oikeaoppisesti puhtaana funktiona. Asennetaan kirjasto kehitysaikaiseksi riippuvuudeksi
 
@@ -355,70 +343,71 @@ npm install --save-dev deep-freeze
 Testi, joka määritellään tiedostoon <i>src/reducers/noteReducer.test.js</i> on sisällöltään seuraava:
 
 ```js
-import noteReducer from './noteReducer'
-import deepFreeze from 'deep-freeze'
+import noteReducer from "./noteReducer";
+import deepFreeze from "deep-freeze";
 
-describe('noteReducer', () => {
-  test('returns new state with action NEW_NOTE', () => {
-    const state = []
+describe("noteReducer", () => {
+  test("returns new state with action NEW_NOTE", () => {
+    const state = [];
     const action = {
-      type: 'NEW_NOTE',
+      type: "NEW_NOTE",
       data: {
-        content: 'the app state is in redux store',
+        content: "the app state is in redux store",
         important: true,
-        id: 1
-      }
-    }
+        id: 1,
+      },
+    };
 
-    deepFreeze(state)
-    const newState = noteReducer(state, action)
+    deepFreeze(state);
+    const newState = noteReducer(state, action);
 
-    expect(newState.length).toBe(1)
-    expect(newState).toContainEqual(action.data)
-  })
-})
+    expect(newState.length).toBe(1);
+    expect(newState).toContainEqual(action.data);
+  });
+});
 ```
 
 Komento <i>deepFreeze(state)</i> varmistaa, että reducer ei muuta parametrina olevaa storen tilaa. Jos reduceri käyttää state:n manipulointiin komentoa _push_, testi ei mene läpi
 
 ![](../../images/6/2.png)
 
-Tehdään sitten testi actionin <i>TOGGLE\_IMPORTANCE</i> käsittelylle:
+Tehdään sitten testi actionin <i>TOGGLE_IMPORTANCE</i> käsittelylle:
 
 ```js
-test('returns new state with action TOGGLE_IMPORTANCE', () => {
+test("returns new state with action TOGGLE_IMPORTANCE", () => {
   const state = [
     {
-      content: 'the app state is in redux store',
+      content: "the app state is in redux store",
       important: true,
-      id: 1
+      id: 1,
     },
     {
-      content: 'state changes are made with actions',
+      content: "state changes are made with actions",
       important: false,
-      id: 2
-    }]
+      id: 2,
+    },
+  ];
 
   const action = {
-    type: 'TOGGLE_IMPORTANCE',
+    type: "TOGGLE_IMPORTANCE",
     data: {
-      id: 2
-    }
-  }
+      id: 2,
+    },
+  };
 
-  deepFreeze(state)
-  const newState = noteReducer(state, action)
+  deepFreeze(state);
+  const newState = noteReducer(state, action);
 
-  expect(newState.length).toBe(2)
+  expect(newState.length).toBe(2);
 
-  expect(newState).toContainEqual(state[0])
+  expect(newState).toContainEqual(state[0]);
 
   expect(newState).toContainEqual({
-    content: 'state changes are made with actions',
+    content: "state changes are made with actions",
     important: true,
-    id: 2
-  })
-})
+    id: 2,
+  });
+});
 ```
 
 Eli seuraavan actionin
@@ -437,23 +426,21 @@ Reduceri laajenee seuraavasti
 
 ```js
 const noteReducer = (state = [], action) => {
-  switch(action.type) {
-    case 'NEW_NOTE':
-      return state.concat(action.data)
-    case 'TOGGLE_IMPORTANCE':
-      const id = action.data.id
-      const noteToChange = state.find(n => n.id === id)
-      const changedNote = { 
-        ...noteToChange, 
-        important: !noteToChange.important 
-      }
-      return state.map(note =>
-        note.id !== id ? note : changedNote 
-      )
+  switch (action.type) {
+    case "NEW_NOTE":
+      return state.concat(action.data);
+    case "TOGGLE_IMPORTANCE":
+      const id = action.data.id;
+      const noteToChange = state.find((n) => n.id === id);
+      const changedNote = {
+        ...noteToChange,
+        important: !noteToChange.important,
+      };
+      return state.map((note) => (note.id !== id ? note : changedNote));
     default:
-      return state
+      return state;
   }
-}
+};
 ```
 
 Luomme tärkeyttä muuttaneesta muistiinpanosta kopion osasta 2 [tutulla syntaksilla](/osa2/palvelimella_olevan_datan_muokkaaminen#muistiinpanon-tarkeyden-muutos) ja korvaamme tilan uudella tilalla, mihin otetaan muuttumattomat muistiinpanot ja muutettavasta sen muutettu kopio <i>changedNote</i>.
@@ -461,24 +448,22 @@ Luomme tärkeyttä muuttaneesta muistiinpanosta kopion osasta 2 [tutulla syntaks
 Kerrataan vielä mitä koodissa tapahtuu. Ensin etsitään olio, jonka tärkeys on tarkoitus muuttaa:
 
 ```js
-const noteToChange = state.find(n => n.id === id)
+const noteToChange = state.find((n) => n.id === id);
 ```
 
 luodaan sitten uusi olio, joka on muuten <i>kopio</i> muuttuvasta oliosta mutta kentän <i>important</i> arvo on muutettu päinvastaiseksi:
 
 ```js
-const changedNote = { 
-  ...noteToChange, 
-  important: !noteToChange.important 
-}
+const changedNote = {
+  ...noteToChange,
+  important: !noteToChange.important,
+};
 ```
 
 Palautetaan uusi tila, joka saadaan ottamalla kaikki vanhan tilan muistiinpanot paitsi uusi juuri luotu olio tärkeydeltään muuttavasta muistiinpanosta:
 
 ```js
-state.map(note =>
-  note.id !== id ? note : changedNote 
-)
+state.map((note) => (note.id !== id ? note : changedNote));
 ```
 
 ### array spread -syntaksi
@@ -489,27 +474,27 @@ Uuden muistiinpanon lisäys luo palautettavan tilan taulukon _concat_-funktiolla
 
 ```js
 const noteReducer = (state = [], action) => {
-  switch(action.type) {
-    case 'NEW_NOTE':
-      return [...state, action.data]
-    case 'TOGGLE_IMPORTANCE':
-      // ...
+  switch (action.type) {
+    case "NEW_NOTE":
+      return [...state, action.data];
+    case "TOGGLE_IMPORTANCE":
+    // ...
     default:
-    return state
+      return state;
   }
-}
+};
 ```
 
 Spread-syntaksi toimii seuraavasti. Jos määrittelemme
 
 ```js
-const luvut = [1, 2, 3]
+const luvut = [1, 2, 3];
 ```
 
 niin <code>...luvut</code> hajottaa taulukon yksittäisiksi alkioiksi, eli voimme sijoittaa sen esim. toisen taulukon sisään:
 
 ```js
-[...luvut, 4, 5]
+[...luvut, 4, 5];
 ```
 
 ja lopputuloksena on taulukko, jonka sisältö on `[1, 2, 3, 4, 5]`.
@@ -517,7 +502,7 @@ ja lopputuloksena on taulukko, jonka sisältö on `[1, 2, 3, 4, 5]`.
 Jos olisimme sijoittaneet taulukon toisen sisälle ilman spreadia, eli
 
 ```js
-[luvut, 4, 5]
+[luvut, 4, 5];
 ```
 
 lopputulos olisi ollut `[ [1, 2, 3], 4, 5]`.
@@ -525,13 +510,13 @@ lopputulos olisi ollut `[ [1, 2, 3], 4, 5]`.
 Samannäköinen syntaksi toimii taulukosta [destrukturoimalla](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) alkioita otettaessa siten, että se <i>kerää</i> loput alkiot:
 
 ```js
-const luvut = [1, 2, 3, 4, 5, 6]
+const luvut = [1, 2, 3, 4, 5, 6];
 
-const [eka, toka, ...loput] = luvut
+const [eka, toka, ...loput] = luvut;
 
-console.log(eka)    // tulostuu 1
-console.log(toka)   // tulostuu 2
-console.log(loput)  // tulostuu [3, 4, 5, 6]
+console.log(eka); // tulostuu 1
+console.log(toka); // tulostuu 2
+console.log(loput); // tulostuu [3, 4, 5, 6]
 ```
 
 </div>
@@ -572,65 +557,65 @@ Projektissa on seuraava runko reducerille:
 const initialState = {
   good: 0,
   ok: 0,
-  bad: 0
-}
+  bad: 0,
+};
 
 const counterReducer = (state = initialState, action) => {
-  console.log(action)
+  console.log(action);
   switch (action.type) {
-    case 'GOOD':
-      return state
-    case 'OK':
-      return state
-    case 'BAD':
-      return state
-    case 'ZERO':
-      return state
+    case "GOOD":
+      return state;
+    case "OK":
+      return state;
+    case "BAD":
+      return state;
+    case "ZERO":
+      return state;
   }
-  return state
-}
+  return state;
+};
 
-export default counterReducer
+export default counterReducer;
 ```
 
 ja sen testien runko
 
 ```js
-import deepFreeze from 'deep-freeze'
-import counterReducer from './reducer'
+import deepFreeze from "deep-freeze";
+import counterReducer from "./reducer";
 
-describe('unicafe reducer', () => {
+describe("unicafe reducer", () => {
   const initialState = {
     good: 0,
     ok: 0,
-    bad: 0
-  }
+    bad: 0,
+  };
 
-  test('should return a proper initial state when called with undefined state', () => {
-    const state = {}
+  test("should return a proper initial state when called with undefined state", () => {
+    const state = {};
     const action = {
-      type: 'DO_NOTHING'
-    }
+      type: "DO_NOTHING",
+    };
 
-    const newState = counterReducer(undefined, action)
-    expect(newState).toEqual(initialState)
-  })
+    const newState = counterReducer(undefined, action);
+    expect(newState).toEqual(initialState);
+  });
 
-  test('good is incremented', () => {
+  test("good is incremented", () => {
     const action = {
-      type: 'GOOD'
-    }
-    const state = initialState
+      type: "GOOD",
+    };
+    const state = initialState;
 
-    deepFreeze(state)
-    const newState = counterReducer(state, action)
+    deepFreeze(state);
+    const newState = counterReducer(state, action);
     expect(newState).toEqual({
       good: 1,
       ok: 0,
-      bad: 0
-    })
-  })
-})
+      bad: 0,
+    });
+  });
+});
 ```
 
 **Toteuta reducer ja tee sille testit.**
@@ -639,11 +624,11 @@ Varmista testeissä <i>deep-freeze</i>-kirjaston avulla, että kyseessä on <i>p
 
 Aloita laajentamalla reduceria siten, että molemmat testeistä menevät läpi. Lisää tämän jälkeen loput testit ja niiden toteuttava toiminnallisuus.
 
-Reducerin toteutuksessa kannattaa ottaa mallia ylläolevasta [redux-muistiinpanot](/osa6/flux_arkkitehtuuri_ja_redux#puhtaat-funktiot-immutable)-esimerkistä. 
+Reducerin toteutuksessa kannattaa ottaa mallia ylläolevasta [redux-muistiinpanot](/osa6/flux_arkkitehtuuri_ja_redux#puhtaat-funktiot-immutable)-esimerkistä.
 
 #### 6.2: unicafe revisited, step2
 
-Toteuta sitten sovelluksen koko sen varsinainen toiminnallisuus. 
+Toteuta sitten sovelluksen koko sen varsinainen toiminnallisuus.
 
 </div>
 
@@ -654,73 +639,69 @@ Toteuta sitten sovelluksen koko sen varsinainen toiminnallisuus.
 Lisätään sovellukseen mahdollisuus uusien muistiinpanojen tekemiseen sekä tärkeyden muuttamiseen:
 
 ```js
-const generateId = () =>
-  Number((Math.random() * 1000000).toFixed(0))
+const generateId = () => Number((Math.random() * 1000000).toFixed(0));
 
 const App = () => {
   const addNote = (event) => {
-    event.preventDefault()
-    const content = event.target.note.value
+    event.preventDefault();
+    const content = event.target.note.value;
     store.dispatch({
-      type: 'NEW_NOTE',
+      type: "NEW_NOTE",
       data: {
         content,
         important: false,
-        id: generateId()
-      }
-    })
-    event.target.note.value = ''
-  }
+        id: generateId(),
+      },
+    });
+    event.target.note.value = "";
+  };
 
   const toggleImportance = (id) => () => {
     store.dispatch({
-      type: 'TOGGLE_IMPORTANCE',
-      data: { id }
-    })
-  }
+      type: "TOGGLE_IMPORTANCE",
+      data: { id },
+    });
+  };
 
   return (
     <div>
       <form onSubmit={addNote}>
-        <input name="note" /> 
+        <input name="note" />
         <button type="submit">add</button>
       </form>
       <ul>
-        {store.getState().map(note =>
-          <li
-            key={note.id} 
-            onClick={toggleImportance(note.id)}
-          >
-            {note.content} <strong>{note.important ? 'important' : ''}</strong>
+        {store.getState().map((note) => (
+          <li key={note.id} onClick={toggleImportance(note.id)}>
+            {note.content} <strong>{note.important ? "important" : ""}</strong>
           </li>
-        )}
+        ))}
       </ul>
     </div>
-  )
-}
+  );
+};
 ```
 
 Molemmat toiminnallisuudet on toteutettu suoraviivaisesti. Huomionarvoista uuden muistiinpanon lisäämisessä on nyt se, että toisin kuin aiemmat Reactilla toteutetut lomakkeet, <i>emme ole</i> nyt sitoneet lomakkeen kentän arvoa komponentin <i>App</i> tilaan. React kutsuu tälläisiä lomakkeita [ei-kontrolloiduiksi](https://reactjs.org/docs/uncontrolled-components.html).
 
 > Ei-kontrolloiduilla lomakkeilla on tiettyjä rajoitteita (ne eivät esim. mahdollista lennossa annettavia validointiviestejä, lomakkeen lähetysnapin disabloimista sisällön perusteella ym...), meidän käyttötapaukseemme ne kuitenkin tällä kertaa sopivat.
-Voit halutessasi lukea aiheesta enemmän [täältä](https://goshakkk.name/controlled-vs-uncontrolled-inputs-react/).
+> Voit halutessasi lukea aiheesta enemmän [täältä](https://goshakkk.name/controlled-vs-uncontrolled-inputs-react/).
 
 Muistiinpanon lisäämisen käsittelevä metodi on yksinkertainen, se ainoastaan dispatchaa muistiinpanon lisäävän actionin:
 
 ```js
 addNote = (event) => {
-  event.preventDefault()
-  const content = event.target.note.value  // highlight-line
+  event.preventDefault();
+  const content = event.target.note.value; // highlight-line
   store.dispatch({
-    type: 'NEW_NOTE',
+    type: "NEW_NOTE",
     data: {
       content,
       important: false,
-      id: generateId()
-    }
-  })
-  event.target.note.value = ''
-}
+      id: generateId(),
+    },
+  });
+  event.target.note.value = "";
+};
 ```
 
 Uuden muistiinpanon sisältö saadaan suoraan lomakkeen syötekentästä, johon kentän nimeämisen ansiosta päästään käsiksi tapahtumaolion kautta <i>event.target.note.value</i>. Kannattaa huomata, että syötekentällä on oltava nimi, jotta sen arvoon on mahdollista päästä käsiksi:
@@ -737,59 +718,57 @@ Tärkeyden muuttaminen tapahtuu klikkaamalla muistiinpanon nimeä. Käsittelijä
 ```js
 toggleImportance = (id) => {
   store.dispatch({
-    type: 'TOGGLE_IMPORTANCE',
-    data: { id }
-  })
-}
+    type: "TOGGLE_IMPORTANCE",
+    data: { id },
+  });
+};
 ```
 
 ### action creatorit
 
-Alamme huomata, että jo näinkin yksinkertaisessa sovelluksessa Reduxin käyttö yksinkertaistaa sovelluksen ulkoasusta vastaavaa koodia. Pystymme kuitenkin vielä paljon parempaan. 
+Alamme huomata, että jo näinkin yksinkertaisessa sovelluksessa Reduxin käyttö yksinkertaistaa sovelluksen ulkoasusta vastaavaa koodia. Pystymme kuitenkin vielä paljon parempaan.
 
 React-komponenttien on oikeastaan tarpeetonta tuntea reduxin actionien tyyppejä ja esitysmuotoja. Eristetään actioiden luominen omiksi funktioiksi:
 
 ```js
 const createNote = (content) => {
   return {
-    type: 'NEW_NOTE',
+    type: "NEW_NOTE",
     data: {
       content,
       important: false,
-      id: generateId()
-    }
-  }
-}
+      id: generateId(),
+    },
+  };
+};
 
 const toggleImportanceOf = (id) => {
   return {
-    type: 'TOGGLE_IMPORTANCE',
-    data: { id }
-  }
-}
+    type: "TOGGLE_IMPORTANCE",
+    data: { id },
+  };
+};
 ```
 
 Actioneja luovia funktioita kutsutaan [action creatoreiksi](https://redux.js.org/advanced/async-actions#synchronous-action-creators).
 
-
 Komponentin <i>App</i> ei tarvitse enää tietää mitään actionien sisäisestä esitystavasta, se saa sopivan actionin kutsumalla creator-funktiota:
-
 
 ```js
 const App = () => {
   const addNote = (event) => {
-    event.preventDefault()
-    const content = event.target.note.value
-    store.dispatch(createNote(content)) // highlight-line
-    event.target.note.value = ''
-  }
-  
+    event.preventDefault();
+    const content = event.target.note.value;
+    store.dispatch(createNote(content)); // highlight-line
+    event.target.note.value = "";
+  };
+
   const toggleImportance = (id) => () => {
-    store.dispatch(toggleImportanceOf(id))// highlight-line
-  }
+    store.dispatch(toggleImportanceOf(id)); // highlight-line
+  };
 
   // ...
-}
+};
 ```
 
 ### staten välittäminen propseissa
@@ -801,52 +780,42 @@ Herää kuitenkin kysymys miten <i>App</i> pääsee muutoksen jälkeen käsiksi 
 Tapoja on muutama. Yksinkertaisin vaihtoehto on välittää store propsien avulla. Sovelluksen käynnistyspiste <i>index.js</i> typistyy seuraavasti
 
 ```js
+import React from "react";
+import ReactDOM from "react-dom";
+import { createStore } from "redux";
+import App from "./App";
+import noteReducer from "./reducers/noteReducer";
 
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { createStore } from 'redux'
-import App from './App'
-import noteReducer from './reducers/noteReducer'
-
-const store = createStore(noteReducer)
+const store = createStore(noteReducer);
 
 const renderApp = () => {
-  ReactDOM.render(
-    <App store={store}/>,
-    document.getElementById('root')
-  )
-}
+  ReactDOM.render(<App store={store} />, document.getElementById("root"));
+};
 
-renderApp()
-store.subscribe(renderApp)
+renderApp();
+store.subscribe(renderApp);
 ```
 
 Muutos omaan moduuliinsa eriytettyyn komponenttiin <i>App</i> on pieni, storeen viitataan <i>propsien</i> kautta <code>props.store</code>:
 
 ```js
-import React from 'react'
+import React from "react";
 // highlight-start
-import { 
-  createNote, toggleImportanceOf
-} from './reducers/noteReducer' 
+import { createNote, toggleImportanceOf } from "./reducers/noteReducer";
 // highlight-end
 
 const App = (props) => {
-  const store = props.store // highlight-line
+  const store = props.store; // highlight-line
 
   const addNote = (event) => {
-    event.preventDefault()
-    store.dispatch(
-      createNote(event.target.note.value)
-    )
-    event.target.note.value = ''
-  }
+    event.preventDefault();
+    store.dispatch(createNote(event.target.note.value));
+    event.target.note.value = "";
+  };
 
   const toggleImportance = (id) => {
-    store.dispatch(
-      toggleImportanceOf(id)
-    )
-  }
+    store.dispatch(toggleImportanceOf(id));
+  };
 
   return (
     <div>
@@ -855,51 +824,49 @@ const App = (props) => {
         <button type="submit">add</button>
       </form>
       <ul>
-        {store.getState().map(note =>
-          <li
-            key={note.id}
-            onClick={() => toggleImportance(note.id)}
-          >
-            {note.content} <strong>{note.important ? 'important' : ''}</strong>
+        {store.getState().map((note) => (
+          <li key={note.id} onClick={() => toggleImportance(note.id)}>
+            {note.content} <strong>{note.important ? "important" : ""}</strong>
           </li>
-        )}
+        ))}
       </ul>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
 ```
 
-Action creator -funktioiden määrittely on siirretty reducerin kanssa samaan tiedostoon 
+Action creator -funktioiden määrittely on siirretty reducerin kanssa samaan tiedostoon
 
 ```js
 const noteReducer = (state = [], action) => {
   // ...
-}
+};
 
-const generateId = () =>
-  Number((Math.random() * 1000000).toFixed(0))
+const generateId = () => Number((Math.random() * 1000000).toFixed(0));
 
-export const createNote = (content) => { // highlight-line
+export const createNote = (content) => {
+  // highlight-line
   return {
-    type: 'NEW_NOTE',
+    type: "NEW_NOTE",
     data: {
       content,
       important: false,
-      id: generateId()
-    }
-  }
-}
+      id: generateId(),
+    },
+  };
+};
 
-export const toggleImportanceOf = (id) => { // highlight-line
+export const toggleImportanceOf = (id) => {
+  // highlight-line
   return {
-    type: 'TOGGLE_IMPORTANCE',
-    data: { id }
-  }
-}
+    type: "TOGGLE_IMPORTANCE",
+    data: { id },
+  };
+};
 
-export default noteReducer
+export default noteReducer;
 ```
 
 Jos sovelluksessa on enemmän storea tarvitsevia komponentteja, tulee <i>App</i>-komponentin välittää <i>store</i> propseina kaikille sitä tarvitseville komponenteille.
@@ -909,81 +876,76 @@ Moduulissa on nyt useita [export](https://developer.mozilla.org/en-US/docs/Web/J
 Reducer-funktio palautetaan edelleen komennolla <i>export default</i>. Tämän ansiosta reducer importataan tuttuun tapaan:
 
 ```js
-import noteReducer from './reducers/noteReducer'
+import noteReducer from "./reducers/noteReducer";
 ```
 
 Moduulilla voi olla vain <i>yksi default export</i>, mutta useita "normaaleja" exporteja
 
 ```js
-export const noteCreation = content => {
+export const noteCreation = (content) => {
   // ...
-}
+};
 
-export const toggleImportanceOf = (id) => { 
+export const toggleImportanceOf = (id) => {
   // ...
-}
+};
 ```
 
 Normaalisti (eli ei defaultina) exportattujen funktioiden käyttöönotto tapahtuu aaltosulkusyntaksilla:
 
 ```js
-import { noteCreation } from './../reducers/noteReducer'
+import { noteCreation } from "./../reducers/noteReducer";
 ```
 
-Eriytetään uuden muistiinpanon luominen omaksi komponentiksi. 
+Eriytetään uuden muistiinpanon luominen omaksi komponentiksi.
 
 ```js
-import { createNote } from '../reducers/noteReducer' // highlight-line
+import { createNote } from "../reducers/noteReducer"; // highlight-line
 
 const NewNote = (props) => {
   const addNote = (event) => {
-    event.preventDefault()
-    const content = event.target.note.value
-    event.target.note.value = ''
-    props.store.dispatch(
-      createNote(content)
-    )
-  }
+    event.preventDefault();
+    const content = event.target.note.value;
+    event.target.note.value = "";
+    props.store.dispatch(createNote(content));
+  };
 
   return (
     <form onSubmit={addNote}>
       <input name="note" />
       <button type="submit">add</button>
     </form>
-  )
-}
+  );
+};
 ```
 
 Toisin kuin aiemmin ilman Reduxia tekemässämme React-koodissa, sovelluksen tilaa (joka on nyt siis reduxissa) muuttava tapahtumankäsittelijä on siirretty pois <i>App</i>-komponentista, alikomponentin vastuulle. Itse tilaa muuttava logiikka on kuitenkin siististi reduxissa eristettynä koko sovelluksen React-osuudesta.
-
 
 Eriytetään vielä muistiinpanojen lista ja yksittäisen muistiinpanon esittäminen omiksi komponenteikseen:
 
 ```js
 const Note = ({ note, handleClick }) => {
-  return(
+  return (
     <li onClick={handleClick}>
-      {note.content} 
-      <strong>{note.important ? 'important' : ''}</strong>
+      {note.content}
+      <strong>{note.important ? "important" : ""}</strong>
     </li>
-  )
-}
+  );
+};
 
 const Notes = ({ store }) => {
-  return(
+  return (
     <ul>
-      {store.getState().map(note =>
+      {store.getState().map((note) => (
         <Note
           key={note.id}
           note={note}
-          handleClick={() => 
-            store.dispatch(toggleImportanceOf(note.id))
-          }
+          handleClick={() => store.dispatch(toggleImportanceOf(note.id))}
         />
-      )}
+      ))}
     </ul>
-  )
-}
+  );
+};
 ```
 
 Muistiinpanon tärkeyttä muuttava logiikka on nyt muistiinpanojen listaa hallinnoivalla komponentilla.
@@ -992,16 +954,14 @@ Komponenttiin <i>App</i> ei jää enää paljoa koodia:
 
 ```js
 const App = (props) => {
-
   return (
     <div>
-      <NewNote store={props.store}/>
+      <NewNote store={props.store} />
       <Notes store={props.store} />
     </div>
-  )
-}
+  );
+};
 ```
-
 
 Yksittäisen muistiinpanon renderöinnistä huolehtiva <i>Note</i> on erittäin yksinkertainen, eikä ole tietoinen siitä, että sen propsina saama tapahtumankäsittelijä dispatchaa actionin. Tällaisia komponentteja kutsutaan Reactin terminologiassa [presentational](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0)-komponenteiksi.
 
@@ -1049,7 +1009,7 @@ Tee sovellukseen mahdollisuus uusien anekdoottien lisäämiselle.
 
 Voit pitää lisäyslomakkeen aiemman esimerkin tapaan [ei-kontrolloituna](/osa6/flux_arkkitehtuuri_ja_redux#ei-kontrolloitu-lomake).
 
-#### 6.5*: anekdootit, step3
+#### 6.5\*: anekdootit, step3
 
 Huolehdi siitä, että anekdootit pysyvät äänten mukaisessa suuruusjärjestyksessä.
 
@@ -1068,9 +1028,9 @@ Eriytä anekdoottilistan näyttäminen omaksi komponentikseen nimeltään <i>Ane
 Tämän tehtävän jälkeen komponentin <i>App</i> pitäisi näyttää seuraavalta:
 
 ```js
-import React from 'react'
-import AnecdoteForm from './components/AnecdoteForm'
-import AnecdoteList from './components/AnecdoteList'
+import React from "react";
+import AnecdoteForm from "./components/AnecdoteForm";
+import AnecdoteList from "./components/AnecdoteList";
 
 const App = (props) => {
   return (
@@ -1079,9 +1039,10 @@ const App = (props) => {
       <AnecdoteForm store={props.store} />
       <AnecdoteList store={props.store} />
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
 ```
+
 </div>

@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-2.svg
+mainImage: "../../../images/part-2.svg"
 part: 2
 letter: a
 lang: fi
@@ -13,20 +13,20 @@ Ennen kun menemme uuteen asiaan, nostetaan esiin muutama edellisen osan huomiota
 
 **Mikä erottaa kokeneen ja kokemattoman Javascript-ohjelmoijan? Kokeneet käyttävät 10-100 kertaa enemmän console.logia**.
 
-Paradoksaalista kyllä tämä näyttää olevan tilanne, vaikka kokematon ohjelmoija oikeastaan tarvitsisi console.logia (tai jotain muita debuggaustapoja) huomattavissa määrin kokenutta enemmän. 
+Paradoksaalista kyllä tämä näyttää olevan tilanne, vaikka kokematon ohjelmoija oikeastaan tarvitsisi console.logia (tai jotain muita debuggaustapoja) huomattavissa määrin kokenutta enemmän.
 
 Eli kun joku ei toimi, älä arvaile vaan logaa tai käytä jotain muita debuggauskeinoja.
 
 **HUOM** kun käytät komentoa _console.log_ debuggaukseen, älä yhdistele asioita "javamaisesti" plussalla, eli sen sijaan että kirjoittaisit
 
 ```js
-console.log('props value is' + props)
+console.log("props value is" + props);
 ```
 
 erottele tulostettavat asiat pilkulla:
 
 ```js
-console.log('props value is', props)
+console.log("props value is", props);
 ```
 
 Jos yhdistät merkkijonoon olion, tuloksena on suhteellisen hyödytön tulostusmuoto
@@ -85,32 +85,32 @@ Tehdään nyt Reactilla [osan 0](/osa0) alussa käytettyä esimerkkisovelluksen 
 Aloitetaan seuraavasta:
 
 ```js
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React from "react";
+import ReactDOM from "react-dom";
 
 const notes = [
   {
     id: 1,
-    content: 'HTML is easy',
-    date: '2019-05-30T17:30:31.098Z',
-    important: true
+    content: "HTML is easy",
+    date: "2019-05-30T17:30:31.098Z",
+    important: true,
   },
   {
     id: 2,
-    content: 'Browser can execute only Javascript',
-    date: '2019-05-30T18:39:34.091Z',
-    important: false
+    content: "Browser can execute only Javascript",
+    date: "2019-05-30T18:39:34.091Z",
+    important: false,
   },
   {
     id: 3,
-    content: 'GET and POST are the most important methods of HTTP protocol',
-    date: '2019-05-30T19:20:14.298Z',
-    important: true
-  }
-]
+    content: "GET and POST are the most important methods of HTTP protocol",
+    date: "2019-05-30T19:20:14.298Z",
+    important: true,
+  },
+];
 
 const App = (props) => {
-  const { notes } = props
+  const { notes } = props;
 
   return (
     <div>
@@ -121,13 +121,10 @@ const App = (props) => {
         <li>{notes[2].content}</li>
       </ul>
     </div>
-  )
-}
+  );
+};
 
-ReactDOM.render(
-  <App notes={notes} />,
-  document.getElementById('root')
-)
+ReactDOM.render(<App notes={notes} />, document.getElementById("root"));
 ```
 
 Jokaiseen muistiinpanoon on merkitty tekstuaalisen sisällön ja aikaleiman lisäksi myös _boolean_-arvo, joka kertoo onko muistiinpano luokiteltu tärkeäksi, sekä yksikäsitteinen tunniste <i>id</i>.
@@ -141,36 +138,38 @@ Koodin toiminta perustuu siihen, että taulukossa on tasan kolme muistiinpanoa, 
 Tämä ei tietenkään ole järkevää. Ratkaisu voidaan yleistää generoimalla taulukon perusteella joukko React-elementtejä käyttäen [map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map)-funktiota:
 
 ```js
-notes.map(note => <li>{note.content}</li>)
+notes.map((note) => <li>{note.content}</li>);
 ```
 
 nyt tuloksena on taulukko, jonka sisältö on joukko <i>li</i>-elementtejä
 
 ```js
 [
-  '<li>HTML is easy</li>',
-  '<li>Browser can execute only Javascript</li>',
-  '<li>GET and POST are the most important methods of HTTP protocol</li>',
-]
+  "<li>HTML is easy</li>",
+  "<li>Browser can execute only Javascript</li>",
+  "<li>GET and POST are the most important methods of HTTP protocol</li>",
+];
 ```
 
 jotka voidaan sijoittaa <i>ul</i>-tagien sisälle:
 
 ```js
 const App = (props) => {
-  const { notes } = props
+  const { notes } = props;
 
   return (
     <div>
       <h1>Notes</h1>
-// highlight-start
+      // highlight-start
       <ul>
-        {notes.map(note => <li>{note.content}</li>)}
+        {notes.map((note) => (
+          <li>{note.content}</li>
+        ))}
       </ul>
-// highlight-end      
+      // highlight-end
     </div>
-  )
-}
+  );
+};
 ```
 
 Koska <i>li</i>-tagit generoiva koodi on Javascriptia, tulee se sijoittaa JSX-templatessa aaltosulkujen sisälle kaiken muun Javascript-koodin tapaan.
@@ -179,22 +178,19 @@ Usein vastaavissa tilanteissa dynaamisesti generoitava sisältö eristetään om
 
 ```js
 const App = (props) => {
-  const { notes } = props
+  const { notes } = props;
 
-// highlight-start
-  const rows = () =>
-    notes.map(note => <li>{note.content}</li>)
-// highlight-end
+  // highlight-start
+  const rows = () => notes.map((note) => <li>{note.content}</li>);
+  // highlight-end
 
   return (
     <div>
       <h1>Notes</h1>
-      <ul>
-        {rows()} // highlight-line
-      </ul>
+      <ul>{rows()} // highlight-line</ul>
     </div>
-  )
-}
+  );
+};
 ```
 
 ### Key-attribuutti
@@ -209,22 +205,19 @@ Lisätään avaimet:
 
 ```js
 const App = (props) => {
-  const { notes } = props
+  const { notes } = props;
 
-// highlight-start
-  const rows = () =>
-    notes.map(note => <li key={note.id}>{note.content}</li>)
-// highlight-end
+  // highlight-start
+  const rows = () => notes.map((note) => <li key={note.id}>{note.content}</li>);
+  // highlight-end
 
   return (
     <div>
       <h1>Notes</h1>
-      <ul>
-        {rows()}
-      </ul>
+      <ul>{rows()}</ul>
     </div>
-  )
-}
+  );
+};
 ```
 
 Virheilmoitus katoaa.
@@ -241,23 +234,23 @@ Sovellus siis sisältää taulukon _notes_
 const notes = [
   {
     id: 1,
-    content: 'HTML is easy',
-    date: '2019-05-30T17:30:31.098Z',
-    important: true
+    content: "HTML is easy",
+    date: "2019-05-30T17:30:31.098Z",
+    important: true,
   },
   {
     id: 2,
-    content: 'Browser can execute only Javascript',
-    date: '2019-05-30T18:39:34.091Z',
-    important: false
+    content: "Browser can execute only Javascript",
+    date: "2019-05-30T18:39:34.091Z",
+    important: false,
   },
   {
     id: 3,
-    content: 'GET and POST are the most important methods of HTTP protocol',
-    date: '2019-05-30T19:20:14.298Z',
-    important: true
-  }
-]
+    content: "GET and POST are the most important methods of HTTP protocol",
+    date: "2019-05-30T19:20:14.298Z",
+    important: true,
+  },
+];
 ```
 
 Pysähdytään hetkeksi tarkastelemaan miten _map_ toimii.
@@ -265,8 +258,8 @@ Pysähdytään hetkeksi tarkastelemaan miten _map_ toimii.
 Jos esim. tiedoston loppuun lisätään seuraava koodi
 
 ```js
-const result = notes.map(note => note.id)
-console.log(result)
+const result = notes.map((note) => note.id);
+console.log(result);
 ```
 
 tulostuu konsoliin <i>[1, 2, 3]</i> eli _map_ muodostaa uuden taulukon, jonka jokainen alkio on saatu alkuperäisen taulukon _notes_ alkioista <i>mappaamalla</i> komennon parametrina olevan funktion avulla.
@@ -274,15 +267,15 @@ tulostuu konsoliin <i>[1, 2, 3]</i> eli _map_ muodostaa uuden taulukon, jonka jo
 Funktio on
 
 ```js
-note => note.id
+(note) => note.id;
 ```
 
 eli kompaktissa muodossa kirjoitettu nuolifunktio, joka on täydelliseltä kirjoitustavaltaan seuraava
 
 ```js
 (note) => {
-  return note.id
-}
+  return note.id;
+};
 ```
 
 eli funktio saa parametrikseen muistiinpano-olion ja <i>palauttaa</i> sen kentän <i>id</i> arvon.
@@ -290,7 +283,7 @@ eli funktio saa parametrikseen muistiinpano-olion ja <i>palauttaa</i> sen kentä
 Muuttamalla komento muotoon
 
 ```js
-const result = notes.map(note => note.content)
+const result = notes.map((note) => note.content);
 ```
 
 tuloksena on taulukko, joka koostuu muistiinpanojen sisällöistä.
@@ -298,7 +291,7 @@ tuloksena on taulukko, joka koostuu muistiinpanojen sisällöistä.
 Tämä on jo lähellä käyttämäämme React-koodia:
 
 ```js
-notes.map(note => <li key={note.id}>{note.content}</li>)
+notes.map((note) => <li key={note.id}>{note.content}</li>);
 ```
 
 joka muodostaa jokaista muistiinpano-olioa vastaavan <i>li</i>-tagin, jonka sisään tulee muistiinpanon sisältö.
@@ -306,7 +299,7 @@ joka muodostaa jokaista muistiinpano-olioa vastaavan <i>li</i>-tagin, jonka sis�
 Koska metodin _map_ parametrina olevan funktion
 
 ```js
-note => <li key={note.id}>{note.content}</li>
+(note) => <li key={note.id}>{note.content}</li>;
 ```
 
 käyttötarkoitus on näkymäelementtien muodostaminen, tulee muuttujan arvo renderöidä aaltosulkeiden sisällä. Kokeile mitä koodi tekee, jos poistat aaltosulkeet.
@@ -316,11 +309,7 @@ Aaltosulkeiden käyttö tulee varmaan aiheuttamaan alussa pientä päänvaivaa, 
 Parempi muotoilu ohjelmamme muistiinpanorivit tuottavalle apufunktiolle saattaakin olla seuraava useille riveille jaoteltu versio:
 
 ```js
-const rows = () => notes.map(note =>
-  <li key={note.id}>
-    {note.content}
-  </li>
-)
+const rows = () => notes.map((note) => <li key={note.id}>{note.content}</li>);
 ```
 
 Kyse on kuitenkin edelleen yhden komennon sisältävästä nuolifunktiosta, komento vain sattuu olemaan hieman monimutkaisempi.
@@ -338,11 +327,7 @@ näin kutsuttaessa _i_ saa arvokseen sen paikan indeksin taulukossa, missä <i>N
 Eli eräs virhettä aiheuttamaton tapa määritellä rivien generointi on
 
 ```js
-const rows = () => notes.map((note, i) => 
-  <li key={i}>
-    {note.content}
-  </li>
-)
+const rows = () => notes.map((note, i) => <li key={i}>{note.content}</li>);
 ```
 
 Tämä **ei kuitenkaan ole suositeltavaa** ja voi näennäisestä toimimisestaan aiheuttaa joissakin tilanteissa pahoja ongelmia. Lue lisää esimerkiksi [täältä](https://medium.com/@robinpokorny/index-as-a-key-is-an-anti-pattern-e0349aece318).
@@ -352,18 +337,17 @@ Tämä **ei kuitenkaan ole suositeltavaa** ja voi näennäisestä toimimisestaan
 Siistitään koodia hiukan. Koska olemme kiinnostuneita ainoastaan propsien kentästä _notes_, otetaan se vastaan suoraan [destrukturointia](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) hyödyntäen:
 
 ```js
-const App = ({ notes }) => { // highlight-line
+const App = ({ notes }) => {
+  // highlight-line
   // ...
 
   return (
     <div>
       <h1>Notes</h1>
-      <ul>
-        {rows()}
-      </ul>
+      <ul>{rows()}</ul>
     </div>
-  )
-}
+  );
+};
 ```
 
 Jos unohdit mitä destrukturointi tarkottaa ja miten se toimii, kertaa [täältä](/osa1/komponentin_tila_ja_tapahtumankasittely#destrukturointi).
@@ -373,31 +357,27 @@ Erotetaan yksittäisen muistiinpanon esittäminen oman komponenttinsa <i>Note</i
 ```js
 // highlight-start
 const Note = ({ note }) => {
-  return (
-    <li>{note.content}</li>
-  )
-}
+  return <li>{note.content}</li>;
+};
 // highlight-end
 
 const App = ({ notes }) => {
-  const rows = () => notes.map(note =>
-  // highlight-start
-    <Note 
-      key={note.id}
-      note={note}
-    />
-    // highlight-end
-  )
+  const rows = () =>
+    notes.map(
+      (note) => (
+        // highlight-start
+        <Note key={note.id} note={note} />
+      )
+      // highlight-end
+    );
 
   return (
     <div>
       <h1>Notes</h1>
-      <ul>
-        {rows()}
-      </ul>
+      <ul>{rows()}</ul>
     </div>
-  )
-}
+  );
+};
 ```
 
 Huomaa, että <i>key</i>-attribuutti täytyy nyt määritellä <i>Note</i>-komponenteille, eikä <i>li</i>-tageille kuten ennen muutosta.
@@ -407,28 +387,26 @@ Koko React-sovellus on mahdollista määritellä samassa tiedostossa, mutta se e
 Koodissamme on käytetty koko ajan moduuleja. Tiedoston ensimmäiset rivit
 
 ```js
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React from "react";
+import ReactDOM from "react-dom";
 ```
 
-[importtaavat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) eli ottavat käyttöönsä kaksi moduulia. Moduuli <i>react</i> sijoitetaan muuttujaan _React_ ja <i>react-dom</i> muuttujaan _ReactDOM_. 
+[importtaavat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) eli ottavat käyttöönsä kaksi moduulia. Moduuli <i>react</i> sijoitetaan muuttujaan _React_ ja <i>react-dom</i> muuttujaan _ReactDOM_.
 
 Siirretään nyt komponentti <i>Note</i> omaan moduuliinsa.
 
-Pienissä sovelluksissa komponentit sijoitetaan yleensä <i>src</i>-hakemiston alle sijoitettavaan hakemistoon <i>components</i>. Konventiona on nimetä tiedosto komponentin mukaan. 
+Pienissä sovelluksissa komponentit sijoitetaan yleensä <i>src</i>-hakemiston alle sijoitettavaan hakemistoon <i>components</i>. Konventiona on nimetä tiedosto komponentin mukaan.
 
 Tehdään nyt sovellukseen hakemisto <i>components</i> ja sinne tiedosto <i>Note.js</i> jonka sisältö on seuraava:
 
 ```js
-import React from 'react'
+import React from "react";
 
 const Note = ({ note }) => {
-  return (
-    <li>{note.content}</li>
-  )
-}
+  return <li>{note.content}</li>;
+};
 
-export default Note
+export default Note;
 ```
 
 Koska kyseessä on React-komponentti, tulee React importata komponentissa.
@@ -438,13 +416,13 @@ Moduulin viimeisenä rivinä [eksportataan](https://developer.mozilla.org/en-US/
 Nyt komponenttia käyttävä tiedosto <i>index.js</i> voi [importata](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) moduulin:
 
 ```js
-import React from 'react'
-import ReactDOM from 'react-dom'
-import Note from './components/Note' // highlight-line
+import React from "react";
+import ReactDOM from "react-dom";
+import Note from "./components/Note"; // highlight-line
 
-const App = ({notes}) => {
+const App = ({ notes }) => {
   // ...
-}
+};
 ```
 
 Moduulin eksporttaama komponentti on nyt käytettävissä muuttujassa <i>Note</i> täysin samalla tavalla kuin aiemmin.
@@ -452,7 +430,7 @@ Moduulin eksporttaama komponentti on nyt käytettävissä muuttujassa <i>Note</i
 Huomaa, että itse määriteltyä komponenttia importatessa komponentin sijainti tulee ilmaista <i>suhteessa importtaavaan tiedostoon</i>:
 
 ```js
-'./components/Note'
+"./components/Note";
 ```
 
 Piste alussa viittaa nykyiseen hakemistoon, eli kyseessä on nykyisen hakemiston alihakemisto <i>components</i> ja sen sisällä tiedosto <i>Note.js</i>. Tiedoston päätteen voi jättää pois.
@@ -460,45 +438,35 @@ Piste alussa viittaa nykyiseen hakemistoon, eli kyseessä on nykyisen hakemiston
 Koska myös <i>App</i> on komponentti, eristetään sekin omaan moduuliinsa. Koska kyseessä on sovelluksen juurikomponentti, sijoitetaan se suoraan hakemistoon <i>src</i>. Tiedoston sisältö on seuraava:
 
 ```js
-import React from 'react'
-import Note from './components/Note'
+import React from "react";
+import Note from "./components/Note";
 
 const App = ({ notes }) => {
-  const rows = () => notes.map(note =>
-    <Note
-      key={note.id}
-      note={note}
-    />
-  )
+  const rows = () => notes.map((note) => <Note key={note.id} note={note} />);
 
   return (
     <div>
       <h1>Notes</h1>
-      <ul>
-        {rows()}
-      </ul>
+      <ul>{rows()}</ul>
     </div>
-  )
-}
+  );
+};
 
-export default App // highlight-line
+export default App; // highlight-line
 ```
 
 Tiedoston <i>index.js</i> sisällöksi jää:
 
 ```js
-import React from 'react'
-import ReactDOM from 'react-dom'
-import App from './App'  // highlight-line
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App"; // highlight-line
 
 const notes = [
   // ...
-]
+];
 
-ReactDOM.render(
-  <App notes={notes} />,
-  document.getElementById('root')
-)
+ReactDOM.render(<App notes={notes} />, document.getElementById("root"));
 ```
 
 Moduuleilla on paljon muutakin käyttöä kuin mahdollistaa komponenttien määritteleminen omissa tiedostoissaan, palaamme moduuleihin tarkemmin myöhemmin kurssilla.
@@ -524,24 +492,24 @@ Tilanteista pelastaa yleensä parhaiten <em>console.log</em>. Pala räjähdyksen
 ```js
 const Course = ({ course }) => (
   <div>
-   <Header course={course} />
+    <Header course={course} />
   </div>
-)
+);
 
 const App = () => {
   const course = {
     // ...
-  }
+  };
 
   return (
     <div>
       <Course course={course} />
     </div>
-  )
-}
+  );
+};
 ```
 
-Syy toimimattomuuteen alkaa selvitä lisäilemällä koodiin <em>console.log</em>-komentoja. Koska ensimmäinen renderöitävä asia on komponentti <i>App</i> kannattaa sinne laittaa ensimmäisen tulostus: 
+Syy toimimattomuuteen alkaa selvitä lisäilemällä koodiin <em>console.log</em>-komentoja. Koska ensimmäinen renderöitävä asia on komponentti <i>App</i> kannattaa sinne laittaa ensimmäisen tulostus:
 
 ```js
 const App = () => {
@@ -566,36 +534,37 @@ Kun joku asia havaitaan toimivaksi, on aika logata syvemmältä. Jos komponentti
 ```js
 const Course = ({ course }) => (
   <div>
-   <Header course={course} />
+    <Header course={course} />
   </div>
-)
+);
 ```
 
 komponentti on syytä muuttaa pidemmän kaavan mukaan määritellyksi jotta tulostus päästään lisäämään:
 
 ```js
-const Course = ({ course }) => { 
-  console.log(course) // highlight-line
+const Course = ({ course }) => {
+  console.log(course); // highlight-line
   return (
     <div>
-    <Header course={course} />
+      <Header course={course} />
     </div>
-  )
-}
+  );
+};
 ```
 
 Erittäin usein ongelma on siitä että propsien odotetaan olevan eri muodossa tai eri nimisiä, kuin ne todellisuudessa ovat ja destrukturointi epäonnistuu. Ongelma alkaa useimmiten ratketa kun poistetaan destrukturointi ja katsotaan mitä <em>props</em> oikeasti pitää sisällään:
 
 ```js
-const Course = (props) => { // highlight-line
-  console.log(props)  // highlight-line
-  const { course } = props
+const Course = (props) => {
+  // highlight-line
+  console.log(props); // highlight-line
+  const { course } = props;
   return (
     <div>
-    <Header course={course} />
+      <Header course={course} />
     </div>
-  )
-}
+  );
+};
 ```
 
 Ja jos ongelma ei vieläkään selviä, ei auta kuin jatkaa vianjäljitystä, eli kirjoittaa lisää console.logeja.
@@ -622,39 +591,39 @@ Huomaa, että tässä osassa on muitakin tehtäviä kuin allaolevat, eli <i>äl�
 
 Viimeistellään nyt tehtävien 1.1-1.5 kurssin sisältöjä renderöivän ohjelman koodi. Voit ottaa tarvittaessa pohjaksi mallivastauksen koodin.
 
-**Huomaa, että jos kopioit projektin paikasta toiseen, saattaa olla tarpeen ensin tuhota hakemisto <i>node\_modules</i> ja antaa sen jälkeen asentaa riippuvuudet uudelleen, eli komento _npm install_ ennen kuin saat kopioidun projektin käynnistettyä.** Lähtökohtaisesti toki kannattaa olla kokonaan kopioimatta tai laittamatta versionhallintaan hakemistoa <i>node\_modules</i>
+**Huomaa, että jos kopioit projektin paikasta toiseen, saattaa olla tarpeen ensin tuhota hakemisto <i>node_modules</i> ja antaa sen jälkeen asentaa riippuvuudet uudelleen, eli komento _npm install_ ennen kuin saat kopioidun projektin käynnistettyä.** Lähtökohtaisesti toki kannattaa olla kokonaan kopioimatta tai laittamatta versionhallintaan hakemistoa <i>node_modules</i>
 
 Muutetaan komponenttia <i>App</i> seuraavasti:
 
 ```js
 const App = () => {
   const course = {
-    name: 'Half Stack application development',
+    name: "Half Stack application development",
     parts: [
       {
-        name: 'Fundamentals of React',
+        name: "Fundamentals of React",
         exercises: 10,
-        id: 1
+        id: 1,
       },
       {
-        name: 'Using props to pass data',
+        name: "Using props to pass data",
         exercises: 7,
-        id: 2
+        id: 2,
       },
       {
-        name: 'State of a component',
+        name: "State of a component",
         exercises: 14,
-        id: 3
-      }
-    ]
-  }
+        id: 3,
+      },
+    ],
+  };
 
   return (
     <div>
       <Course course={course} />
     </div>
-  )
-}
+  );
+};
 ```
 
 Määrittele sovellukseen yksittäisen kurssin muotoilusta huolehtiva komponentti <i>Course</i>.
@@ -693,20 +662,19 @@ Ilmoita myös kurssin yhteenlaskettu tehtävien lukumäärä:
 
 Jos et jo niin tehnyt, laske koodissasi tehtävien määrä taulukon metodilla [reduce](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce).
 
-**Pro tip:** Kun koodisi joka näyttää esimerkisi seuraavalta 
+**Pro tip:** Kun koodisi joka näyttää esimerkisi seuraavalta
 
 ```js
-const total = 
-  parts.reduce( (s, p) => someMagicHere )
+const total = parts.reduce((s, p) => someMagicHere);
 ```
 
 ei toimi, kannattaa taas kerran turvautua komentoon _console.log_, joka jälleen vaatii sen, että nuolifunktio muutetaan pidempään muotoonsa
 
 ```js
-const total = parts.reduce( (s, p) => {
-  console.log('what is happening', s, p)
-  return someMagicHere 
-})
+const total = parts.reduce((s, p) => {
+  console.log("what is happening", s, p);
+  return someMagicHere;
+});
 ```
 
 **Pro tip2:** VS codeen on asennettavissa laajennus, ilmeisesti [tämä](https://marketplace.visualstudio.com/items?itemName=cmstead.jsrefactor), jonka avulla nuolifunktion lyhyen muodon voi muuttaa automaattisesti pidemmäksi muodoksi ja päinvastoin:
@@ -716,8 +684,9 @@ const total = parts.reduce( (s, p) => {
 **Pro tip3:** Mikäli console.login haluaa vain pikaisesti ujuttaa koodiin nuolifunktiota muuttamatta, voi sen tehdä näppärästi myös tällä tapaa:
 
 ```js
-const total = 
-  parts.reduce( (s, p) => console.log('what is happening', s, p) || someMagicHere )
+const total = parts.reduce(
+  (s, p) => console.log("what is happening", s, p) || someMagicHere
+);
 ```
 
 <h4>2.4: kurssitiedot step9</h4>
@@ -728,53 +697,49 @@ Laajennetaan sovellusta siten, että kursseja voi olla <i>mielivaltainen määr�
 const App = () => {
   const courses = [
     {
-      name: 'Half Stack application development',
+      name: "Half Stack application development",
       parts: [
         {
-          name: 'Fundamentals of React',
+          name: "Fundamentals of React",
           exercises: 10,
-          id: 1
+          id: 1,
         },
         {
-          name: 'Using props to pass data',
+          name: "Using props to pass data",
           exercises: 7,
-          id: 2
+          id: 2,
         },
         {
-          name: 'State of a component',
+          name: "State of a component",
           exercises: 14,
-          id: 3
+          id: 3,
         },
         {
-          name: 'Redux',
+          name: "Redux",
           exercises: 11,
-          id: 4
-        }
-      ]
-    }, 
+          id: 4,
+        },
+      ],
+    },
     {
-      name: 'Node.js',
+      name: "Node.js",
       parts: [
         {
-          name: 'Routing',
+          name: "Routing",
           exercises: 3,
-          id: 1
+          id: 1,
         },
         {
-          name: 'Middlewares',
+          name: "Middlewares",
           exercises: 7,
-          id: 2
-        }
-      ]
-    }
-  ]
+          id: 2,
+        },
+      ],
+    },
+  ];
 
-  return (
-    <div>
-      // ...
-    </div>
-  )
-}
+  return <div>// ...</div>;
+};
 ```
 
 Sovelluksen ulkoasu voi olla esim seuraava:

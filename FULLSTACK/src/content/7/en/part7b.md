@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-7.svg
+mainImage: '../../../images/part-7.svg'
 part: 7
 letter: b
 lang: en

@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-2.svg
+mainImage: "../../../images/part-2.svg"
 part: 2
 letter: c
 lang: en
@@ -68,21 +68,20 @@ In the part0 [example project](/en/part0/fundamentals_of_web_apps#running-applic
 
 The use of XHR is no longer recommended, and browsers already widely support the [fetch](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) method, which is based on so-called [promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), instead of the event-driven model used by XHR.
 
-As a reminder from part0 (which one should in fact <i>remember to not use</i> without a pressing reason), data was fetched using XHR in the following way: 
-
+As a reminder from part0 (which one should in fact <i>remember to not use</i> without a pressing reason), data was fetched using XHR in the following way:
 
 ```js
-const xhttp = new XMLHttpRequest()
+const xhttp = new XMLHttpRequest();
 
-xhttp.onreadystatechange = function() {
+xhttp.onreadystatechange = function () {
   if (this.readyState == 4 && this.status == 200) {
-    const data = JSON.parse(this.responseText)
+    const data = JSON.parse(this.responseText);
     // handle the response that is saved in variable data
   }
-}
+};
 
-xhttp.open('GET', '/data.json', true)
-xhttp.send()
+xhttp.open("GET", "/data.json", true);
+xhttp.send();
 ```
 
 Right at the beginning we register an <i>event handler</i> to the <em>xhttp</em> object representing the HTTP request, which will be called by the JavaScript runtime whenever the state of the <em>xhttp</em> object changes. If the change in state means that the response to the request has arrived, then the data is handled accordingly.
@@ -114,13 +113,13 @@ Another consequence of this single threaded nature of Javascript engines is that
 
 ```js
 setTimeout(() => {
-  console.log('loop..')
-  let i = 0
+  console.log("loop..");
+  let i = 0;
   while (i < 50000000000) {
-    i++
+    i++;
   }
-  console.log('end')
-}, 5000)
+  console.log("end");
+}, 5000);
 ```
 
 everything would work normally for 5 seconds. However, when the function defined as the parameter for <em>setTimeout</em> is run, the browser will be stuck for the duration of the execution of the long loop. Even the browser tab cannot be closed during the execution of the loop, at least not in Chrome.
@@ -160,12 +159,7 @@ Nowadays, practically all JavaScript projects are defined using the node package
   "eslintConfig": {
     "extends": "react-app"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  "browserslist": [">0.2%", "not dead", "not ie <= 11", "not op_mini all"]
 }
 ```
 
@@ -176,7 +170,6 @@ We now want to use axios. Theoretically, we could define the library directly in
 ```js
 npm install axios --save
 ```
-
 
 **NB _npm_-commands should always be run in the project root directory**, which is where the <i>package.json</i> file can be found.
 
@@ -189,12 +182,12 @@ Axios is now included among the other dependencies:
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1"
-  },
+  }
   // ...
 }
 ```
 
-In addition to adding axios to the dependencies, the <em>npm install</em> command also <i>downloaded</i> the library code. As with other dependencies, the code can be found in the <i>node\_modules</i> directory located in the root. As one might have noticed, <i>node\_modules</i> contains a fair amount of interesting stuff.
+In addition to adding axios to the dependencies, the <em>npm install</em> command also <i>downloaded</i> the library code. As with other dependencies, the code can be found in the <i>node_modules</i> directory located in the root. As one might have noticed, <i>node_modules</i> contains a fair amount of interesting stuff.
 
 Let's make another addition. Install <i>json-server</i> as a development dependency (only used during development) by executing the command:
 
@@ -206,13 +199,13 @@ and making a small addition to the <i>scripts</i> part of the <i>package.json</i
 
 ```json
 {
-  // ... 
+  // ...
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "server": "json-server -p3001 db.json"  // highlight-line
+    "server": "json-server -p3001 db.json" // highlight-line
   }
 }
 ```
@@ -231,9 +224,9 @@ We will get more familiar with the _npm_ tool in the [third part of the course](
 
 The red print in the error message informs us about the issue:
 
-<i>Cannot bind to the port 3001. Please specify another port number either through --port argument or through the json-server.json configuration file</i> 
+<i>Cannot bind to the port 3001. Please specify another port number either through --port argument or through the json-server.json configuration file</i>
 
-As we can see, the application is not able to bind itself to the [port](https://en.wikipedia.org/wiki/Port_(computer_networking)). The reason being that port 3001 is already occupied by the previously started json-server.
+As we can see, the application is not able to bind itself to the [port](<https://en.wikipedia.org/wiki/Port_(computer_networking)>). The reason being that port 3001 is already occupied by the previously started json-server.
 
 We used the command _npm install_ twice, but with slight differences:
 
@@ -250,18 +243,16 @@ Now we are ready to use axios. Going forward, json-server is assumed to be runni
 
 The library can be brought into use the same way other libraries, e.g. React, are, i.e. by using an appropriate <em>import</em> statement.
 
-
-
 Add the following to the file <i>index.js</i>:
 
 ```js
-import axios from 'axios'
+import axios from "axios";
 
-const promise = axios.get('http://localhost:3001/notes')
-console.log(promise)
+const promise = axios.get("http://localhost:3001/notes");
+console.log(promise);
 
-const promise2 = axios.get('http://localhost:3001/foobar')
-console.log(promise2)
+const promise2 = axios.get("http://localhost:3001/foobar");
+console.log(promise2);
 ```
 
 This should be printed to the console
@@ -285,12 +276,13 @@ The first promise in our example is <i>fulfilled</i>, representing a successful 
 If, and when, we want to access the result of the operation represented by the promise, we must register an event handler to the promise. This is achieved using the method <em>then</em>:
 
 ```js
-const promise = axios.get('http://localhost:3001/notes')
+const promise = axios.get("http://localhost:3001/notes");
 
-promise.then(response => {
-  console.log(response)
-})
+promise.then((response) => {
+  console.log(response);
+});
 ```
+
 The following is printed to the console:
 
 ![](../../images/2/17e.png)
@@ -300,27 +292,21 @@ The Javascript runtime environment calls the callback function registered by the
 Storing the promise object in a variable is generally unnecessary, and it's instead common to chain the <em>then</em> method call to the axios method call, so that it follows it directly:
 
 ```js
-axios.get('http://localhost:3001/notes').then(response => {
-  const notes = response.data
-  console.log(notes)
-})
+axios.get("http://localhost:3001/notes").then((response) => {
+  const notes = response.data;
+  console.log(notes);
+});
 ```
 
-
-
 The callback function now takes the data contained within the response, stores it in a variable and prints the notes to the console.
-
-
 
 A more readable way to format <i>chained</i> method calls is to place each call on its own line:
 
 ```js
-axios
-  .get('http://localhost:3001/notes')
-  .then(response => {
-    const notes = response.data
-    console.log(notes)
-  })
+axios.get("http://localhost:3001/notes").then((response) => {
+  const notes = response.data;
+  console.log(notes);
+});
 ```
 
 this way a quick glance at the left side of the screen gives a decent picture of what's going on.
@@ -332,69 +318,62 @@ We can finally begin using the data fetched from the server.
 Let's do it "poorly" first by putting the <i>App</i> component representing the application inside the callback function. This is done by changing <i>index.js</i> to the following form:
 
 ```js
-import ReactDOM from 'react-dom'
-import React from 'react'
-import App from './App'
+import ReactDOM from "react-dom";
+import React from "react";
+import App from "./App";
 
-import axios from 'axios'
+import axios from "axios";
 
-axios.get('http://localhost:3001/notes').then(response => {
-  const notes = response.data
-  ReactDOM.render(
-    <App notes={notes} />,
-    document.getElementById('root')
-  )
-})
+axios.get("http://localhost:3001/notes").then((response) => {
+  const notes = response.data;
+  ReactDOM.render(<App notes={notes} />, document.getElementById("root"));
+});
 ```
 
 This method could be acceptable in some circumstances, but it's somewhat problematic. Let's instead move the fetching of the data into the <i>App</i> component.
 
 What's not immediately obvious, however, is where the command <em>axios.get</em> should be placed within the component.
 
-
 ### Effect-hooks
 
 We have already used [state hooks](https://reactjs.org/docs/hooks-state.html) that were introduced along with React version [16.8.0](https://www.npmjs.com/package/react/v/16.8.0), which provide state to React components defined as functions. Version 16.8.0 also introduces the [effect hooks](https://reactjs.org/docs/hooks-effect.html) as a new feature. In the words of the docs:
 
-> <i>The Effect Hook lets you perform side effects in function components.</i>
-> <i>Data fetching, setting up a subscription, and manually changing the DOM in React components are all examples of side effects. </i>
+> <i>The Effect Hook lets you perform side effects in function components.</i> > <i>Data fetching, setting up a subscription, and manually changing the DOM in React components are all examples of side effects. </i>
 
 As such, effect hooks are precisely the right tool to use when fetching data from a server.
 
 Let's remove the fetching of data from <i>index.js</i>. There is no longer a need to pass data as props to the <i>App</i> component. So <i>index.js</i> simplifies to:
 
 ```js
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
 The <i>App</i> component changes as follows:
 
 ```js
-import React, { useState, useEffect } from 'react' // highlight-line
-import axios from 'axios' // highlight-line
-import Note from './components/Note'
+import React, { useState, useEffect } from "react"; // highlight-line
+import axios from "axios"; // highlight-line
+import Note from "./components/Note";
 
 const App = () => {
-  const [notes, setNotes] = useState([]) // highlight-line
-  const [newNote, setNewNote] = useState('')
-  const [showAll, setShowAll] = useState(true)
+  const [notes, setNotes] = useState([]); // highlight-line
+  const [newNote, setNewNote] = useState("");
+  const [showAll, setShowAll] = useState(true);
 
-// highlight-start
+  // highlight-start
   useEffect(() => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/notes')
-      .then(response => {
-        console.log('promise fulfilled')
-        setNotes(response.data)
-      })
-  }, [])
+    console.log("effect");
+    axios.get("http://localhost:3001/notes").then((response) => {
+      console.log("promise fulfilled");
+      setNotes(response.data);
+    });
+  }, []);
 
-  console.log('render', notes.length, 'notes')
-// highlight-end
+  console.log("render", notes.length, "notes");
+  // highlight-end
 
   // ...
-}
+};
 ```
 
 We have also added a few helpful prints, which clarify the progression of the execution.
@@ -411,16 +390,15 @@ render 3 notes
 First the body of the function defining the component is executed and the component is rendered for the first time. At this point <i>render 0 notes</i> is printed, meaning data hasn't been fetched from the server yet.
 
 The following function, or effect in React parlance:
+
 ```js
 () => {
-  console.log('effect')
-  axios
-    .get('http://localhost:3001/notes')
-    .then(response => {
-      console.log('promise fulfilled')
-      setNotes(response.data)
-    })
-}
+  console.log("effect");
+  axios.get("http://localhost:3001/notes").then((response) => {
+    console.log("promise fulfilled");
+    setNotes(response.data);
+  });
+};
 ```
 
 is executed immediately after rendering. The execution of the function results in <i>effect</i> being printed to the console, and the command <em>axios.get</em> initiates the fetching of data from the server as well as registers the following function as an <i>event handler</i> for the operation:
@@ -440,29 +418,26 @@ Finally, let's take a look at the definition of the effect hook as a whole:
 
 ```js
 useEffect(() => {
-  console.log('effect')
-  axios
-    .get('http://localhost:3001/notes').then(response => {
-      console.log('promise fulfilled')
-      setNotes(response.data)
-    })
-}, [])
+  console.log("effect");
+  axios.get("http://localhost:3001/notes").then((response) => {
+    console.log("promise fulfilled");
+    setNotes(response.data);
+  });
+}, []);
 ```
 
 Let's rewrite the code a bit differently.
 
 ```js
 const hook = () => {
-  console.log('effect')
-  axios
-    .get('http://localhost:3001/notes')
-    .then(response => {
-      console.log('promise fulfilled')
-      setNotes(response.data)
-    })
-}
+  console.log("effect");
+  axios.get("http://localhost:3001/notes").then((response) => {
+    console.log("promise fulfilled");
+    setNotes(response.data);
+  });
+};
 
-useEffect(hook, [])
+useEffect(hook, []);
 ```
 
 Now we can see more clearly that the function [useEffect](https://reactjs.org/docs/hooks-reference.html#useeffect) actually takes <i>two parameters</i>. The first is a function, the <i>effect</i> itself. According to the documentation:
@@ -481,37 +456,35 @@ Note that we could have also written the code of the effect function this way:
 
 ```js
 useEffect(() => {
-  console.log('effect')
+  console.log("effect");
 
-  const eventHandler = response => {
-    console.log('promise fulfilled')
-    setNotes(response.data)
-  }
+  const eventHandler = (response) => {
+    console.log("promise fulfilled");
+    setNotes(response.data);
+  };
 
-  const promise = axios.get('http://localhost:3001/notes')
-  promise.then(eventHandler)
-}, [])
+  const promise = axios.get("http://localhost:3001/notes");
+  promise.then(eventHandler);
+}, []);
 ```
 
 A reference to an event handler function is assigned to the variable <em>eventHandler</em>. The promise returned by the <em>get</em> method of Axios is stored in the variable <em>promise</em>. The registration of the callback happens by giving the <em>eventHandler</em> variable, referring to the event-handler function, as a parameter to the then method of the promise. It isn't usually necessary to assign functions and promises to variables, and a more compact way of representing things, as seen further above, is sufficient.
 
 ```js
 useEffect(() => {
-  console.log('effect')
-  axios
-    .get('http://localhost:3001/notes')
-    .then(response => {
-      console.log('promise fulfilled')
-      setNotes(response.data)
-    })
-}, [])
+  console.log("effect");
+  axios.get("http://localhost:3001/notes").then((response) => {
+    console.log("promise fulfilled");
+    setNotes(response.data);
+  });
+}, []);
 ```
 
 We still have a problem in our application. When adding new notes, they are not stored on the server.
 
 The code so far for the application can be found in full on [github](https://github.com/fullstackopen-2019/part2-notes/tree/part2-4) in the branch <i>part2-4</i>.
 
-### The development runtime environment 
+### The development runtime environment
 
 The configuration for the whole of our application has steadily grown more complex. Let's review what happens and where. The following image describes the makeup of the application
 
@@ -527,36 +500,32 @@ At this point in development, all the parts of the application happen to reside 
 
 <div class="tasks">
 
-
 <h3>Exercises</h3>
 
-
 <h4>2.11: The Phonebook Step6</h4>
-
-
 
 We continue with developing the phonebook. Store the initial state of the application in the file <i>db.json</i>, which should be placed in the root of the project.
 
 ```json
 {
-  "persons":[
-    { 
-      "name": "Arto Hellas", 
+  "persons": [
+    {
+      "name": "Arto Hellas",
       "number": "040-123456",
       "id": 1
     },
-    { 
-      "name": "Ada Lovelace", 
+    {
+      "name": "Ada Lovelace",
       "number": "39-44-5323523",
       "id": 2
     },
-    { 
-      "name": "Dan Abramov", 
+    {
+      "name": "Dan Abramov",
       "number": "12-43-234345",
       "id": 3
     },
-    { 
-      "name": "Mary Poppendieck", 
+    {
+      "name": "Mary Poppendieck",
       "number": "39-23-6423122",
       "id": 4
     }
@@ -565,7 +534,6 @@ We continue with developing the phonebook. Store the initial state of the applic
 ```
 
 Start json-server on port 3001 and make sure that the server returns the list of people by going to the address <http://localhost:3001/persons> in the browser.
-
 
 If you receive the following error message:
 

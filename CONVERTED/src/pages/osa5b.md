@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-5.svg
+mainImage: "../../../images/part-5.svg"
 part: 5
 letter: b
 lang: fi
@@ -22,15 +22,15 @@ Napilla <i>cancel</i> käyttäjä saa tarvittaessa suljettua lomakkeen.
 Aloitetaan eristämällä kirjautumislomake omaksi komponentikseen:
 
 ```js
-import React from 'react'
+import React from "react";
 
 const LoginForm = ({
-   handleSubmit,
-   handleUsernameChange,
-   handlePasswordChange,
-   username,
-   password
-  }) => {
+  handleSubmit,
+  handleUsernameChange,
+  handlePasswordChange,
+  username,
+  password,
+}) => {
   return (
     <div>
       <h2>Login</h2>
@@ -38,10 +38,7 @@ const LoginForm = ({
       <form onSubmit={handleSubmit}>
         <div>
           username
-          <input
-            value={username}
-            onChange={handleUsernameChange}
-          />
+          <input value={username} onChange={handleUsernameChange} />
         </div>
         <div>
           password
@@ -50,14 +47,14 @@ const LoginForm = ({
             value={password}
             onChange={handlePasswordChange}
           />
-      </div>
+        </div>
         <button type="submit">login</button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default LoginForm
+export default LoginForm;
 ```
 
 Tila ja tilaa käsittelevät funktiot on kaikki määritelty komponentin ulkopuolella ja välitetään komponentille propseina.
@@ -82,8 +79,8 @@ const LoginForm = (props) => {
         <button type="submit">login</button>
       </form>
     </div>
-  )
-}
+  );
+};
 ```
 
 jolloin muuttujan _props_ kenttiin on viitattava muuttujan kautta esim. _props.handleSubmit_, otetaan kentät suoraan vastaan omiin muuttujiinsa.
@@ -92,13 +89,13 @@ Nopea tapa toiminnallisuuden toteuttamiseen on muuttaa komponentin <i>App</i> k�
 
 ```js
 const App = () => {
-  const [loginVisible, setLoginVisible] = useState(false) // highlight-line
+  const [loginVisible, setLoginVisible] = useState(false); // highlight-line
 
   // ...
 
   const loginForm = () => {
-    const hideWhenVisible = { display: loginVisible ? 'none' : '' }
-    const showWhenVisible = { display: loginVisible ? '' : 'none' }
+    const hideWhenVisible = { display: loginVisible ? "none" : "" };
+    const showWhenVisible = { display: loginVisible ? "" : "none" };
 
     return (
       <div>
@@ -116,11 +113,11 @@ const App = () => {
           <button onClick={() => setLoginVisible(false)}>cancel</button>
         </div>
       </div>
-    )
-  }
+    );
+  };
 
   // ...
-}
+};
 ```
 
 Komponentin <i>App</i> tilaan on nyt lisätty totuusarvo <i>loginVisible</i> joka määrittelee sen, näytetäänkö kirjautumislomake.
@@ -151,7 +148,7 @@ const showWhenVisible = { display: loginVisible ? '' : 'none' }
 Käytössä on taas kysymysmerkkioperaattori, eli jos _loginVisible_ on <i>true</i>, tulee napin CSS-määrittelyksi
 
 ```css
-display: 'none';
+display: "none";
 ```
 
 jos _loginVisible_ on <i>false</i>, ei <i>display</i> saa mitään napin näkyvyyteen liittyvää arvoa.
@@ -163,7 +160,7 @@ Kirjautumislomakkeen näkyvyyttä ympäröivän koodin voi ajatella olevan oma l
 Tavoitteena on luoda komponentti <i>Togglable</i>, jota käytetään seuraavalla tavalla:
 
 ```js
-<Togglable buttonLabel='login'>
+<Togglable buttonLabel="login">
   <LoginForm
     username={username}
     password={password}
@@ -188,17 +185,17 @@ Komponentin käyttö poikkeaa aiemmin näkemistämme siinä, että käytössä o
 Komponentin koodi on seuraavassa:
 
 ```js
-import React, { useState } from 'react'
+import React, { useState } from "react";
 
 const Togglable = (props) => {
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(false);
 
-  const hideWhenVisible = { display: visible ? 'none' : '' }
-  const showWhenVisible = { display: visible ? '' : 'none' }
+  const hideWhenVisible = { display: visible ? "none" : "" };
+  const showWhenVisible = { display: visible ? "" : "none" };
 
   const toggleVisibility = () => {
-    setVisible(!visible)
-  }
+    setVisible(!visible);
+  };
 
   return (
     <div>
@@ -210,10 +207,10 @@ const Togglable = (props) => {
         <button onClick={toggleVisibility}>cancel</button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Togglable
+export default Togglable;
 ```
 
 Mielenkiintoista ja meille uutta on [props.children](https://reactjs.org/docs/glossary.html#propschildren), jonka avulla koodi viittaa komponentin lapsiin, eli avaavan ja sulkevan tagin sisällä määriteltyihin React-elementteihin.
@@ -244,21 +241,18 @@ Komponentti <i>Togglable</i> on uusiokäytettävä ja voimme käyttää sitä te
 Eristetään ensin muistiinpanojen luominen omaksi komponentiksi
 
 ```js
-const NoteForm = ({ onSubmit, handleChange, value}) => {
+const NoteForm = ({ onSubmit, handleChange, value }) => {
   return (
     <div>
       <h2>Create a new note</h2>
 
       <form onSubmit={onSubmit}>
-        <input
-          value={value}
-          onChange={handleChange}
-        />
+        <input value={value} onChange={handleChange} />
         <button type="submit">save</button>
       </form>
     </div>
-  )
-}
+  );
+};
 ```
 
 ja määritellään lomakkeen näyttävä koodi komponentin <i>Togglable</i> sisällä
@@ -281,7 +275,7 @@ Ratkaisu on melko hyvä, haluaisimme kuitenkin parantaa sitä erään seikan osa
 
 Kun uusi muistiinpano luodaan, olisi loogista jos luomislomake menisi piiloon. Nyt lomake pysyy näkyvillä. Lomakkeen piilottamiseen sisältyy kuitenkin pieni ongelma, sillä näkyvyyttä kontrolloidaan <i>Togglable</i>-komponentin tilassa olevalla muuttujalla <i>visible</i>. Miten pääsemme tilaan käsiksi komponentin ulkopuolelta?
 
-On useita erilaisia tapoja toteuttaa pääsy komponentin funktoihin sen ulkopuolelta, käytetään nyt 
+On useita erilaisia tapoja toteuttaa pääsy komponentin funktoihin sen ulkopuolelta, käytetään nyt
 Reactin [ref](https://reactjs.org/docs/refs-and-the-dom.html)-mekanismia, joka tarjoaa eräänlaisen viitteen komponenttiin.
 
 Tehdään komponenttiin <i>App</i> seuraavat muutokset
@@ -289,20 +283,22 @@ Tehdään komponenttiin <i>App</i> seuraavat muutokset
 ```js
 const App = () => {
   // ...
-  const noteFormRef = React.createRef() // highlight-line
+  const noteFormRef = React.createRef(); // highlight-line
 
   const noteForm = () => (
-    <Togglable buttonLabel="new note" ref={noteFormRef}> // highlight-line
+    <Togglable buttonLabel="new note" ref={noteFormRef}>
+      {" "}
+      // highlight-line
       <NoteForm
         onSubmit={addNote}
         value={newNote}
         handleChange={handleNoteChange}
       />
     </Togglable>
-  )
+  );
 
   // ...
-}
+};
 ```
 
 Metodilla [createRef](https://reactjs.org/docs/react-api.html#reactcreateref) luodaan ref <i>noteFormRef</i>, joka kiinnitetään muistiinpanojen luomislomakkeen sisältävälle <i>Togglable</i>-komponentille. Nyt siis muuttuja <i>noteFormRef</i> toimii viitteenä komponenttiin.
@@ -310,25 +306,26 @@ Metodilla [createRef](https://reactjs.org/docs/react-api.html#reactcreateref) lu
 Komponenttia <i>Togglable</i> laajennetaan seuraavasti
 
 ```js
-import React, { useState, useImperativeHandle } from 'react' // highlight-line
+import React, { useState, useImperativeHandle } from "react"; // highlight-line
 
-const Togglable = React.forwardRef((props, ref) => { // highlight-line
-  const [visible, setVisible] = useState(false)
+const Togglable = React.forwardRef((props, ref) => {
+  // highlight-line
+  const [visible, setVisible] = useState(false);
 
-  const hideWhenVisible = { display: visible ? 'none' : '' }
-  const showWhenVisible = { display: visible ? '' : 'none' }
+  const hideWhenVisible = { display: visible ? "none" : "" };
+  const showWhenVisible = { display: visible ? "" : "none" };
 
   const toggleVisibility = () => {
-    setVisible(!visible)
-  }
+    setVisible(!visible);
+  };
 
-// highlight-start
+  // highlight-start
   useImperativeHandle(ref, () => {
     return {
-      toggleVisibility
-    }
-  })
-// highlight-end
+      toggleVisibility,
+    };
+  });
+  // highlight-end
 
   return (
     <div>
@@ -340,10 +337,10 @@ const Togglable = React.forwardRef((props, ref) => { // highlight-line
         <button onClick={toggleVisibility}>cancel</button>
       </div>
     </div>
-  )
-})
+  );
+});
 
-export default Togglable
+export default Togglable;
 ```
 
 Komponentin luova funktio on kääritty funktiokutsun [forwardRef](https://reactjs.org/docs/react-api.html#reactforwardref) sisälle, näin komponentti pääsee käsiksi sille määriteltyyn refiin.
@@ -357,22 +354,21 @@ Voimme nyt piilottaa lomakkeen kutsumalla <i>noteFormRef.current.toggleVisibilit
 const App = () => {
   // ...
   const addNote = (event) => {
-    event.preventDefault()
-    noteFormRef.current.toggleVisibility() // highlight-line
+    event.preventDefault();
+    noteFormRef.current.toggleVisibility(); // highlight-line
     const noteObject = {
       content: newNote,
       date: new Date().toISOString(),
-      important: Math.random() > 0.5
-    }
+      important: Math.random() > 0.5,
+    };
 
-    noteService
-      .create(noteObject).then(returnedNote => {
-        setNotes(notes.concat(returnedNote))
-        setNewNote('')
-      })
-  }
+    noteService.create(noteObject).then((returnedNote) => {
+      setNotes(notes.concat(returnedNote));
+      setNewNote("");
+    });
+  };
   // ...
-}
+};
 ```
 
 Käyttämämme [useImperativeHandle
@@ -436,7 +432,7 @@ Klikkaamalla nappia <i>new note</i> lomake aukeaa
 
 ![](../../images/5/13be.png)
 
-#### 5.6* blogilistan frontend, step6
+#### 5.6\* blogilistan frontend, step6
 
 Laajenna blogien listausta siten, että klikkaamalla blogin nimeä, sen täydelliset tiedot aukeavat
 
@@ -455,26 +451,29 @@ const Blog = ({ blog }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
-    border: 'solid',
+    border: "solid",
     borderWidth: 1,
-    marginBottom: 5
-  }
+    marginBottom: 5,
+  };
 
   return (
-    <div style={blogStyle}> 
-      <div onClick={() => console.log('clicked')}>  // highlight-line
+    <div style={blogStyle}>
+      <div onClick={() => console.log("clicked")}>
+        {" "}
+        // highlight-line
         {blog.title} {blog.author}
       </div>
       // ...
-  </div>
-)}
+    </div>
+  );
+};
 ```
 
 **Huom1:** voit tehdä blogin nimestä klikattavan korostetun koodirivin tapaan.
 
 **Huom2:** vaikka tämän tehtävän toiminnallisuus on melkein samanlainen kuin komponentin <i>Togglable</i> tarjoama toiminnallisuus, ei Togglable kuitenkaan sovi tarkoitukseen sellaisenaan. Helpoin ratkaisu lienee lisätä blogille tila, joka kontrolloi sitä missä muodossa blogi näytetään.
 
-#### 5.7*: blogilistan frontend, step7
+#### 5.7\*: blogilistan frontend, step7
 
 Toteuta like-painikkeen toiminnallisuus. Like lisätään backendiin blogin yksilöivään urliin tapahtuvalla _PUT_-pyynnöllä.
 
@@ -509,11 +508,11 @@ tulee palvelimelle tehdä PUT-pyyntö osoitteeseen <i>/api/blogs/5a43fde2cbd20b1
 
 **Varoitus vielä kerran:** jos huomaat kirjoittavasi sekaisin async/awaitia ja _then_-kutsuja, on 99.9% varmaa, että teet jotain väärin. Käytä siis jompaa kumpaa tapaa, älä missään tapauksessa "varalta" molempia.
 
-#### 5.8*: blogilistan frontend, step8
+#### 5.8\*: blogilistan frontend, step8
 
 Järjestä sovellus näyttämään blogit <i>likejen</i> mukaisessa suuruusjärjestyksessä. Järjestäminen onnistuu taulukon metodilla [sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort).
 
-#### 5.9*: blogilistan frontend, step9
+#### 5.9\*: blogilistan frontend, step9
 
 Lisää nappi blogin poistamiselle. Toteuta myös poiston tekevä logiikka.
 
@@ -524,7 +523,7 @@ Ohjelmasi voi näyttää esim. seuraavalta:
 Kuvassa näkyvä poiston varmistus on helppo toteuttaa funktiolla
 [window.confirm](https://developer.mozilla.org/en-US/docs/Web/API/Window/confirm).
 
-#### 5.10*: blogilistan frontend, step10
+#### 5.10\*: blogilistan frontend, step10
 
 Näytä poistonappi ainoastaan jos kyseessä on kirjautuneen käyttäjän lisäämä blogi.
 
@@ -573,25 +572,25 @@ Koodi kuitenkin toimii edelleen, eli mikään ei pakota määrittelemään props
 Määritellään Proptypet myös <i>LoginForm</i>-komponentille:
 
 ```js
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types";
 
 const LoginForm = ({
-   handleSubmit,
-   handleUsernameChange,
-   handlePasswordChange,
-   username,
-   password
-  }) => {
-    // ...
-  }
+  handleSubmit,
+  handleUsernameChange,
+  handlePasswordChange,
+  username,
+  password,
+}) => {
+  // ...
+};
 
 LoginForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   handleUsernameChange: PropTypes.func.isRequired,
   handlePasswordChange: PropTypes.func.isRequired,
   username: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired
-}
+  password: PropTypes.string.isRequired,
+};
 ```
 
 Funktionaalisen komponentin proptypejen määrittely tapahtuu samalla tavalla kuin luokkaperustaisten.
@@ -618,57 +617,42 @@ Luodaan tiedosto <i>.eslintrc.js</i> ja kopioidaan sinne seuraava sisältö:
 
 ```js
 module.exports = {
-    "env": {
-        "browser": true,
-        "es6": true,
-        "jest/globals": true // highlight-line
+  env: {
+    browser: true,
+    es6: true,
+    "jest/globals": true, // highlight-line
+  },
+  // highlight-start
+  extends: ["eslint:recommended", "plugin:react/recommended"],
+  // highlight-end
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
     },
+    ecmaVersion: 2018,
+    sourceType: "module",
+  },
+  plugins: [
+    "react",
+    "jest", // highlight-line
+  ],
+  rules: {
+    indent: [
+      "error",
+      2, // highlight-line
+    ],
+    "linebreak-style": ["error", "unix"],
+    quotes: ["error", "single"],
+    semi: ["error", "never"],
     // highlight-start
-    "extends": [ 
-        "eslint:recommended",
-        "plugin:react/recommended"
-    ],
+    eqeqeq: "error",
+    "no-trailing-spaces": "error",
+    "object-curly-spacing": ["error", "always"],
+    "arrow-spacing": ["error", { before: true, after: true }],
+    "no-console": 0,
+    "react/prop-types": 0,
     // highlight-end
-    "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        },
-        "ecmaVersion": 2018,
-        "sourceType": "module"
-    },
-    "plugins": [
-        "react", "jest" // highlight-line
-    ],
-    "rules": {
-        "indent": [
-            "error",
-            2  // highlight-line
-        ],
-        "linebreak-style": [
-            "error",
-            "unix"
-        ],
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "semi": [
-            "error",
-            "never"
-        ],
-        // highlight-start
-        "eqeqeq": "error",
-        "no-trailing-spaces": "error",
-        "object-curly-spacing": [
-            "error", "always"
-        ],
-        "arrow-spacing": [
-            "error", { "before": true, "after": true }
-        ],
-        "no-console": 0,
-        "react/prop-types": 0
-        // highlight-end
-    }
+  },
 };
 ```
 
@@ -679,7 +663,7 @@ node_modules
 build
 ```
 
-Näin ainoastaan sovelluksessa oleva itse kirjoitettu koodi huomioidaan linttauksessa. 
+Näin ainoastaan sovelluksessa oleva itse kirjoitettu koodi huomioidaan linttauksessa.
 
 Tehdään lintausta varten npm-skripti:
 

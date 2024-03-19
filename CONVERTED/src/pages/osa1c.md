@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-1.svg
+mainImage: "../../../images/part-1.svg"
 part: 1
 letter: c
 lang: fi
@@ -19,12 +19,12 @@ const Hello = (props) => {
         Hello {props.name}, you are {props.age} years old
       </p>
     </div>
-  )
-}
+  );
+};
 
 const App = () => {
-  const nimi = 'Pekka'
-  const ika = 10
+  const nimi = "Pekka";
+  const ika = 10;
 
   return (
     <div>
@@ -32,8 +32,8 @@ const App = () => {
       <Hello name="Arto" age={26 + 10} />
       <Hello name={nimi} age={ika} />
     </div>
-  )
-}
+  );
+};
 ```
 
 ### Komponenttien apufunktiot
@@ -44,9 +44,9 @@ Laajennetaan komponenttia <i>Hello</i> siten, että se antaa arvion tervehdittä
 const Hello = (props) => {
   // highlight-start
   const bornYear = () => {
-    const yearNow = new Date().getFullYear()
-    return yearNow - props.age
-  }
+    const yearNow = new Date().getFullYear();
+    return yearNow - props.age;
+  };
   // highlight-end
 
   return (
@@ -56,8 +56,8 @@ const Hello = (props) => {
       </p>
       <p>So you were probably born {bornYear()}</p> // highlight-line
     </div>
-  )
-}
+  );
+};
 ```
 
 Syntymävuoden arvauksen tekevä logiikka on erotettu omaksi funktiokseen, jota kutsutaan komponentin renderöinnin yhteydessä.
@@ -76,9 +76,9 @@ Koska <i>props</i> on nyt olio
 
 ```js
 props = {
-  name: 'Arto Hellas',
+  name: "Arto Hellas",
   age: 35,
-}
+};
 ```
 
 voimme suoraviivaistaa komponenttia siten, että sijoitamme kenttien arvot muuttujiin _name_ ja _age_, jonka jälkeen niitä on mahdollista käyttää koodissa suoraan:
@@ -86,67 +86,11 @@ voimme suoraviivaistaa komponenttia siten, että sijoitamme kenttien arvot muutt
 ```js
 const Hello = (props) => {
   // highlight-start
-  const name = props.name
-  const age = props.age
+  const name = props.name;
+  const age = props.age;
   // highlight-end
 
-  const bornYear = () => new Date().getFullYear() - age
-
-  return (
-    <div>
-      <p>Hello {name}, you are {age} years old</p>
-      <p>So you were probably born {bornYear()}</p>
-    </div>
-  )
-}
-```
-
-Huomaa, että olemme myös hyödyntäneet nuolifunktion kompaktimpaa kirjoitustapaa metodin _bornYear_ määrittelyssä. Kuten aiemmin totesimme, jos nuolifunktio koostuu ainoastaan yhdestä komennosta, ei funktion runkoa tarvitse kirjoittaa aaltosulkeiden sisään ja funktio palauttaa ainoan komentonsa arvon.
-
-Seuraavat ovat siis vaihtoehtoiset tavat määritellä sama funktio:
-
-```js
-const bornYear = () => new Date().getFullYear() - age
-
-const bornYear = () => {
-  return new Date().getFullYear() - age
-}
-```
-
-Destrukturointi tekee apumuuttujien määrittelyn vielä helpommaksi, sen avulla voimme "kerätä" olion oliomuuttujien arvot suoraan omiin yksittäisiin muuttujiin:
-
-```js
-const Hello = (props) => {
-    // highlight-start
-  const { name, age } = props
-    // highlight-end
-  const bornYear = () => new Date().getFullYear() - age
-
-  return (
-    <div>
-      <p>Hello {name}, you are {age} years old</p>
-      <p>So you were probably born {bornYear()}</p>
-    </div>
-  )
-}
-```
-
-Eli koska
-
-```js
-props = {
-  name: 'Arto Hellas',
-  age: 35,
-}
-```
-
-saa <em>const { name, age } = props</em> aikaan sen, että muuttuja _name_ saa arvon 'Arto Hellas' ja muuttuja _age_ arvon 35.
-
-Voimme viedä destrukturoinnin vielä askeleen verran pidemmälle
-
-```js
-const Hello = ({ name, age }) => { // highlight-line
-  const bornYear = () => new Date().getFullYear() - age
+  const bornYear = () => new Date().getFullYear() - age;
 
   return (
     <div>
@@ -155,8 +99,69 @@ const Hello = ({ name, age }) => { // highlight-line
       </p>
       <p>So you were probably born {bornYear()}</p>
     </div>
-  )
-}
+  );
+};
+```
+
+Huomaa, että olemme myös hyödyntäneet nuolifunktion kompaktimpaa kirjoitustapaa metodin _bornYear_ määrittelyssä. Kuten aiemmin totesimme, jos nuolifunktio koostuu ainoastaan yhdestä komennosta, ei funktion runkoa tarvitse kirjoittaa aaltosulkeiden sisään ja funktio palauttaa ainoan komentonsa arvon.
+
+Seuraavat ovat siis vaihtoehtoiset tavat määritellä sama funktio:
+
+```js
+const bornYear = () => new Date().getFullYear() - age;
+
+const bornYear = () => {
+  return new Date().getFullYear() - age;
+};
+```
+
+Destrukturointi tekee apumuuttujien määrittelyn vielä helpommaksi, sen avulla voimme "kerätä" olion oliomuuttujien arvot suoraan omiin yksittäisiin muuttujiin:
+
+```js
+const Hello = (props) => {
+  // highlight-start
+  const { name, age } = props;
+  // highlight-end
+  const bornYear = () => new Date().getFullYear() - age;
+
+  return (
+    <div>
+      <p>
+        Hello {name}, you are {age} years old
+      </p>
+      <p>So you were probably born {bornYear()}</p>
+    </div>
+  );
+};
+```
+
+Eli koska
+
+```js
+props = {
+  name: "Arto Hellas",
+  age: 35,
+};
+```
+
+saa <em>const { name, age } = props</em> aikaan sen, että muuttuja _name_ saa arvon 'Arto Hellas' ja muuttuja _age_ arvon 35.
+
+Voimme viedä destrukturoinnin vielä askeleen verran pidemmälle
+
+```js
+const Hello = ({ name, age }) => {
+  // highlight-line
+  const bornYear = () => new Date().getFullYear() - age;
+
+  return (
+    <div>
+      <p>
+        Hello {name}, you are {age} years old
+      </p>
+      <p>So you were probably born {bornYear()}</p>
+    </div>
+  );
+};
 ```
 
 Destrukturointi tehdään nyt suoraan sijoittamalla komponentin saamat propsit muuttujiin _name_ ja _age_.
@@ -182,48 +187,40 @@ Aloitetaan seuraavasta rungosta:
 
 ```js
 const App = (props) => {
-  const {counter} = props
-  return (
-    <div>{counter}</div>
-  )
-}
+  const { counter } = props;
+  return <div>{counter}</div>;
+};
 
-let counter = 1
+let counter = 1;
 
-ReactDOM.render(
-  <App counter={counter} />, 
-  document.getElementById('root')
-)
+ReactDOM.render(<App counter={counter} />, document.getElementById("root"));
 ```
 
 Sovelluksen juurikomponentille siis annetaan propsiksi laskuriin _counter_ arvo. Juurikomponentti renderöi arvon ruudulle. Entä laskurin arvon muuttuessa? Jos lisäämme ohjelmaan esim. komennon
 
 ```js
-counter += 1
+counter += 1;
 ```
 
 ei komponenttia kuitenkaan renderöidä uudelleen. Voimme saada komponentin uudelleenrenderöitymään kutsumalla uudelleen metodia _ReactDOM.render_, esim. seuraavasti
 
 ```js
 const App = (props) => {
-  const { counter } = props
-  return (
-    <div>{counter}</div>
-  )
-}
+  const { counter } = props;
+  return <div>{counter}</div>;
+};
 
-let counter = 1
+let counter = 1;
 
 const refresh = () => {
-  ReactDOM.render(<App counter={counter} />, 
-  document.getElementById('root'))
-}
+  ReactDOM.render(<App counter={counter} />, document.getElementById("root"));
+};
 
-refresh()
-counter += 1
-refresh()
-counter += 1
-refresh()
+refresh();
+counter += 1;
+refresh();
+counter += 1;
+refresh();
 ```
 
 Copypastea vähentämään on komponentin renderöinti kääritty funktioon _refresh_.
@@ -234,9 +231,9 @@ Hieman mielenkiintoisempaan toiminnallisuuteen pääsemme tekemällä renderöin
 
 ```js
 setInterval(() => {
-  refresh()
-  counter += 1
-}, 1000)
+  refresh();
+  counter += 1;
+}, 1000);
 ```
 
 _ReactDOM.render_-metodin toistuva kutsuminen ei kuitenkaan ole suositeltu tapa päivittää komponentteja. Tutustutaan seuraavaksi järkevämpään tapaan.
@@ -250,40 +247,32 @@ Määritellään nyt sovelluksemme komponentille <i>App</i> tila Reactin [state 
 Muutetaan ohjelmaa seuraavasti
 
 ```js
-import React, { useState } from 'react' // highlight-line
-import ReactDOM from 'react-dom'
+import React, { useState } from "react"; // highlight-line
+import ReactDOM from "react-dom";
 
 const App = (props) => {
-  const [ counter, setCounter ] = useState(0) // highlight-line
+  const [counter, setCounter] = useState(0); // highlight-line
 
-// highlight-start
-  setTimeout(
-    () => setCounter(counter + 1),
-    1000
-  )
+  // highlight-start
+  setTimeout(() => setCounter(counter + 1), 1000);
   // highlight-end
 
-  return (
-    <div>{counter}</div>
-  )
-}
+  return <div>{counter}</div>;
+};
 
-ReactDOM.render(
-  <App />, 
-  document.getElementById('root')
-)
+ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
 Sovellus importaa nyt heti ensimmäisellä rivillä _useState_-funktion:
 
 ```js
-import React, { useState } from 'react'
+import React, { useState } from "react";
 ```
 
 Komponentin määrittelevä funktio alkaa metodikutsulla
 
 ```js
-const [ counter, setCounter ] = useState(0)
+const [counter, setCounter] = useState(0);
 ```
 
 Kutsu saa aikaan sen, että komponentille luodaan <i>tila</i>, joka saa alkuarvokseen nollan. Metodi palauttaa taulukon, jolla on kaksi alkiota. Alkiot otetaan taulukon destrukturointisyntaksilla talteen muuttujiin _counter_ ja _setCounter_.
@@ -293,27 +282,19 @@ Muuttuja _counter_ pitää sisällään <i>tilan arvon</i> joka on siis aluksi n
 Sovellus määrittelee funktion [setTimeout](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout) avulla, että tilan _counter_ arvoa kasvatetaan yhdellä sekunnin päästä:
 
 ```js
-setTimeout(
-  () => setCounter(counter + 1),
-  1000
-)
+setTimeout(() => setCounter(counter + 1), 1000);
 ```
 
 Kun tilaa muuttavaa funktiota _setCounter_ kutsutaan, <i>renderöi React komponentin uudelleen</i>, eli käytännössä suorittaa uudelleen komponentin määrittelevän koodin
 
 ```js
 (props) => {
-  const [ counter, setCounter ] = useState(0)
+  const [counter, setCounter] = useState(0);
 
-  setTimeout(
-    () => setCounter(counter + 1),
-    1000
-  )
+  setTimeout(() => setCounter(counter + 1), 1000);
 
-  return (
-    <div>{counter}</div>
-  )
-}
+  return <div>{counter}</div>;
+};
 ```
 
 kun koodi suoritetaan toista kertaa, funktion _useState_ kutsuminen palauttaa komponentin jo olemassaolevan tilan arvon, joka on nyt 1. Komponentin suoritus määrittelee jälleen laskuria kasvatettavaksi yhdellä sekunnin päästä ja renderöi ruudulle laskurin nykyisen arvon, joka on 1.
@@ -321,13 +302,13 @@ kun koodi suoritetaan toista kertaa, funktion _useState_ kutsuminen palauttaa ko
 Sekunnin päästä siis suoritetaan funktion _setTimeout_ parametrina ollut koodi
 
 ```js
-() => setCounter(counter + 1)
+() => setCounter(counter + 1);
 ```
 
 ja koska muuttujan _counter_ arvo on 1, on koodi oleellisesti sama kuin tilan _counter_ arvoon 2 asettava
 
 ```js
-() => setCounter(2)
+() => setCounter(2);
 ```
 
 Ja tämä saa jälleen aikaan sen, että komponentti renderöidään uudelleen. Tilan arvo kasvaa sekunnin päästä yhdellä ja sama jatkuu niin kauan kun sovellus on toiminnassa.
@@ -336,19 +317,14 @@ Jos komponentti ei renderöidy vaikka sen omasta mielestä pitäisi, tai se rend
 
 ```js
 const App = (props) => {
-  const [ counter, setCounter ] = useState(0)
+  const [counter, setCounter] = useState(0);
 
-  setTimeout(
-    () => setCounter(counter + 1),
-    1000
-  )
+  setTimeout(() => setCounter(counter + 1), 1000);
 
-  console.log('rendering...', counter) // highlight-line
+  console.log("rendering...", counter); // highlight-line
 
-  return (
-    <div>{counter}</div>
-  )
-}
+  return <div>{counter}</div>;
+};
 ```
 
 on konsolista helppo seurata metodin _render_ kutsuja:
@@ -367,25 +343,23 @@ Reactissa funktion rekisteröiminen tapahtumankäsittelijäksi tapahtumalle <i>c
 
 ```js
 const App = (props) => {
-  const [ counter, setCounter ] = useState(0)
+  const [counter, setCounter] = useState(0);
 
   // highlight-start
   const handleClick = () => {
-    console.log('clicked')
-  }
+    console.log("clicked");
+  };
   // highlight-end
 
   return (
     <div>
       <div>{counter}</div>
       // highlight-start
-      <button onClick={handleClick}>
-        plus
-      </button>
+      <button onClick={handleClick}>plus</button>
       // highlight-end
     </div>
-  )
-}
+  );
+};
 ```
 
 Eli laitetaan buttonin <i>onClick</i>-attribuutin arvoksi aaltosulkeissa oleva viite koodissa määriteltyyn funktioon _handleClick_.
@@ -396,25 +370,24 @@ Tapahtumankäsittelijäfunktio voidaan määritellä myös suoraan onClick-mää
 
 ```js
 const App = (props) => {
-  const [ counter, setCounter ] = useState(0)
+  const [counter, setCounter] = useState(0);
 
   return (
     <div>
       <div>{counter}</div>
-      <button onClick={() => console.log('clicked')}> // highlight-line
-        plus
+      <button onClick={() => console.log("clicked")}>
+        {" "}
+        // highlight-line plus
       </button>
     </div>
-  )
-}
+  );
+};
 ```
 
 Muuttamalla tapahtumankäsittelijä seuraavaan muotoon
 
 ```js
-<button onClick={() => setCounter(counter + 1)}>
-  plus
-</button>
+<button onClick={() => setCounter(counter + 1)}>plus</button>
 ```
 
 saamme halutun toiminnallisuuden, eli tilan _counter_ arvo kasvaa yhdellä <i>ja</i> komponentti renderöityy uudelleen.
@@ -423,22 +396,18 @@ Lisätään sovellukseen myös nappi laskurin nollaamiseen:
 
 ```js
 const App = (props) => {
-  const [ counter, setCounter ] = useState(0)
+  const [counter, setCounter] = useState(0);
 
   return (
     <div>
       <div>{counter}</div>
-      <button onClick={() => setCounter(counter + 1)}>
-        plus
-      </button>
+      <button onClick={() => setCounter(counter + 1)}>plus</button>
       // highlight-start
-      <button onClick={() => setCounter(0)}> 
-        zero
-      </button>
+      <button onClick={() => setCounter(0)}>zero</button>
       // highlight-end
     </div>
-  )
-}
+  );
+};
 ```
 
 Sovelluksemme on valmis!
@@ -447,28 +416,22 @@ Tapahtumankäsittelijöiden määrittely suoraan JSX-templatejen sisällä ei us
 
 ```js
 const App = (props) => {
-  const [ counter, setCounter ] = useState(0)
+  const [counter, setCounter] = useState(0);
 
-// highlight-start
-  const increaseByOne = () =>
-    setCounter(counter + 1)
-  
-  const setToZero = () =>
-    setCounter(0)
+  // highlight-start
+  const increaseByOne = () => setCounter(counter + 1);
+
+  const setToZero = () => setCounter(0);
   // highlight-end
 
   return (
     <div>
       <div>{counter}</div>
-      <button onClick={increaseByOne}> // highlight-line
-        plus
-      </button>
-      <button onClick={setToZero}> // highlight-line
-        zero
-      </button>
+      <button onClick={increaseByOne}> // highlight-line plus</button>
+      <button onClick={setToZero}> // highlight-line zero</button>
     </div>
-  )
-}
+  );
+};
 ```
 
 ### Tapahtumankäsittelijä on funktio
@@ -477,23 +440,18 @@ Metodit _increaseByOne_ ja _setToZero_ toimivat melkein samalla tavalla, ne aset
 
 ```js
 const App = (props) => {
-  const [ counter, setCounter ] = useState(0)
+  const [counter, setCounter] = useState(0);
 
-  const setToValue = (value) => setCounter(value) // highlight-line
+  const setToValue = (value) => setCounter(value); // highlight-line
 
   return (
     <div>
       <div>{counter}</div>
-      <button onClick={setToValue(counter + 1)}> // highlight-line
-        plus
-      </button>
-      <button onClick={setToValue(0)}> // highlight-line
-        zero
-      </button>
+      <button onClick={setToValue(counter + 1)}> // highlight-line plus</button>
+      <button onClick={setToValue(0)}> // highlight-line zero</button>
     </div>
-  )
-}
-
+  );
+};
 ```
 
 Huomaamme kuitenkin että muutos hajottaa sovelluksemme täysin:
@@ -512,22 +470,21 @@ Tilanteeseen on kaksi ratkaisua. Ratkaisuista yksinkertaisempi on muuttaa tapaht
 
 ```js
 const App = (props) => {
-  const [ counter, setCounter ] = useState(0)
+  const [counter, setCounter] = useState(0);
 
-  const setToValue = (value) => setCounter(value)
+  const setToValue = (value) => setCounter(value);
 
   return (
     <div>
       <div>{counter}</div>
-      <button onClick={() => setToValue(counter + 1)}> // highlight-line
-        plus
+      <button onClick={() => setToValue(counter + 1)}>
+        {" "}
+        // highlight-line plus
       </button>
-      <button onClick={() => setToValue(0)}> // highlight-line
-        zero
-      </button>
+      <button onClick={() => setToValue(0)}> // highlight-line zero</button>
     </div>
-  )
-}
+  );
+};
 ```
 
 eli tapahtumankäsittelijä on määritelty <i>funktio</i>, joka kutsuu funktiota _setToValue_ sopivalla parametrilla:
@@ -542,28 +499,24 @@ Toinen vaihtoehto on käyttää yleistä Javascriptin ja yleisemminkin funktiona
 
 ```js
 const App = (props) => {
-  const [ counter, setCounter ] = useState(0)
+  const [counter, setCounter] = useState(0);
 
-// highlight-start
+  // highlight-start
   const setToValue = (value) => {
     return () => {
-      setCounter(value)
-    }
-  }
-// highlight-end  
+      setCounter(value);
+    };
+  };
+  // highlight-end
 
   return (
     <div>
       <div>{counter}</div>
-      <button onClick={setToValue(counter + 1)}> // highlight-line
-        plus
-      </button>
-      <button onClick={setToValue(0)}> // highlight-line
-        zero
-      </button>
+      <button onClick={setToValue(counter + 1)}> // highlight-line plus</button>
+      <button onClick={setToValue(0)}> // highlight-line zero</button>
     </div>
-  )
-}
+  );
+};
 ```
 
 Jos et ole aiemmin törmännyt tekniikkaan, siihen totutteluun voi mennä tovi.
@@ -573,17 +526,17 @@ Olemme siis määritelleet tapahtumankäsittelijäfunktion _setToValue_ seuraava
 ```js
 const setToValue = (value) => {
   return () => {
-    setCounter(value)
-  }
-}
+    setCounter(value);
+  };
+};
 ```
 
 Kun komponentissa määritellään tapahtumankäsittelijä kutsumalla <em>setToValue(0)</em> on lopputuloksena funktio
 
 ```js
 () => {
-  setCounter(0)
-}
+  setCounter(0);
+};
 ```
 
 eli juuri oikeanlainen tilan nollaamisen aiheuttava funktio!
@@ -592,16 +545,16 @@ Plus-napin tapahtumankäsittelijä määritellään kutsumalla <em>setToValue(co
 
 ```js
 () => {
-  setCounter(1)
-}
+  setCounter(1);
+};
 ```
 
 Vastaavasti, kun laskurin tila on esim 41, tulee plus-napin tapahtumakuuntelijaksi
 
 ```js
 () => {
-  setCounter(42)
-}
+  setCounter(42);
+};
 ```
 
 Tarkastellaan vielä hieman funktiota _setToValue_:
@@ -609,23 +562,23 @@ Tarkastellaan vielä hieman funktiota _setToValue_:
 ```js
 const setToValue = (value) => {
   return () => {
-    setCounter(value)
-  }
-}
+    setCounter(value);
+  };
+};
 ```
 
 Koska metodi itse sisältää ainoastaan yhden komennon, eli <i>returnin</i>, joka palauttaa funktion, voidaan hyödyntää nuolifunktion tiiviimpää muotoa:
 
 ```js
 const setToValue = (value) => () => {
-  setCounter(value)
-}
+  setCounter(value);
+};
 ```
 
 Usein tälläisissä tilanteissa kaikki kirjoitetaan samalle riville, jolloin tuloksena on "kaksi nuolta sisältävä funktio":
 
 ```js
-const setToValue = (value) => () => setCounter(value)
+const setToValue = (value) => () => setCounter(value);
 ```
 
 Kaksinuolisen funktion voi ajatella funktiona, jota lopullisen tuloksen saadakseen täytyy kutsua kaksi kertaa.
@@ -633,7 +586,7 @@ Kaksinuolisen funktion voi ajatella funktiona, jota lopullisen tuloksen saadakse
 Ensimmäisellä kutsulla "konfiguroidaan" varsinainen funktio, sijoittamalla osalle parametreista arvo. Eli kutsu <em>setToValue(5)</em> sitoo muuttujaan _value_ arvon 5 ja funktiosta "jää jäljelle" seuraava funktio:
 
 ```js
-() => setCounter(5)
+() => setCounter(5);
 ```
 
 Tässä näytetty tapa soveltaa funktioita palauttavia funktioita on oleellisesti sama asia mistä funktionaalisessa ohjelmoinnissa käytetään termiä [currying](https://medium.com/javascript-scene/curry-and-function-composition-2c208d774983). Termi currying ei ole lähtöisin funktionaalisen ohjelmoinnin piiristä vaan sillä on juuret [syvällä matematiikassa](https://en.wikipedia.org/wiki/Currying).
@@ -656,47 +609,39 @@ Jätetään sovelluksen tila, eli laskimen arvo komponenttiin <i>App</i> ja väl
 
 ```js
 const Display = (props) => {
-  return (
-    <div>{props.counter}</div>
-  )
-}
+  return <div>{props.counter}</div>;
+};
 ```
 
 Voimme hyödyntää aiemmin mainittua [destrukturointia](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) myös metodien parametreissa. Eli koska olemme kiinnostuneita <i>propsin</i> kentästä _counter_, on edellinen mahdollista yksinkertaistaa seuraavaan muotoon:
 
 ```js
 const Display = ({ counter }) => {
-  return (
-    <div>{counter}</div>
-  )
-}
+  return <div>{counter}</div>;
+};
 ```
 
 Koska komponentin määrittelevä metodi ei sisällä muuta kuin returnin, voimme ilmaista sen hyödyntäen nuolifunktioiden tiiviimpää ilmaisumuotoa
 
 ```js
-const Display = ({ counter }) => <div>{counter}</div>
+const Display = ({ counter }) => <div>{counter}</div>;
 ```
 
 Komponentin käyttö on suoraviivaista, riittää että sille välitetään laskurin tila eli _counter_:
 
 ```js
 const App = (props) => {
-  const [counter, setCounter] = useState(0)
-  const setToValue = (value) => setCounter(value)
+  const [counter, setCounter] = useState(0);
+  const setToValue = (value) => setCounter(value);
 
   return (
     <div>
-      <Display counter={counter}/> // highlight-line
-      <button onClick={() => setToValue(counter + 1)}>
-        plus
-      </button>
-      <button onClick={() => setToValue(0)}>
-        zero
-      </button>
+      <Display counter={counter} /> // highlight-line
+      <button onClick={() => setToValue(counter + 1)}>plus</button>
+      <button onClick={() => setToValue(0)}>zero</button>
     </div>
-  )
-}
+  );
+};
 ```
 
 Kaikki toimii edelleen. Kun nappeja painetaan ja <i>App</i> renderöityy uudelleen, renderöityvät myös kaikki sen alikomponentit, siis myös <i>Display</i> automaattisesti uudelleen.
@@ -704,51 +649,33 @@ Kaikki toimii edelleen. Kun nappeja painetaan ja <i>App</i> renderöityy uudelle
 Tehdään seuraavaksi napeille tarkoitettu komponentti <i>Button</i>. Napille on välitettävä propsien avulla tapahtumankäsittelijä sekä napin teksti:
 
 ```js
-const Button = (props) => (
-  <button onClick={props.onClick}>
-    {props.text}
-  </button>
-)
+const Button = (props) => <button onClick={props.onClick}>{props.text}</button>;
 ```
 
 ja hyödynnetään taas destrukturointia ottamaan <i>props</i>:in tarpeelliset kentät suoraan:
 
 ```js
-const Button = ({ onClick, text }) => (
-  <button onClick={onClick}>
-    {text}
-  </button>
-)
+const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>;
 ```
 
 Komponentti <i>App</i> muuttuu nyt muotoon:
 
 ```js
 const App = (props) => {
-  const [ counter, setCounter ] = useState(0)
-  const setToValue = (value) => setCounter(value)
-
+  const [counter, setCounter] = useState(0);
+  const setToValue = (value) => setCounter(value);
 
   return (
     <div>
-      <Display counter={counter}/>
+      <Display counter={counter} />
       // highlight-start
-      <Button
-        onClick={() => setToValue(counter + 1)}
-        text='plus'
-      />
-      <Button
-        onClick={() => setToValue(counter - 1)}
-        text='minus'
-      />
-      <Button
-        onClick={() => setToValue(0)}
-        text='zero'
-      />
+      <Button onClick={() => setToValue(counter + 1)} text="plus" />
+      <Button onClick={() => setToValue(counter - 1)} text="minus" />
+      <Button onClick={() => setToValue(0)} text="zero" />
       // highlight-end
     </div>
-  )
-}
+  );
+};
 ```
 
 Koska meillä on nyt uudelleenkäytettävä nappi, sovellukselle on lisätty uutena toiminnallisuutena nappi, jolla laskurin arvoa voi vähentää.

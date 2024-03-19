@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-7.svg
+mainImage: "../../../images/part-7.svg"
 part: 7
 letter: e
 lang: fi
@@ -43,7 +43,7 @@ Reactin yhteydessä mainitaan usein käsite Virtual DOM. Mistä oikein on kyse? 
 Reactia käyttäessä ohjelmoija ei koskaan (tai parempi sanoa yleensä) manipuloi DOM:ia suoraan. React-komponenttin määrittelevä funktio palauttaa joukon [React-elementtejä](https://reactjs.org/docs/glossary.html#elements). Vaikka osa elementeistä näyttää normaaleilta HTML-elementeiltä
 
 ```js
-const element = <h1>Hello, world</h1>
+const element = <h1>Hello, world</h1>;
 ```
 
 eivät nekään ole HTML:ää vaan pohjimmiltaan Javascriptiä olevia React-elementtejä.
@@ -53,10 +53,7 @@ Sovelluksen komponenttien ulkoasun määrittelevät React-elementit muodostavat 
 [ReactDOM](https://reactjs.org/docs/react-dom.html)-kirjaston avulla komponenttien määrittelevä virtuaalinen DOM renderöidään oikeaksi DOM:iksi eli DOM API:n avulla selaimen näytettäväksi:
 
 ```js
-ReactDOM.render(
-  <App />,
-  document.getElementById('root')
-)
+ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
 Kun sovelluksen tila muuttuu, määrittyy komponenttien render-metodien ansiosta <i>uusi virtuaalinen DOM</i>. Reactilla on edellinen versio virtual DOM:ista muistissa ja sensijaan että uusi virtuaalinen DOM renderöitäisiin suoraviivaisesti DOM API:n avulla, React laskee mikä on optimaalisin tapa tehdä DOM:iin muutoksia (eli poistaa, lisätä ja muokata DOM:issa olevia elementtejä) siten, että DOM saadaan vastaamaan uutta Virtual DOM:ia.
@@ -84,7 +81,7 @@ Listaykkösenä on <i>injection</i>, joka tarkoittaa sitä, että sovellukseen e
 Esim. jos ei-turvallisessa koodissa tehtäisiin seuraavasti muotoiltu SQL-kysely:
 
 ```js
-let query = "SELECT * FROM Users WHERE name = '" + userName + "';"
+let query = "SELECT * FROM Users WHERE name = '" + userName + "';";
 ```
 
 Oletetaan että hieman ilkeämielinen käyttäjä <i>Arto Hellas</i> nyt määrittelisi nimekseen
@@ -107,7 +104,7 @@ Myös NoSQL-kantoihin tehtävät injektiohyökkäykset ovat mahdollisia. Mongoos
 
 ```html
 <script>
-  alert('Evil XSS attack')
+  alert("Evil XSS attack");
 </script>
 ```
 
@@ -184,8 +181,6 @@ found 29 vulnerabilities (7 low, 18 moderate, 4 high) in 964 scanned packages
   run `npm audit fix` to fix 27 of them.
   2 vulnerabilities require semver-major dependency updates.
 ```
-
-
 
 Toinen palvelu riippuvuuksien turvallisuuden tarkkailuun on [Snyk](https://snyk.io).
 
@@ -304,7 +299,6 @@ Serverlessissä ei siis ole kyse siitä että sovelluksissa ei olisi palvelinta,
 ### Hyödyllisiä kirjastoja ja mielenkiintoisia linkkejä
 
 Facebookin ylläpitämä kirjasto [immutable.js](https://github.com/facebook/immutable-js/) tarjoaa muutamista tietorakenteista nimensä mukaisia <i>muuttumattomia</i> toteutuksia. Kirjastosta voi olla hyötyä Reduxia käytettäessä, sillä kuten osasta 6 [muistamme](/osa6/flux_arkkitehtuuri_ja_redux#puhtaat-funktiot-immutable) reducerien on oltava puhtaita funktioita eli ne eivät saa muuttaa storen tilaa vaan niiden on korvattava se muutostilanteissa uudella. Kuluneen vuoden aikana Immutable.js:n suosiota on ruvennut syömään samankaltaisen toiminnallisuuden jossain määrin helpompikäyttöisessä muodossa tarjoava [Immer](https://github.com/mweststrate/immer).
-
 
 [Redux-saga](https://redux-saga.js.org/) tarjoaa osassa 6 käsitellylle [redux thunkille](/osa6/redux_sovelluksen_kommunikointi_palvelimen_kanssa#asynkroniset-actionit-ja-redux-thunk) vaihtoehtoisen tavan tehdä asynkronisia actioneja. Jotkut hypettää ja tykkää, itse en.
 

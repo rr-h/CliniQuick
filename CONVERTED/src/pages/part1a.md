@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-1.svg
+mainImage: "../../../images/part-1.svg"
 part: 1
 letter: a
 lang: en
@@ -35,16 +35,16 @@ Chrome should launch automatically. Open the browser console **immediately**. Al
 The code of the application resides in the <i>src</i> folder. Let's simplify the default code such that the contents of the file <i>index.js</i> look like:
 
 ```js
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React from "react";
+import ReactDOM from "react-dom";
 
 const App = () => (
   <div>
     <p>Hello world</p>
   </div>
-)
+);
 
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
 The files <i>App.js</i>, <i>App.css</i>, <i>App.test.js</i>, <i>logo.svg</i> and <i>serviceWorker.js</i> may be deleted as they are not needed in our application right now.
@@ -54,7 +54,7 @@ The files <i>App.js</i>, <i>App.css</i>, <i>App.test.js</i>, <i>logo.svg</i> and
 The file <i>index.js</i> now defines a React-[component](https://reactjs.org/docs/components-and-props.html) with the name <i>App</i> and the command on the final line
 
 ```js
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
 renders its contents into the <i>div</i>-element, defined in the file <i>public/index.html</i>, having the <i>id</i> value 'root'.
@@ -68,7 +68,7 @@ const App = () => (
   <div>
     <p>Hello world</p>
   </div>
-)
+);
 ```
 
 As you probably guessed, the component will be rendered as a <i>div</i>-tag, which wraps a <i>p</i>-tag containing the text <i>Hello world</i>.
@@ -80,7 +80,7 @@ Technically the component is defined as a JavaScript function. The following is 
   <div>
     <p>Hello world</p>
   </div>
-)
+);
 ```
 
 The function is then assigned to a constant variable <i>App</i>:
@@ -99,8 +99,8 @@ const App = () => {
     <div>
       <p>Hello world</p>
     </div>
-  )
-}
+  );
+};
 ```
 
 In other words, the function returns the value of the expression.
@@ -109,13 +109,13 @@ The function defining the component may contain any kind of JavaScript code. Mod
 
 ```js
 const App = () => {
-  console.log('Hello from component')
+  console.log("Hello from component");
   return (
     <div>
       <p>Hello world</p>
     </div>
-  )
-}
+  );
+};
 ```
 
 It is also possible to render dynamic content inside of a component.
@@ -124,9 +124,9 @@ Modify the component as follows:
 
 ```js
 const App = () => {
-  const now = new Date()
-  const a = 10
-  const b = 20
+  const now = new Date();
+  const a = 10;
+  const b = 20;
 
   return (
     <div>
@@ -135,8 +135,8 @@ const App = () => {
         {a} plus {b} is {a + b}
       </p>
     </div>
-  )
-}
+  );
+};
 ```
 
 Any JavaScript code within the curly braces is evaluated and the result of this evaluation is embedded into the defined place in the HTML produced by the component.
@@ -148,32 +148,28 @@ It seems like React components are returning HTML markup. However, this is not t
 After compiling, our application looks like this:
 
 ```js
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React from "react";
+import ReactDOM from "react-dom";
 
 const App = () => {
-  const now = new Date()
-  const a = 10
-  const b = 20
+  const now = new Date();
+  const a = 10;
+  const b = 20;
   return React.createElement(
-    'div',
+    "div",
     null,
-    React.createElement(
-      'p', null, 'Hello world, it is ', now.toString()
-    ),
-    React.createElement(
-      'p', null, a, ' plus ', b, ' is ', a + b
-    )
-  )
-}
+    React.createElement("p", null, "Hello world, it is ", now.toString()),
+    React.createElement("p", null, a, " plus ", b, " is ", a + b)
+  );
+};
 
 ReactDOM.render(
   React.createElement(App, null),
-  document.getElementById('root')
-)
+  document.getElementById("root")
+);
 ```
 
-The compiling is handled by [Babel](https://babeljs.io/repl/). Projects created with *create-react-app* are configured to compile automatically. We will learn more about this topic in [part 7](/en/part7) of this course.
+The compiling is handled by [Babel](https://babeljs.io/repl/). Projects created with _create-react-app_ are configured to compile automatically. We will learn more about this topic in [part 7](/en/part7) of this course.
 
 It is also possible to write React as "pure JavaScript" without using JSX. Although, nobody with a sound mind would actually do so.
 
@@ -182,7 +178,7 @@ In practice, JSX is much like HTML with the distinction that with JSX you can ea
 JSX is "[XML](https://developer.mozilla.org/en-US/docs/Web/XML/XML_introduction)-like", which means that every tag needs to be closed. For example, a newline is an empty element, which in HTML can be written as follows:
 
 ```html
-<br>
+<br />
 ```
 
 but when writing JSX, the tag needs to be closed:
@@ -202,8 +198,8 @@ const Hello = () => {
     <div>
       <p>Hello world</p>
     </div>
-  )
-}
+  );
+};
 // highlight-end
 
 const App = () => {
@@ -212,10 +208,10 @@ const App = () => {
       <h1>Greetings</h1>
       <Hello /> // highlight-line
     </div>
-  )
-}
+  );
+};
 
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
 We have defined a new component <i>Hello</i> and used it inside the component <i>App</i>. Naturally, a component can be used multiple times:
@@ -231,8 +227,8 @@ const App = () => {
       <Hello />
       // highlight-end
     </div>
-  )
-}
+  );
+};
 ```
 
 Writing components with React is easy, and by combining components, even a more complex application can be kept fairly maintainable. Indeed, a core philosophy of React is composing applications from many specialized reusable components.
@@ -246,13 +242,14 @@ It is possible to pass data to components using so called [props](https://reactj
 Let's modify the component <i>Hello</i> as follows
 
 ```js
-const Hello = (props) => { // highlight-line
+const Hello = (props) => {
+  // highlight-line
   return (
     <div>
       <p>Hello {props.name}</p> // highlight-line
     </div>
-  )
-}
+  );
+};
 ```
 
 Now the function defining the component has a parameter <i>props</i>. As an argument, the parameter receives an object, which has fields corresponding to all the "props" the user of the component defines.
@@ -267,8 +264,8 @@ const App = () => {
       <Hello name="George" /> // highlight-line
       <Hello name="Daisy" /> // highlight-line
     </div>
-  )
-}
+  );
+};
 ```
 
 There can be an arbitrary number of props and their values can be "hard coded" strings or results of JavaScript expressions. If the value of the prop is achieved using JavaScript it must be wrapped with curly braces.
@@ -283,21 +280,21 @@ const Hello = (props) => {
         Hello {props.name}, you are {props.age} years old // highlight-line
       </p>
     </div>
-  )
-}
+  );
+};
 
 const App = () => {
-  const name = 'Peter' // highlight-line
-  const age = 10       // highlight-line
+  const name = "Peter"; // highlight-line
+  const age = 10; // highlight-line
 
   return (
     <div>
       <h1>Greetings</h1>
       <Hello name="Maya" age={26 + 10} /> // highlight-line
-      <Hello name={name} age={age} />     // highlight-line
+      <Hello name={name} age={age} /> // highlight-line
     </div>
-  )
-}
+  );
+};
 ```
 
 The props sent by the component <i>App</i> are the values of the variables, the result of the evaluation of the sum expression and a regular string.
@@ -318,11 +315,11 @@ Also keep in mind that **React component names must be capitalized**. If you try
 const footer = () => {
   return (
     <div>
-      greeting app created by 
+      greeting app created by
       <a href="https://github.com/mluukkai">mluukkai</a>
     </div>
-  )
-}
+  );
+};
 ```
 
 and use it like this
@@ -335,8 +332,8 @@ const App = () => {
       <Hello name="Maya" age={26 + 10} />
       <footer /> // highlight-line
     </div>
-  )
-}
+  );
+};
 ```
 
 the page is not going to display the content defined within the Footer component, and instead React only creates an empty <i>footer</i> element. If you change the first letter of the component name to a capital letter, then React creates a <i>div</i>-element defined in the Footer component, which is rendered on the page.
@@ -361,12 +358,8 @@ Using a root element is not the only working option. An <i>array</i> of componen
 
 ```js
 const App = () => {
-  return [
-    <h1>Greetings</h1>,
-    <Hello name="Maya" age={26 + 10} />,
-    <Footer />
-  ]
-}
+  return [<h1>Greetings</h1>, <Hello name="Maya" age={26 + 10} />, <Footer />];
+};
 ```
 
 However, when defining the root component of the application this is not a particularly wise thing to do, and it makes the code look a bit ugly.
@@ -375,8 +368,8 @@ Because the root element is stipulated, we have "extra" div-elements in the DOM-
 
 ```js
 const App = () => {
-  const name = 'Peter'
-  const age = 10
+  const name = "Peter";
+  const age = 10;
 
   return (
     <>
@@ -385,8 +378,8 @@ const App = () => {
       <Hello name={name} age={age} />
       <Footer />
     </>
-  )
-}
+  );
+};
 ```
 
 It now compiles successfully, and the DOM generated by React no longer contains the extra div-element.
@@ -400,7 +393,7 @@ Exercises are submitted through GitHub and by marking completed exercises in the
 
 You may submit all the exercises of this course into the same repository, or use multiple repositories. If you submit exercises of different parts into the same repository, please use a sensible naming scheme for the directories.
 
-One very functional file  structure for the submission repository is as follows:
+One very functional file structure for the submission repository is as follows:
 
 ```
 part0
@@ -415,12 +408,12 @@ part2
 
 For each part of the course there is a directory, which further branches into directories containing a series of exercises, like "unicafe" for part 1.
 
-For each web application for a series of exercises, it is recommended to submit all files relating to that application, except for the directory <i>node\_modules</i>.
+For each web application for a series of exercises, it is recommended to submit all files relating to that application, except for the directory <i>node_modules</i>.
 
 The exercises are submitted **one part at a time**. When you have submitted the exercises for a part of the course you can no longer submit undone exercises for the same part.
 
 Note that in this part, there are more exercises besides those found below. <i>Do not submit your work</i> until you have completed all of the exercises you want to submit for the part.
-  
+
   <h4>1.1: course information, step1</h4>
 
 <i>The application that we will start working on in this exercise will be further developed in a few of the following exercises. In this and other upcoming exercise sets in this course, it is enough to only submit the final state of the application. If desired, you may also create a commit for each exercise of the series, but this is entirely optional.</i>
@@ -428,17 +421,17 @@ Note that in this part, there are more exercises besides those found below. <i>D
 Use create-react-app to initialize a new application. Modify <i>index.js</i> to match the following
 
 ```js
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React from "react";
+import ReactDOM from "react-dom";
 
 const App = () => {
-  const course = 'Half Stack application development'
-  const part1 = 'Fundamentals of React'
-  const exercises1 = 10
-  const part2 = 'Using props to pass data'
-  const exercises2 = 7
-  const part3 = 'State of a component'
-  const exercises3 = 14
+  const course = "Half Stack application development";
+  const part1 = "Fundamentals of React";
+  const exercises1 = 10;
+  const part2 = "Using props to pass data";
+  const exercises2 = 7;
+  const part3 = "State of a component";
+  const exercises3 = 14;
 
   return (
     <div>
@@ -454,10 +447,10 @@ const App = () => {
       </p>
       <p>Number of exercises {exercises1 + exercises2 + exercises3}</p>
     </div>
-  )
-}
+  );
+};
 
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
 and remove extra files (App.js, App.css, App.test.js, logo.svg, serviceWorker.js).

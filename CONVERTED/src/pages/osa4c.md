@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-4.svg
+mainImage: "../../../images/part-4.svg"
 part: 4
 letter: c
 lang: fi
@@ -34,14 +34,14 @@ Oletetaan että kokoelmassa <i>users</i> on kaksi käyttäjää:
 ```js
 [
   {
-    username: 'mluukkai',
+    username: "mluukkai",
     _id: 123456,
   },
   {
-    username: 'hellas',
+    username: "hellas",
     _id: 141414,
   },
-]
+];
 ```
 
 Kokoelmassa <i>notes</i> on kolme muistiinpanoa, kaikkien kenttä <i>user</i> viittaa <i>users</i>-kentässä olevaan käyttäjään:
@@ -49,24 +49,24 @@ Kokoelmassa <i>notes</i> on kolme muistiinpanoa, kaikkien kenttä <i>user</i> vi
 ```js
 [
   {
-    content: 'HTML is easy',
+    content: "HTML is easy",
     important: false,
     _id: 221212,
     user: 123456,
   },
   {
-    content: 'The most important operations of HTTP protocol are GET and POST',
+    content: "The most important operations of HTTP protocol are GET and POST",
     important: true,
     _id: 221255,
     user: 123456,
   },
   {
-    content: 'A proper dinosaur codes with Java',
+    content: "A proper dinosaur codes with Java",
     important: false,
     _id: 221244,
     user: 141414,
   },
-]
+];
 ```
 
 Mikään ei kuitenkaan määrää dokumenttitietokannoissa, että viitteet on talletettava muistiinpanoihin, ne voivat olla <i>myös</i> (tai ainoastaan) käyttäjien yhteydessä:
@@ -74,16 +74,16 @@ Mikään ei kuitenkaan määrää dokumenttitietokannoissa, että viitteet on ta
 ```js
 [
   {
-    username: 'mluukkai',
+    username: "mluukkai",
     _id: 123456,
     notes: [221212, 221255],
   },
   {
-    username: 'hellas',
+    username: "hellas",
     _id: 141414,
     notes: [141414],
   },
-]
+];
 ```
 
 Koska käyttäjiin liittyy potentiaalisesti useita muistiinpanoja, niiden id:t talletetaan käyttäjän kentässä <i>notes</i> olevaan taulukkoon.
@@ -93,31 +93,31 @@ Dokumenttitietokannat tarjoavat myös radikaalisti erilaisen tavan datan organis
 ```js
 [
   {
-    username: 'mluukkai',
+    username: "mluukkai",
     _id: 123456,
     notes: [
       {
-        content: 'HTML is easy',
+        content: "HTML is easy",
         important: false,
       },
       {
-        content: 'The most important operations of HTTP protocol are GET and POST',
+        content:
+          "The most important operations of HTTP protocol are GET and POST",
         important: true,
       },
     ],
   },
   {
-    username: 'hellas',
+    username: "hellas",
     _id: 141414,
     notes: [
       {
-        content:
-          'A proper dinosaur codes with Java',
+        content: "A proper dinosaur codes with Java",
         important: false,
       },
     ],
   },
-]
+];
 ```
 
 Muistiinpanot olisivat tässä skeemaratkaisussa siis yhteen käyttäjään alisteisia kenttiä, niillä ei olisi edes omaa identiteettiä, eli id:tä tietokannan tasolla.
@@ -131,7 +131,7 @@ Hieman paradoksaalisesti tietokannan tasolla skeematon Mongo edellyttääkin pro
 Päätetään tallettaa käyttäjän yhteyteen myös tieto käyttäjän luomista muistiinpanoista, eli käytännössä muistiinpanojen id:t. Määritellään käyttäjää edustava model tiedostoon <i>models/user.js</i>
 
 ```js
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema({
   username: String,
@@ -140,24 +140,24 @@ const userSchema = mongoose.Schema({
   notes: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Note'
-    }
+      ref: "Note",
+    },
   ],
-})
+});
 
-userSchema.set('toJSON', {
+userSchema.set("toJSON", {
   transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString()
-    delete returnedObject._id
-    delete returnedObject.__v
+    returnedObject.id = returnedObject._id.toString();
+    delete returnedObject._id;
+    delete returnedObject.__v;
     // the passwordHash should not be revealed
-    delete returnedObject.passwordHash
-  }
-})
+    delete returnedObject.passwordHash;
+  },
+});
 
-const User = mongoose.model('User', userSchema)
+const User = mongoose.model("User", userSchema);
 
-module.exports = User
+module.exports = User;
 ```
 
 Muistiinpanojen id:t on talletettu käyttäjien sisälle taulukkona mongo-id:itä. Määrittely on seuraava
@@ -178,17 +178,17 @@ const noteSchema = new mongoose.Schema({
   content: {
     type: String,
     required: true,
-    minlength: 5
+    minlength: 5,
   },
   date: Date,
   important: Boolean,
   // highlight-start
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-  }
+    ref: "User",
+  },
   // highlight-end
-})
+});
 ```
 
 Relaatiotietokantojen käytänteistä poiketen <i>viitteet on nyt talletettu molempiin dokumentteihin</i>, muistiinpano viittaa sen luoneeseen käyttäjään ja käyttäjä sisältää taulukollisen viitteitä sen luomiin muistiinpanoihin.
@@ -208,42 +208,42 @@ Käyttäjien luominen tapahtuu osassa 3 läpikäytyjä [RESTful](/osa3/node_js_j
 Määritellään käyttäjienhallintaa varten oma <i>router</i> tiedostoon <i>controllers/users.js</i>, ja liitetään se <i>app.js</i>-tiedostossa huolehtimaan polulle <i>/api/users/</i> tulevista pyynnöistä:
 
 ```js
-const usersRouter = require('./controllers/users')
+const usersRouter = require("./controllers/users");
 
 // ...
 
-app.use('/api/users', usersRouter)
+app.use("/api/users", usersRouter);
 ```
 
 Routerin alustava sisältö on seuraava:
 
 ```js
-const bcrypt = require('bcrypt')
-const usersRouter = require('express').Router()
-const User = require('../models/user')
+const bcrypt = require("bcrypt");
+const usersRouter = require("express").Router();
+const User = require("../models/user");
 
-usersRouter.post('/', async (request, response, next) => {
+usersRouter.post("/", async (request, response, next) => {
   try {
-    const body = request.body
+    const body = request.body;
 
-    const saltRounds = 10
-    const passwordHash = await bcrypt.hash(body.password, saltRounds)
+    const saltRounds = 10;
+    const passwordHash = await bcrypt.hash(body.password, saltRounds);
 
     const user = new User({
       username: body.username,
       name: body.name,
       passwordHash,
-    })
+    });
 
-    const savedUser = await user.save()
+    const savedUser = await user.save();
 
-    response.json(savedUser)
+    response.json(savedUser);
   } catch (exception) {
-    next(exception)
+    next(exception);
   }
-})
+});
 
-module.exports = usersRouter
+module.exports = usersRouter;
 ```
 
 Tietokantaan siis <i>ei</i> talleteta pyynnön mukana tulevaa salasanaa, vaan funktion _bcrypt.hash_ avulla laskettu <i>hash</i>.
@@ -259,88 +259,88 @@ Pienellä vaivalla voimme tehdä automaattisesti suoritettavat testit, jotka hel
 Alustava testi näyttää seuraavalta:
 
 ```js
-const User = require('../models/user')
+const User = require("../models/user");
 
 //...
 
-describe('when there is initially one user at db', () => {
+describe("when there is initially one user at db", () => {
   beforeEach(async () => {
-    await User.deleteMany({})
-    const user = new User({ username: 'root', password: 'sekret' })
-    await user.save()
-  })
+    await User.deleteMany({});
+    const user = new User({ username: "root", password: "sekret" });
+    await user.save();
+  });
 
-  test('creation succeeds with a fresh username', async () => {
-    const usersAtStart = await helper.usersInDb()
+  test("creation succeeds with a fresh username", async () => {
+    const usersAtStart = await helper.usersInDb();
 
     const newUser = {
-      username: 'mluukkai',
-      name: 'Matti Luukkainen',
-      password: 'salainen',
-    }
+      username: "mluukkai",
+      name: "Matti Luukkainen",
+      password: "salainen",
+    };
 
     await api
-      .post('/api/users')
+      .post("/api/users")
       .send(newUser)
       .expect(200)
-      .expect('Content-Type', /application\/json/)
+      .expect("Content-Type", /application\/json/);
 
-    const usersAtEnd = await helper.usersInDb()
-    expect(usersAtEnd.length).toBe(usersAtStart.length + 1)
+    const usersAtEnd = await helper.usersInDb();
+    expect(usersAtEnd.length).toBe(usersAtStart.length + 1);
 
-    const usernames = usersAtEnd.map(u => u.username)
-    expect(usernames).toContain(newUser.username)
-  })
-})
+    const usernames = usersAtEnd.map((u) => u.username);
+    expect(usernames).toContain(newUser.username);
+  });
+});
 ```
 
 Testit käyttävät myös tiedostossa <i>tests/test_helper.js</i> määriteltyä apufunktiota <i>usersInDb()</i> tarkastamaan lisäysoperaation jälkeisen tietokannan tilan:
 
 ```js
-const User = require('../models/user')
+const User = require("../models/user");
 
 // ...
 
 const usersInDb = async () => {
-  const users = await User.find({})
-  return users.map(u => u.toJSON())
-}
+  const users = await User.find({});
+  return users.map((u) => u.toJSON());
+};
 
 module.exports = {
   initialNotes,
   nonExistingId,
   notesInDb,
   usersInDb,
-}
+};
 ```
 
 Lohko <i>beforeEach</i> lisää kantaan käyttäjän, jonka username on <i>root</i>. Voimmekin tehdä uuden testin, jolla varmistetaan, että samalla käyttäjätunnuksella ei voi luoda uutta käyttäjää:
 
 ```js
-describe('when there is initially one user at db', () => {
+describe("when there is initially one user at db", () => {
   // ...
 
-  test('creation fails with proper statuscode and message if username already taken', async () => {
-    const usersAtStart = await helper.usersInDb()
+  test("creation fails with proper statuscode and message if username already taken", async () => {
+    const usersAtStart = await helper.usersInDb();
 
     const newUser = {
-      username: 'root',
-      name: 'Superuser',
-      password: 'salainen',
-    }
+      username: "root",
+      name: "Superuser",
+      password: "salainen",
+    };
 
     const result = await api
-      .post('/api/users')
+      .post("/api/users")
       .send(newUser)
       .expect(400)
-      .expect('Content-Type', /application\/json/)
+      .expect("Content-Type", /application\/json/);
 
-    expect(result.body.error).toContain('`username` to be unique')
+    expect(result.body.error).toContain("`username` to be unique");
 
-    const usersAtEnd = await helper.usersInDb()
-    expect(usersAtEnd.length).toBe(usersAtStart.length)
-  })
-})
+    const usersAtEnd = await helper.usersInDb();
+    expect(usersAtEnd.length).toBe(usersAtStart.length);
+  });
+});
 ```
 
 Testi ei tietenkään mene läpi tässä vaiheessa. Toimimme nyt oleellisesti [TDD:n eli test driven developmentin](https://en.wikipedia.org/wiki/Test-driven_development) hengessä, uuden ominaisuuden testi on kirjoitettu ennen ominaisuuden ohjelmointia.
@@ -355,39 +355,38 @@ npm install --save mongoose-unique-validator
 Käyttäjän skeemaa tiedostossa <i>models/user.js</i> tulee muuttaa seuraavasti seuraavasti:
 
 ```js
-const mongoose = require('mongoose')
-const uniqueValidator = require('mongoose-unique-validator') // highlight-line
+const mongoose = require("mongoose");
+const uniqueValidator = require("mongoose-unique-validator"); // highlight-line
 
 const userSchema = mongoose.Schema({
   username: {
     type: String,
-    unique: true  // highlight-line
+    unique: true, // highlight-line
   },
   name: String,
   passwordHash: String,
   notes: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Note'
-    }
+      ref: "Note",
+    },
   ],
-})
+});
 
-userSchema.plugin(uniqueValidator) // highlight-line
+userSchema.plugin(uniqueValidator); // highlight-line
 
 // ...
 ```
 
 Voisimme toteuttaa käyttäjien luomisen yhteyteen myös muita tarkistuksia, esim. onko käyttäjätunnus tarpeeksi pitkä, koostuuko se sallituista merkeistä ja onko salasana tarpeeksi hyvä. Jätämme ne kuitenkin vapaaehtoiseksi harjoitustehtäväksi.
 
-
 Ennen kuin menemme eteenpäin, lisätään sovellukseen alustava versio kaikki käyttäjät palauttavasta käsittelijäfunktiosta:
 
 ```js
-usersRouter.get('/', async (request, response) => {
-  const users = await User.find({})
-  response.json(users.map(u => u.toJSON()))
-})
+usersRouter.get("/", async (request, response) => {
+  const users = await User.find({});
+  response.json(users.map((u) => u.toJSON()));
+});
 ```
 
 Lista näyttää seuraavalta
@@ -403,40 +402,40 @@ Muistiinpanot luovaa koodia on nyt mukautettava siten, että uusi muistiinpano t
 Laajennetaan ensin olemassaolevaa toteutusta siten, että tieto muistiinpanon luovan käyttäjän id:stä lähetetään pyynnön rungossa kentän <i>userId</i> arvona:
 
 ```js
-const User = require('../models/user')
+const User = require("../models/user");
 
 //...
 
-notesRouter.post('/', async (request, response, next) => {
-  const body = request.body
+notesRouter.post("/", async (request, response, next) => {
+  const body = request.body;
 
-  const user = await User.findById(body.userId) //highlight-line
+  const user = await User.findById(body.userId); //highlight-line
 
   const note = new Note({
     content: body.content,
     important: body.important === undefined ? false : body.important,
     date: new Date(),
-    user: user._id //highlight-line
-  })
+    user: user._id, //highlight-line
+  });
 
   try {
-    const savedNote = await note.save()
-    user.notes = user.notes.concat(savedNote._id) //highlight-line
-    await user.save()  //highlight-line
-    response.json(savedNote.toJSON())
-  } catch(exception) {
-    next(exception)
+    const savedNote = await note.save();
+    user.notes = user.notes.concat(savedNote._id); //highlight-line
+    await user.save(); //highlight-line
+    response.json(savedNote.toJSON());
+  } catch (exception) {
+    next(exception);
   }
-})
+});
 ```
 
 Huomionarvoista on nyt se, että myös <i>user</i>-olio muuttuu. Sen kenttään <i>notes</i> talletetaan luodun muistiinpanon <i>id</i>:
 
 ```js
-const user = User.findById(userId)
+const user = User.findById(userId);
 
-user.notes = user.notes.concat(savedNote._id)
-await user.save()
+user.notes = user.notes.concat(savedNote._id);
+await user.save();
 ```
 
 Kokeillaan nyt lisätä uusi muistiinpano
@@ -462,15 +461,15 @@ Kuten aiemmin mainittiin, eivät dokumenttitietokannat tue (kunnolla) eri kokoel
 Liitoksen tekeminen suoritetaan Mongoosen komennolla [populate](http://mongoosejs.com/docs/populate.html). Päivitetään ensin kaikkien käyttäjien tiedot palauttava route:
 
 ```js
-usersRouter.get('/', async (request, response) => {
-  const users = await User  // highlight-line
-    .find({}).populate('notes') // highlight-line
+usersRouter.get("/", async (request, response) => {
+  const users = await User.find({}) // highlight-line
+    .populate("notes"); // highlight-line
 
-  response.json(users.map(u => u.toJSON()))
-})
+  response.json(users.map((u) => u.toJSON()));
+});
 ```
 
-Funktion [populate](http://mongoosejs.com/docs/populate.html) kutsu siis ketjutetaan kyselyä vastaavan metodikutsun (tässä tapauksessa <i>find_</i> perään. Populaten parametri määrittelee, että <i>user</i>-dokumenttien <i>notes</i>-kentässä olevat <i>note</i>-olioihin viittaavat <i>id</i>:t korvataan niitä vastaavilla dokumenteilla.
+Funktion [populate](http://mongoosejs.com/docs/populate.html) kutsu siis ketjutetaan kyselyä vastaavan metodikutsun (tässä tapauksessa <i>find\_</i> perään. Populaten parametri määrittelee, että <i>user</i>-dokumenttien <i>notes</i>-kentässä olevat <i>note</i>-olioihin viittaavat <i>id</i>:t korvataan niitä vastaavilla dokumenteilla.
 
 Lopputulos on jo melkein haluamamme kaltainen:
 
@@ -479,11 +478,10 @@ Lopputulos on jo melkein haluamamme kaltainen:
 Populaten yhteydessä on myös mahdollista rajata mitä kenttiä sisällytettävistä dokumenteista otetaan mukaan. Rajaus tapahtuu Mongon [syntaksilla](https://docs.mongodb.com/manual/tutorial/project-fields-from-query-results/#return-the-specified-fields-and-the-id-field-only):
 
 ```js
-usersRouter.get('/', async (request, response) => {
-  const users = await User
-    .find({}).populate('notes', { content: 1, date: 1 })
+usersRouter.get("/", async (request, response) => {
+  const users = await User.find({}).populate("notes", { content: 1, date: 1 });
 
-  response.json(users.map(u => u.toJSON()))
+  response.json(users.map((u) => u.toJSON()));
 });
 ```
 
@@ -494,11 +492,10 @@ Tulos on täsmälleen sellainen kuin haluamme
 Lisätään sopiva käyttäjän tietojen populointi muistiinpanojen yhteyteen:
 
 ```js
-notesRouter.get('/', async (request, response) => {
-  const notes = await Note
-    .find({}).populate('user', { username: 1, name: 1 })
+notesRouter.get("/", async (request, response) => {
+  const notes = await Note.find({}).populate("user", { username: 1, name: 1 });
 
-  response.json(notes.map(note => note.toJSON()))
+  response.json(notes.map((note) => note.toJSON()));
 });
 ```
 
@@ -515,15 +512,15 @@ const noteSchema = new mongoose.Schema({
   content: {
     type: String,
     required: true,
-    minlength: 5
+    minlength: 5,
   },
   date: Date,
   important: Boolean,
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-  }
-})
+    ref: "User",
+  },
+});
 ```
 
 Sovelluksen tämänhetkinen koodi on kokonaisuudessaan [githubissa](https://github.com/fullstackopen-2019/part3-notes-backend/tree/part4-7), branchissä <i>part4-7</i>.

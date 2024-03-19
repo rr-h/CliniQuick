@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-2.svg
+mainImage: "../../../images/part-2.svg"
 part: 2
 letter: c
 lang: fi
@@ -72,17 +72,17 @@ Nykyään XHR:ää ei kuitenkaan kannata käyttää ja selaimet tukevatkin jo la
 Muistutuksena edellisestä osasta (oikeastaan tätä tapaa pitää lähinnä <i>muistaa olla käyttämättä</i> ilman painavaa syytä), XHR:llä haettiin dataa seuraavasti
 
 ```js
-const xhttp = new XMLHttpRequest()
+const xhttp = new XMLHttpRequest();
 
-xhttp.onreadystatechange = function() {
+xhttp.onreadystatechange = function () {
   if (this.readyState == 4 && this.status == 200) {
-    const data = JSON.parse(this.responseText)
+    const data = JSON.parse(this.responseText);
     // käsittele muuttujaan data sijoitettu kyselyn tulos
   }
-}
+};
 
-xhttp.open('GET', '/data.json', true)
-xhttp.send()
+xhttp.open("GET", "/data.json", true);
+xhttp.send();
 ```
 
 Heti alussa HTTP-pyyntöä vastaavalle <em>xhttp</em>-oliolle rekisteröidään <i>tapahtumankäsittelijä</i>, jota Javascript runtime kutsuu kun <em>xhttp</em>-olion tila muuttuu. Jos tilanmuutos tarkoittaa että pyynnön vastaus on saapunut, käsitellään data halutulla tavalla.
@@ -114,13 +114,13 @@ Javascript-moottoreiden yksisäikeisyydellä on myös sellainen seuraus, että j
 
 ```js
 setTimeout(() => {
-  console.log('loop..')
-  let i = 0
+  console.log("loop..");
+  let i = 0;
   while (i < 50000000000) {
-    i++
+    i++;
   }
-  console.log('end')
-}, 5000)
+  console.log("end");
+}, 5000);
 ```
 
 Kaikki toimii 5 sekunnin ajan normaalisti. Kun <em>setTimeout</em>:in parametrina määritelty funktio suoritetaan, menee selaimen sivu jumiin pitkän loopin suorituksen ajaksi. Ainakaan Chromessa selaimen tabia ei pysty edes sulkemaan luupin suorituksen aikana.
@@ -160,12 +160,7 @@ Nykyään lähes kaikki Javascript-projektit määritellään node "pakkausmanag
   "eslintConfig": {
     "extends": "react-app"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  "browserslist": [">0.2%", "not dead", "not ie <= 11", "not op_mini all"]
 }
 ```
 
@@ -177,7 +172,7 @@ Haluamme nyt käyttöömme axioksen. Voisimme määritellä kirjaston suoraan ti
 npm install axios --save
 ```
 
-**Huomaa, että _npm_-komennot tulee antaa aina projektin juurihakemistossa**, eli siinä minkä sisältä tiedosto <i>package.json_</i> löytyy.
+**Huomaa, että _npm_-komennot tulee antaa aina projektin juurihakemistossa**, eli siinä minkä sisältä tiedosto <i>package.json\_</i> löytyy.
 
 Nyt axios on mukana riippuvuuksien joukossa:
 
@@ -188,10 +183,9 @@ Nyt axios on mukana riippuvuuksien joukossa:
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1"
-  },
+  }
   // ...
 }
-
 ```
 
 Sen lisäksi, että komento <em>npm install</em> lisäsi axiosin riippuvuuksien joukkoon, se myös <i>latasi</i> kirjaston koodin. Koodi löytyy muiden riippuvuuksien tapaan projektin juuren hakemistosta <i>node_modules</i>, mikä kuten huomata saattaa sisältääkin runsaasti kaikenlaista.
@@ -206,18 +200,18 @@ ja tehdään tiedoston <i>package.json</i> osaan <i>scripts</i> pieni lisäys
 
 ```json
 {
-  // ... 
+  // ...
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "server": "json-server -p3001 db.json"  // highlight-line
+    "server": "json-server -p3001 db.json" // highlight-line
   }
 }
 ```
 
-Nyt voimme käynnistää  json-serverin projektin hakemistosta mukavasti ilman tarvetta parametrien määrittelylle komennolla
+Nyt voimme käynnistää json-serverin projektin hakemistosta mukavasti ilman tarvetta parametrien määrittelylle komennolla
 
 ```js
 npm run server
@@ -229,11 +223,11 @@ Huomaa, että aiemmin käynnistetty json-server tulee olla sammutettuna, muuten 
 
 ![](../../images/2/15b.png)
 
-Virheilmoituksen punaisella oleva teksti kertoo mistä on kyse: 
+Virheilmoituksen punaisella oleva teksti kertoo mistä on kyse:
 
-<i>Cannot bind to the port 3001. Please specify another port number either through --port argument or through the json-server.json configuration file</i> 
+<i>Cannot bind to the port 3001. Please specify another port number either through --port argument or through the json-server.json configuration file</i>
 
-eli sovellus ei onnistu käynnistyessään kytkemään itseään [porttiin](https://en.wikipedia.org/wiki/Port_(computer_networking)), syy tälle on se, että portti 3001 on jo aiemmin käynnistetyn json-serverin varaama.
+eli sovellus ei onnistu käynnistyessään kytkemään itseään [porttiin](<https://en.wikipedia.org/wiki/Port_(computer_networking)>), syy tälle on se, että portti 3001 on jo aiemmin käynnistetyn json-serverin varaama.
 
 Käytimme komentoa _npm install_ kahteen kertaan hieman eri tavalla
 
@@ -248,20 +242,20 @@ Parametrissa oli siis hienoinen ero. <i>axios</i> tallennettiin sovelluksen ajon
 
 Olemme nyt valmiina käyttämään axiosia. Jatkossa oletetaan että <i>json-server</i> on käynnissä portissa 3001. Lisäksi varsinainen React-sovellus tulee käynnistää erikseen, erilliseen komentorivi-ikkunaan komennolla:
 
-```npm start```
+`npm start`
 
 Kirjaston voi ottaa käyttöön samaan tapaan kuin esim. React otetaan käyttöön, eli sopivalla <em>import</em>-lauseella.
 
 Lisätään seuraava tiedostoon <i>index.js</i>
 
 ```js
-import axios from 'axios'
+import axios from "axios";
 
-const promise = axios.get('http://localhost:3001/notes')
-console.log(promise)
+const promise = axios.get("http://localhost:3001/notes");
+console.log(promise);
 
-const promise2 = axios.get('http://localhost:3001/foobar')
-console.log(promise2)
+const promise2 = axios.get("http://localhost:3001/foobar");
+console.log(promise2);
 ```
 
 Konsoliin tulostuu seuraavaa
@@ -285,11 +279,11 @@ Esimerkkimme ensimmäinen promise on <i>fulfilled</i>, eli vastaa onnistunutta <
 Jos ja kun haluamme tietoon promisea vastaavan operaation tuloksen, tulee promiselle rekisteröidä tapahtumankuuntelija. Tämä tapahtuu metodilla <em>then</em>:
 
 ```js
-const promise = axios.get('http://localhost:3001/notes')
+const promise = axios.get("http://localhost:3001/notes");
 
-promise.then(response => {
-  console.log(response)
-})
+promise.then((response) => {
+  console.log(response);
+});
 ```
 
 Konsoliin tulostuu seuraavaa
@@ -301,10 +295,10 @@ Javascriptin suoritusympäristö kutsuu <em>then</em>-metodin avulla rekisteröi
 Promise-olioa ei ole yleensä tarvetta tallettaa muuttujaan, ja onkin tapana ketjuttaa metodin <em>then</em> kutsu suoraan axiosin metodin kutsun perään:
 
 ```js
-axios.get('http://localhost:3001/notes').then(response => {
-  const notes = response.data
-  console.log(notes)
-})
+axios.get("http://localhost:3001/notes").then((response) => {
+  const notes = response.data;
+  console.log(notes);
+});
 ```
 
 Takaisinkutsufunktio ottaa nyt vastauksen sisällä olevan datan muuttujaan ja tulostaa muistiinpanot konsoliin.
@@ -312,17 +306,15 @@ Takaisinkutsufunktio ottaa nyt vastauksen sisällä olevan datan muuttujaan ja t
 Luettavampi tapa formatoida <i>ketjutettuja</i> metodikutsuja on sijoittaa jokainen kutsu omalle rivilleen:
 
 ```js
-axios
-  .get('http://localhost:3001/notes')
-  .then(response => {
-    const notes = response.data
-    console.log(notes)
-  })
+axios.get("http://localhost:3001/notes").then((response) => {
+  const notes = response.data;
+  console.log(notes);
+});
 ```
 
 näin jo nopea, ruudun vasempaan laitaan kohdistunut vilkaisu kertoo mistä on kyse.
 
-Palvelimen palauttama data on pelkkää tekstiä, käytännössä yksi iso merkkijono. 
+Palvelimen palauttama data on pelkkää tekstiä, käytännössä yksi iso merkkijono.
 Axios-kirjasto osaa kuitenkin parsia datan Javascript-taulukoksi, sillä palvelin on kertonut headerin <i>content-type</i> avulla että datan muoto on <i>application/json; charset=utf-8</i> (ks. edellinen kuva).
 
 Voimme vihdoin siirtyä käyttämään sovelluksessamme palvelimelta haettavaa dataa.
@@ -330,19 +322,16 @@ Voimme vihdoin siirtyä käyttämään sovelluksessamme palvelimelta haettavaa d
 Tehdään se aluksi "huonosti", eli lisätään sovellusta vastaavan komponentin <i>App</i> renderöinti takaisinkutsufunktion sisälle muuttamalla <i>index.js</i> seuraavaan muotoon:
 
 ```js
-import ReactDOM from 'react-dom'
-import React from 'react'
-import App from './App'
+import ReactDOM from "react-dom";
+import React from "react";
+import App from "./App";
 
-import axios from 'axios'
+import axios from "axios";
 
-axios.get('http://localhost:3001/notes').then(response => {
-  const notes = response.data
-  ReactDOM.render(
-    <App notes={notes} />,
-    document.getElementById('root')
-  )
-})
+axios.get("http://localhost:3001/notes").then((response) => {
+  const notes = response.data;
+  ReactDOM.render(<App notes={notes} />, document.getElementById("root"));
+});
 ```
 
 Joissain tilanteissa tämäkin tapa voisi olla ok, mutta se on hieman ongelmallinen ja päätetäänkin siirtää datan hakeminen komponenttiin <i>App</i>.
@@ -354,46 +343,43 @@ Ei ole kuitenkaan ihan selvää, mihin kohtaan komponentin koodia komento <em>ax
 Olemme jo käyttäneet Reactin version [16.8.0](https://www.npmjs.com/package/react/v/16.8.0) mukanaan tuomia [state hookeja](https://reactjs.org/docs/hooks-state.html) tuomaan funktioina määriteltyihin React-komponentteihin tilan. Versio 16.8.0 tarjoaa kokonaan uutena ominaisuutena myös
 [effect hookit](https://reactjs.org/docs/hooks-effect.html), dokumentaation sanoin
 
-> <i>The Effect Hook lets you perform side effects in function components.</i>
-> <i>Data fetching, setting up a subscription, and manually changing the DOM in React components are all examples of side effects. </i>
+> <i>The Effect Hook lets you perform side effects in function components.</i> > <i>Data fetching, setting up a subscription, and manually changing the DOM in React components are all examples of side effects. </i>
 
 Eli effect hookit ovat juuri oikea tapa hakea dataa palvelimelta.
 
-Poistetaan nyt datan hakeminen tiedostosta <i>index.js</i>. Komponentille <i>App</i> ei ole enää tarvetta välittää dataa propseina. Eli  <i>index.js</i> pelkistyy seuraavaan muotoon
+Poistetaan nyt datan hakeminen tiedostosta <i>index.js</i>. Komponentille <i>App</i> ei ole enää tarvetta välittää dataa propseina. Eli <i>index.js</i> pelkistyy seuraavaan muotoon
 
 ```js
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById("root"));
 ```
+
 Komponentti <i>App</i> muuttuu seuraavasti:
 
 ```js
-import React, { useState, useEffect } from 'react' // highlight-line
-import axios from 'axios' // highlight-line
-import Note from './components/Note'
+import React, { useState, useEffect } from "react"; // highlight-line
+import axios from "axios"; // highlight-line
+import Note from "./components/Note";
 
 const App = () => {
-  const [notes, setNotes] = useState([]) 
-  const [newNote, setNewNote] = useState('')
-  const [showAll, setShowAll] = useState(true)
+  const [notes, setNotes] = useState([]);
+  const [newNote, setNewNote] = useState("");
+  const [showAll, setShowAll] = useState(true);
 
-// highlight-start
+  // highlight-start
   useEffect(() => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/notes')
-      .then(response => {
-        console.log('promise fulfilled')
-        setNotes(response.data)
-      })
-  }, [])
+    console.log("effect");
+    axios.get("http://localhost:3001/notes").then((response) => {
+      console.log("promise fulfilled");
+      setNotes(response.data);
+    });
+  }, []);
 
-  console.log('render', notes.length, 'notes')
-// highlight-end
+  console.log("render", notes.length, "notes");
+  // highlight-end
 
   // ...
-}
+};
 ```
-
 
 Koodiin on myös lisätty muutama aputulostus, jotka auttavat hahmottamaan miten suoritus etenee.
 
@@ -408,18 +394,16 @@ render 3 notes
 
 Ensin siis suoritetaan komponentin määrittelevan funktion runko ja renderöidään komponentti ensimmäistä kertaa. Tässä vaiheessa tulostuu <i>render 0 notes</i> eli dataa ei ole vielä haettu palvelimelta.
 
-Efekti, eli funktio 
+Efekti, eli funktio
 
 ```js
 () => {
-  console.log('effect')
-  axios
-    .get('http://localhost:3001/notes')
-    .then(response => {
-      console.log('promise fulfilled')
-      setNotes(response.data)
-    })
-}
+  console.log("effect");
+  axios.get("http://localhost:3001/notes").then((response) => {
+    console.log("promise fulfilled");
+    setNotes(response.data);
+  });
+};
 ```
 
 suoritetaan heti renderöinnin jälkeen. Funktion suoritus saa aikaan sen, että konsoliin tulostuu <i>effect</i> ja että komento <em>axios.get</em> aloittaa datan hakemisen palvelimelta sekä rekisteröi operaatiolle <i>tapahtumankäsittelijäksi</i> funktion
@@ -439,36 +423,33 @@ Tarkastellaan vielä efektihookin määrittelyä kokonaisuudessaan
 
 ```js
 useEffect(() => {
-  console.log('effect')
-  axios
-    .get('http://localhost:3001/notes').then(response => {
-      console.log('promise fulfilled')
-      setNotes(response.data)
-    })
-}, [])
+  console.log("effect");
+  axios.get("http://localhost:3001/notes").then((response) => {
+    console.log("promise fulfilled");
+    setNotes(response.data);
+  });
+}, []);
 ```
 
-Kirjotetaan koodi hieman toisella tavalla. 
+Kirjotetaan koodi hieman toisella tavalla.
 
 ```js
 const hook = () => {
-  console.log('effect')
-  axios
-    .get('http://localhost:3001/notes')
-    .then(response => {
-      console.log('promise fulfilled')
-      setNotes(response.data)
-    })
-}
+  console.log("effect");
+  axios.get("http://localhost:3001/notes").then((response) => {
+    console.log("promise fulfilled");
+    setNotes(response.data);
+  });
+};
 
-useEffect(hook, [])
+useEffect(hook, []);
 ```
 
 Nyt huomaamme selvemmin, että funktiolle [useEffect](https://reactjs.org/docs/hooks-reference.html#useeffect) annetaan <i>kaksi parametria</i>. Näistä ensimmäinen on funktio, eli itse <i>efekti</i>. Dokumentaation mukaan
 
 > <i>By default, effects run after every completed render, but you can choose to fire it only when certain values have changed.</i>
 
-Eli oletusarvoisesti efekti suoritetaan <i>aina</i> sen jälkeen, kun komponentti renderöidään. Meidän tapauksessamme emme kuitenkaan halua suorittaa efektin kuin ensimmäisen renderöinnin yhteydessä. 
+Eli oletusarvoisesti efekti suoritetaan <i>aina</i> sen jälkeen, kun komponentti renderöidään. Meidän tapauksessamme emme kuitenkaan halua suorittaa efektin kuin ensimmäisen renderöinnin yhteydessä.
 
 Funktion <em>useEffect</em> toista parametria käytetään [tarkentamaan sitä miten usein efekti suoritetaan](https://reactjs.org/docs/hooks-reference.html#conditionally-firing-an-effect). Jos toisena parametrina on tyhjä taulukko <em>[]</em>, suoritetaan efekti ainoastaan komponentin ensimmäisen renderöinnin jälkeen.
 
@@ -480,30 +461,28 @@ Huomaa, että olisimme voineet kirjoittaa efektifunktion koodin myös seuraavast
 
 ```js
 useEffect(() => {
-  console.log('effect')
+  console.log("effect");
 
-  const eventHandler = response => {
-    console.log('promise fulfilled')
-    setNotes(response.data)
-  }
+  const eventHandler = (response) => {
+    console.log("promise fulfilled");
+    setNotes(response.data);
+  };
 
-  const promise = axios.get('http://localhost:3001/notes')
-  promise.then(eventHandler)
-}, [])
+  const promise = axios.get("http://localhost:3001/notes");
+  promise.then(eventHandler);
+}, []);
 ```
 
 Muuttujaan <em>eventHandler</em> on sijoitettu viite tapahtumankäsittelijäfunktioon. Axiosin metodin <em>get</em> palauttama promise on talletettu muuttujaan <em>promise</em>. Takaisinkutsun rekisteröinti tapahtuu antamalla promisen then-metodin parametrina muuttuja <em>eventHandler</em>, joka viittaa käsittelijäfunktioon. Useimmiten funktioiden ja promisejen sijoittaminen muuttujiin ei ole tarpeen ja ylempänä käyttämämme kompaktimpi esitystapa riittää:
 
 ```js
 useEffect(() => {
-  console.log('effect')
-  axios
-    .get('http://localhost:3001/notes')
-    .then(response => {
-      console.log('promise fulfilled')
-      setNotes(response.data)
-    })
-}, [])
+  console.log("effect");
+  axios.get("http://localhost:3001/notes").then((response) => {
+    console.log("promise fulfilled");
+    setNotes(response.data);
+  });
+}, []);
 ```
 
 Sovelluksessa on tällä hetkellä vielä se ongelma, että jos lisäämme uusia muistiinpanoja, ne eivät tallennu palvelimelle asti. Eli kun uudelleenlataamme sovelluksen, kaikki lisäykset katoavat. Korjaus asiaan tulee pian.
@@ -534,24 +513,24 @@ Jatketaan puhelinluettelon kehittämistä. Talleta sovelluksen alkutila projekti
 
 ```json
 {
-  "persons":[
-    { 
-      "name": "Arto Hellas", 
+  "persons": [
+    {
+      "name": "Arto Hellas",
       "number": "040-123456",
       "id": 1
     },
-    { 
-      "name": "Ada Lovelace", 
+    {
+      "name": "Ada Lovelace",
       "number": "39-44-5323523",
       "id": 2
     },
-    { 
-      "name": "Dan Abramov", 
+    {
+      "name": "Dan Abramov",
       "number": "12-43-234345",
       "id": 3
     },
-    { 
-      "name": "Mary Poppendieck", 
+    {
+      "name": "Mary Poppendieck",
       "number": "39-23-6423122",
       "id": 4
     }
@@ -609,13 +588,13 @@ Paranna edellisen tehtävän maasovellusta siten, että kun sivulla näkyy useid
 
 ![](../../images/2/19b4.png)
 
-Tässäkin tehtävässä riittää, että ohjelmasi toimii suurella osalla maita ja maat joiden nimi sisältyy johonkin muuhun maahan, kuten <i>Sudan</i> voit unohtaa. 
+Tässäkin tehtävässä riittää, että ohjelmasi toimii suurella osalla maita ja maat joiden nimi sisältyy johonkin muuhun maahan, kuten <i>Sudan</i> voit unohtaa.
 
 <h4>2.14*: maiden tiedot, step3</h4>
 
 **Tässä osassa on vielä paljon tekemistä, joten älä juutu tähän tehtävään!**
 
-Lisää yksittäisen maan näkymään pääkaupungin säätiedotus. Säätiedotuksen tarjoavia palveluita on kymmeniä. Itse käytin [https://www.apixu.com](https://www.apixu.com):ia. 
+Lisää yksittäisen maan näkymään pääkaupungin säätiedotus. Säätiedotuksen tarjoavia palveluita on kymmeniä. Itse käytin [https://www.apixu.com](https://www.apixu.com):ia.
 
 ![](../../images/2/19b5.png)
 

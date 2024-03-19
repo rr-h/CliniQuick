@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-8.svg
+mainImage: "../../../images/part-8.svg"
 part: 8
 letter: c
 lang: fi
@@ -22,32 +22,32 @@ Tehdään osien [3](/osa3/tietojen_tallettaminen_mongo_db_tietokantaan) ja [4](/
 Henkilön skeema on määritelty seuraavasti:
 
 ```js
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const schema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
     unique: true,
-    minlength: 5
+    minlength: 5,
   },
   phone: {
     type: String,
-    minlength: 5
+    minlength: 5,
   },
   street: {
     type: String,
     required: true,
-    minlength: 5
+    minlength: 5,
   },
   city: {
     type: String,
     required: true,
-    minlength: 3
+    minlength: 3,
   },
-})
+});
 
-module.exports = mongoose.model('Person', schema)
+module.exports = mongoose.model("Person", schema);
 ```
 
 Mukana on myös muutama validointi. Arvon olemassaolon takaava _required: true_ on sikäli turha, että GraphQL:n käyttö takaa sen, että kentät ovat olemassa. Validointi on kuitenkin hyvä pitää myös tietokannan puolella.
@@ -55,63 +55,64 @@ Mukana on myös muutama validointi. Arvon olemassaolon takaava _required: true_ 
 Saamme sovelluksen jo suurilta osin toimimaan seuraavilla muutoksilla:
 
 ```js
-const { ApolloServer, UserInputError, gql } = require('apollo-server')
-const mongoose = require('mongoose')
-const Person = require('./models/person')
+const { ApolloServer, UserInputError, gql } = require("apollo-server");
+const mongoose = require("mongoose");
+const Person = require("./models/person");
 
-mongoose.set('useFindAndModify', false)
+mongoose.set("useFindAndModify", false);
 
-const MONGODB_URI = 'mongodb+srv://fullstack:fullstack@cluster0-ostce.mongodb.net/graphql?retryWrites=true'
+const MONGODB_URI =
+  "mongodb+srv://fullstack:fullstack@cluster0-ostce.mongodb.net/graphql?retryWrites=true";
 
-console.log('connecting to', MONGODB_URI)
+console.log("connecting to", MONGODB_URI);
 
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true })
+mongoose
+  .connect(MONGODB_URI, { useNewUrlParser: true })
   .then(() => {
-    console.log('connected to MongoDB')
+    console.log("connected to MongoDB");
   })
   .catch((error) => {
-    console.log('error connection to MongoDB:', error.message)
-  })
+    console.log("error connection to MongoDB:", error.message);
+  });
 
 const typeDefs = gql`
   ...
-`
+`;
 
 const resolvers = {
   Query: {
     personCount: () => Person.collection.countDocuments(),
     allPersons: (root, args) => {
       // filters missing
-      return Person.find({})
+      return Person.find({});
     },
-    findPerson: (root, args) => Person.findOne({ name: args.name })
+    findPerson: (root, args) => Person.findOne({ name: args.name }),
   },
   Person: {
-    address: root => {
+    address: (root) => {
       return {
         street: root.street,
-        city: root.city
-      }
-    }
+        city: root.city,
+      };
+    },
   },
   Mutation: {
     addPerson: (root, args) => {
-      const person = new Person({ ...args })
-      return person.save()
+      const person = new Person({ ...args });
+      return person.save();
     },
     editNumber: async (root, args) => {
-      const person = await Person.findOne({ name: args.name })
-      person.phone = args.phone
-      return person.save()
-    }
-  }
-}
+      const person = await Person.findOne({ name: args.name });
+      person.phone = args.phone;
+      return person.save();
+    },
+  },
+};
 ```
 
-Muutokset ovat melko suoraviivaisia. Huomio kiinnittyy pariin seikkaan. Kuten muistamme, Mongossa olioiden identifioiva kenttä on nimeltään <i>_id</i> ja jouduimme aiemmin muuttamaan itse kentän nimen alaviivattomaan muotoon <i>id</i>. GraphQL osaa tehdä tämän muutoksen automaattisesti.
+Muutokset ovat melko suoraviivaisia. Huomio kiinnittyy pariin seikkaan. Kuten muistamme, Mongossa olioiden identifioiva kenttä on nimeltään <i>\_id</i> ja jouduimme aiemmin muuttamaan itse kentän nimen alaviivattomaan muotoon <i>id</i>. GraphQL osaa tehdä tämän muutoksen automaattisesti.
 
 Toinen huomionarvoinen seikka on se, että resolverifunktiot palauttavat nyt <i>promisen</i>, aiemminhan ne palauttivat aina normaaleja oliota. Kun resolveri palauttaa promisen, Apollo server [osaa lähettää vastaukseksi](https://www.apollographql.com/docs/apollo-server/data/data/#resolver-results) sen arvon mihin promise resolvoituu.
-
 
 Eli esimerkiksi jos seuraava resolverifunktio suoritetaan,
 
@@ -124,9 +125,9 @@ allPersons: (root, args) => {
 odottaa Apollo server promisen valmistumista ja lähettää promisen vastauksen kyselyn tekijälle. Apollo toimii siis suunnilleen seuraavasti:
 
 ```js
-Person.find({}).then( result => {
+Person.find({}).then((result) => {
   // palautetaan kyselyn tuloksena result
-})
+});
 ```
 
 Täydennetään vielä resolveri _allPersons_ ottamaan huomioon optionaalinen filtterinä toimiva parametri _phone_:
@@ -147,13 +148,13 @@ Query: {
 Eli jos kyselylle ei ole annettu parametria _phone_, palautetaan kaikki henkilöt. Jos parametrilla on arvo <i>YES</i>, palautetaan kyselyn
 
 ```js
-Person.find({ phone: { $exists: true }})
+Person.find({ phone: { $exists: true } });
 ```
 
 palauttamat henkilöt, eli ne joiden kentällä _phone_ on jokin arvo. Jos parametrin arvo on <i>NO</i>, palauttaa kysely ne henkilöt, joilla ei ole arvoa kentällä _phone_:
 
 ```js
-Person.find({ phone: { $exists: false }})
+Person.find({ phone: { $exists: false } });
 ```
 
 #### Validoinnit
@@ -192,7 +193,6 @@ Mutation: {
 
 Backendin lopullinen koodi on kokonaisuudessaan [githubissa](https://github.com/fullstackopen-2019/graphql-phonebook-backend/tree/part8-4), branchissa <i>part8-4</i>.
 
-
 ### Käyttäjä ja kirjautuminen
 
 Lisätään järjestelmään käyttäjänhallinta. Oletetaan nyt yksinkertaisuuden takia, että kaikkien käyttäjien salasana on sama järjestelmään kovakoodattu merkkijono. [Osan 4](/osa4/kayttajien_hallinta) periaatteilla on toki suoraviivaista tallettaa käyttäjille yksilöllinen salasana, mutta koska fokuksemme on GraphQL:ssä, jätämme salasanaan liittyvät rönsyt tällä kertaa pois.
@@ -200,24 +200,24 @@ Lisätään järjestelmään käyttäjänhallinta. Oletetaan nyt yksinkertaisuud
 Käyttäjän skeema seuraavassa:
 
 ```js
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const schema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
     unique: true,
-    minlength: 3
+    minlength: 3,
   },
   friends: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Person'
-    }
+      ref: "Person",
+    },
   ],
-})
+});
 
-module.exports = mongoose.model('User', schema)
+module.exports = mongoose.model("User", schema);
 ```
 
 Käyttäjään siis liittyy kentän _friends_ kautta joukko luettelossa olevia henkilöitä. Ideana on se, että kun käyttäjä, esim. <i>mluukkai</i> lisää henkilön, vaikkapa <i>Arto Hellas</i> luetteloon, liitetään henkilö käyttäjän _friends_-listaan. Näin kirjautuneilla henkilöillä on mahdollista saada sovellukseen oma personoitu näkymänsä.
@@ -308,18 +308,18 @@ const server = new ApolloServer({
   resolvers,
   // highlight-start
   context: async ({ req }) => {
-    const auth = req ? req.headers.authorization : null
-    if (auth && auth.toLowerCase().startsWith('bearer ')) {
-      const decodedToken = jwt.verify(
-        auth.substring(7), JWT_SECRET
-      )
+    const auth = req ? req.headers.authorization : null;
+    if (auth && auth.toLowerCase().startsWith("bearer ")) {
+      const decodedToken = jwt.verify(auth.substring(7), JWT_SECRET);
 
-      const currentUser = await User.findById(decodedToken.id).populate('friends')
-      return { currentUser }
+      const currentUser = await User.findById(decodedToken.id).populate(
+        "friends"
+      );
+      return { currentUser };
     }
-  }
+  },
   // highlight-end
-})
+});
 ```
 
 Contextin palauttama olio annetaan kaikille resolvereille <i>kolmantena parametrina</i>, context on siis oikea paikka tehdä asioita, jotka ovat useille resolvereille yhteistä, kuten pyyntöön liittyvän [käyttäjän tunnistaminen](https://blog.apollographql.com/authorization-in-graphql-452b1c402a9?_ga=2.45656161.474875091.1550613879-1581139173.1549828167).
@@ -388,7 +388,7 @@ Mutaation toteuttava resolveri:
 
 ```js
   addAsFriend: async (root, args, { currentUser }) => {
-    const nonFriendAlready = (person) => 
+    const nonFriendAlready = (person) =>
       !currentUser.friends.map(f => f._id).includes(person._id)
 
     if (!currentUser) {
@@ -421,7 +421,6 @@ addAsFriend: async (root, args, { currentUser }) => {
 
 Backendin koodi on kokonaisuudessaan [githubissa](https://github.com/fullstackopen-2019/graphql-phonebook-backend/tree/part8-5), branchissa <i>part8-5</i>.
 
-
 </div>
 
 <div class="tasks">
@@ -442,7 +441,7 @@ type Book {
   genres: [String!]!
   id: ID!
 }
-```  
+```
 
 eli kirja sisältää pelkän kirjailijan nimen sijaan kirjailijan kaikki tiedot.
 
@@ -500,6 +499,6 @@ type Mutation {
 
 Toteuta uuden queryn _me_ sekä uusien mutaatioiden _createUser_ ja _login_ resolverit. Voit olettaa tämän luvun materiaalin tapaan, että kaikilla käyttäjillä on sama, kovakoodattu salasana.
 
-Tee mutaatiot _addBook_ ja _editAuthor_ mahdollisiksi ainoastaan, jos pyynnön mukana lähetetään validi token. 
+Tee mutaatiot _addBook_ ja _editAuthor_ mahdollisiksi ainoastaan, jos pyynnön mukana lähetetään validi token.
 
 </div>

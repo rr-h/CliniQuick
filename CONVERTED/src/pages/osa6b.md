@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-6.svg
+mainImage: "../../../images/part-6.svg"
 part: 6
 letter: b
 lang: fi
@@ -14,23 +14,23 @@ Sovelluskehitystä helpottaaksemme laajennetaan reduceria siten, että storelle 
 ```js
 const initialState = [
   {
-    content: 'reducer defines how redux store works',
+    content: "reducer defines how redux store works",
     important: true,
     id: 1,
   },
   {
-    content: 'state of store can contain any data',
+    content: "state of store can contain any data",
     important: false,
     id: 2,
   },
-]
+];
 
 const noteReducer = (state = initialState, action) => {
   // ...
-}
+};
 
 // ...
-export default noteReducer
+export default noteReducer;
 ```
 
 ### Monimutkaisempi tila storessa
@@ -42,39 +42,45 @@ Toteutetaan sovellukseen näytettävien muistiinpanojen filtteröinti, jonka avu
 Aloitetaan todella suoraviivaisella toteutuksella:
 
 ```js
-import React from 'react'
-import NewNote from './components/NewNote'
-import Notes from './components/Notes'
+import React from "react";
+import NewNote from "./components/NewNote";
+import Notes from "./components/Notes";
 
 const App = (props) => {
-  const store = props.store
+  const store = props.store;
 
-//highlight-start
+  //highlight-start
   const filterSelected = (value) => () => {
-    console.log(value)
-  }
-//highlight-end
+    console.log(value);
+  };
+  //highlight-end
 
   return (
     <div>
-      <NewNote store={store}/>
+      <NewNote store={store} />
       <div>
         <div>
-        //highlight-start
-          all          <input type="radio" name="filter"
-            onChange={filterSelected('ALL')} />
-          important    <input type="radio" name="filter"
-            onChange={filterSelected('IMPORTANT')} />
-          nonimportant <input type="radio" name="filter"
-            onChange={filterSelected('NONIMPORTANT')} />
+          //highlight-start all{" "}
+          <input type="radio" name="filter" onChange={filterSelected("ALL")} />
+          important <input
+            type="radio"
+            name="filter"
+            onChange={filterSelected("IMPORTANT")}
+          />
+          nonimportant{" "}
+          <input
+            type="radio"
+            name="filter"
+            onChange={filterSelected("NONIMPORTANT")}
+          />
           //highlight-end
         </div>
       </div>
-      
+
       <Notes store={store} />
     </div>
-  )
-}
+  );
+};
 ```
 
 Koska painikkeiden attribuutin <i>name</i> arvo on kaikilla sama, muodostavat ne <i>nappiryhmän</i>, joista ainoastaan yksi voi olla kerrallaan valittuna.
@@ -100,14 +106,14 @@ Tällä hetkellähän tilassa on ainoastaan muistiinpanot sisältävä taulukko.
 Voisimme periaatteessa muokata jo olemassaolevaa reduceria ottamaan huomioon muuttuneen tilanteen. Parempi ratkaisu on kuitenkin määritellä tässä tilanteessa uusi, filtterin arvosta huolehtiva reduceri:
 
 ```js
-const filterReducer = (state = 'ALL', action) => {
+const filterReducer = (state = "ALL", action) => {
   switch (action.type) {
-    case 'SET_FILTER':
-      return action.filter
+    case "SET_FILTER":
+      return action.filter;
     default:
-      return state
+      return state;
   }
-}
+};
 ```
 
 Filtterin arvon asettavat actionit ovat siis muotoa
@@ -122,18 +128,18 @@ Filtterin arvon asettavat actionit ovat siis muotoa
 Määritellään samalla myös sopiva _action creator_ -funktio. Sijoitetaan koodi moduuliin <i>src/reducers/filterReducer.js</i>:
 
 ```js
-const filterReducer = (state = 'ALL', action) => {
+const filterReducer = (state = "ALL", action) => {
   // ...
-}
+};
 
-export const filterChange = filter => {
+export const filterChange = (filter) => {
   return {
-    type: 'SET_FILTER',
+    type: "SET_FILTER",
     filter,
-  }
-}
+  };
+};
 
-export default filterReducer
+export default filterReducer;
 ```
 
 Saamme nyt muodostettua varsinaisen reducerin yhdistämällä kaksi olemassaolevaa reduceria funktion [combineReducers](https://redux.js.org/api-reference/combinereducers) avulla.
@@ -141,28 +147,28 @@ Saamme nyt muodostettua varsinaisen reducerin yhdistämällä kaksi olemassaolev
 Määritellään yhdistetty reduceri tiedostossa <i>index.js</i>:
 
 ```js
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { createStore, combineReducers } from 'redux' // highlight-line
-import App from './App'
-import noteReducer from './reducers/noteReducer'
-import filterReducer from './reducers/filterReducer'  // highlight-line
+import React from "react";
+import ReactDOM from "react-dom";
+import { createStore, combineReducers } from "redux"; // highlight-line
+import App from "./App";
+import noteReducer from "./reducers/noteReducer";
+import filterReducer from "./reducers/filterReducer"; // highlight-line
 
- // highlight-start
+// highlight-start
 const reducer = combineReducers({
   notes: noteReducer,
-  filter: filterReducer
-})
- // highlight-end
+  filter: filterReducer,
+});
+// highlight-end
 
-const store = createStore(reducer)  // highlight-line
+const store = createStore(reducer); // highlight-line
 
-console.log(store.getState())
+console.log(store.getState());
 
 ReactDOM.render(
-  <div></div>,  // highlight-line
-  document.getElementById('root')
-)
+  <div></div>, // highlight-line
+  document.getElementById("root")
+);
 ```
 
 Koska sovelluksemme hajoaa tässä vaiheessa täysin, komponentin <i>App</i> sijasta renderöidään tyhjä <i>div</i>-elementti.
@@ -179,7 +185,7 @@ Tarkastellaan vielä yhdistetyn reducerin luomista
 const reducer = combineReducers({
   notes: noteReducer,
   filter: filterReducer,
-})
+});
 ```
 
 Näin tehdyn reducerin määrittelemän storen tila on olio, jossa on kaksi kenttää, <i>notes</i> ja <i>filter</i>. Tilan kentän <i>notes</i> arvon määrittelee <i>noteReducer</i>, jonka ei tarvitse välittää mitään tilan muista kentistä. Vastaavasti <i>filter</i> kentän käsittely tapahtuu <i>filterReducer</i>:in avulla.
@@ -187,12 +193,14 @@ Näin tehdyn reducerin määrittelemän storen tila on olio, jossa on kaksi kent
 Ennen muun koodin muutoksia, kokeillaan vielä konsolista, miten actionit muuttavat yhdistetyn reducerin muodostamaa staten tilaa. Lisätään seuraavat tiedostoon <i>index.js</i>:
 
 ```js
-import { createNote } from './reducers/noteReducer'
-import { filterChange } from './reducers/filterReducer'
+import { createNote } from "./reducers/noteReducer";
+import { filterChange } from "./reducers/filterReducer";
 //...
-store.subscribe(() => console.log(store.getState()))
-store.dispatch(filterChange('IMPORTANT'))
-store.dispatch(createNote('combineReducers forms one reduces from many simple reducers'))
+store.subscribe(() => console.log(store.getState()));
+store.dispatch(filterChange("IMPORTANT"));
+store.dispatch(
+  createNote("combineReducers forms one reduces from many simple reducers")
+);
 ```
 
 Kun simuloimme näin filtterin tilan muutosta ja muistiinpanon luomista Konsoliin tulostuu storen tila jokaisen muutoksen jälkeen:
@@ -202,10 +210,10 @@ Kun simuloimme näin filtterin tilan muutosta ja muistiinpanon luomista Konsolii
 Jo tässä vaiheessa kannattaa laittaa mieleen eräs tärkeä detalji. Jos lisäämme <i>molempien reducerien alkuun</i> konsoliin tulostuksen:
 
 ```js
-const filterReducer = (state = 'ALL', action) => {
-  console.log('ACTION: ', action)
+const filterReducer = (state = "ALL", action) => {
+  console.log("ACTION: ", action);
   // ...
-}
+};
 ```
 
 Näyttää konsolin perusteella siltä, että jokainen action kahdentuu:
@@ -219,10 +227,7 @@ Onko koodissa bugi? Ei. Yhdistetty reducer toimii siten, että jokainen <i>actio
 Viimeistellään nyt sovellus käyttämään yhdistettyä reduceria, eli palautetaan tiedostossa <i>index.js</i> suoritettava renderöinti muotoon
 
 ```js
-ReactDOM.render(
-  <App store={store} />,
-  document.getElementById('root')
-)
+ReactDOM.render(<App store={store} />, document.getElementById("root"));
 ```
 
 Korjataan sitten bugi, joka johtuu siitä, että koodi olettaa storen tilan olevan mustiinpanot tallettava taulukko:
@@ -233,57 +238,56 @@ Korjaus on helppo. Viitteen <i>store.getState()</i> sijaan kaikki muistiinpanot 
 
 ```js
 const Notes = ({ store }) => {
-  return(
+  return (
     <ul>
-      {store.getState().notes.map(note => // highlight-line
-        <Note
-          key={note.id}
-          note={note}
-          onClick={() => store.dispatch(toggleImportanceOf(note.id))}
-        />
+      {store.getState().notes.map(
+        (
+          note // highlight-line
+        ) => (
+          <Note
+            key={note.id}
+            note={note}
+            onClick={() => store.dispatch(toggleImportanceOf(note.id))}
+          />
+        )
       )}
     </ul>
-  )
-}
+  );
+};
 ```
 
 Eriytetään näkyvyyden säätelyfiltteri omaksi, tiedostoon sijoitettavaksi <i>src/components/VisibilityFilter.js</i> komponentiksi:
 
 ```js
-import React from 'react'
-import { filterChange } from '../reducers/filterReducer'
+import React from "react";
+import { filterChange } from "../reducers/filterReducer";
 
 const VisibilityFilter = (props) => {
-
   const filterClicked = (value) => {
-    props.store.dispatch(filterChange(value))
-  }
+    props.store.dispatch(filterChange(value));
+  };
 
   return (
     <div>
-      all    
-      <input 
-        type="radio" 
-        name="filter" 
-        onChange={() => filterClicked('ALL')}
-      />
-      important   
+      all
+      <input type="radio" name="filter" onChange={() => filterClicked("ALL")} />
+      important
       <input
         type="radio"
         name="filter"
-        onChange={() => filterClicked('IMPORTANT')}
+        onChange={() => filterClicked("IMPORTANT")}
       />
-      nonimportant 
+      nonimportant
       <input
         type="radio"
         name="filter"
-        onChange={() => filterClicked('NONIMPORTANT')}
+        onChange={() => filterClicked("NONIMPORTANT")}
       />
     </div>
-  )
-}
+  );
+};
 
-export default VisibilityFilter
+export default VisibilityFilter;
 ```
 
 Toteutus on suoraviivainen, radiobuttonin klikkaaminen muuttaa storen kentän <i>filter</i> tilaa.
@@ -291,13 +295,13 @@ Toteutus on suoraviivainen, radiobuttonin klikkaaminen muuttaa storen kentän <i
 Komponentti <i>App</i> yksinkertaisuu nyt seuraavasti:
 
 ```js
-import React from 'react'
-import Notes from './components/Notes'
-import NewNote from './components/NewNote'
-import VisibilityFilter from './components/VisibilityFilter'
+import React from "react";
+import Notes from "./components/Notes";
+import NewNote from "./components/NewNote";
+import VisibilityFilter from "./components/VisibilityFilter";
 
 const App = (props) => {
-  const store = props.store
+  const store = props.store;
 
   return (
     <div>
@@ -305,10 +309,10 @@ const App = (props) => {
       <VisibilityFilter store={store} />
       <Notes store={store} />
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
 ```
 
 Muutetaan vielä komponentin <i>Notes</i> ottamaan huomioon filtteri
@@ -316,49 +320,52 @@ Muutetaan vielä komponentin <i>Notes</i> ottamaan huomioon filtteri
 ```js
 const Notes = ({ store }) => {
   // highlight-start
-  const { notes, filter } = store.getState()
+  const { notes, filter } = store.getState();
   const notesToShow = () => {
-    if ( filter === 'ALL' ) {
-      return notes
+    if (filter === "ALL") {
+      return notes;
     }
 
-    return filter === 'IMPORTANT'
-      ? notes.filter(note => note.important)
-      : notes.filter(note => !note.important)
-  }
+    return filter === "IMPORTANT"
+      ? notes.filter((note) => note.important)
+      : notes.filter((note) => !note.important);
+  };
   // highlight-end
 
-  return(
+  return (
     <ul>
-      {notesToShow().map(note => // highlight-line
-        <Note
-          key={note.id}
-          note={note}
-          onClick={() => store.dispatch(toggleImportanceOf(note.id))}
-        />
+      {notesToShow().map(
+        (
+          note // highlight-line
+        ) => (
+          <Note
+            key={note.id}
+            note={note}
+            onClick={() => store.dispatch(toggleImportanceOf(note.id))}
+          />
+        )
       )}
     </ul>
-  )
-}
+  );
+};
 ```
 
 Huomaa miten storen tilan kentät on otettu tuttuun tapaan destrukturoimalla apumuuttujiin
 
 ```js
-const { notes, filter } = store.getState()
+const { notes, filter } = store.getState();
 ```
 
 siis on sama kuin kirjoittaisimme
 
 ```js
-const notes = store.getState().notes
-const filter = store.getState().filter
+const notes = store.getState().notes;
+const filter = store.getState().filter;
 ```
 
 Sovelluksen tämänhetkinen koodi on [githubissa](https://github.com/fullstackopen-2019/redux-notes/tree/part6-2) branchissa </i>part6-2</i>.
 
 Sovelluksessa on vielä pieni kauneusvirhe, vaikka oletusarvosesti filtterin arvo on <i>ALL</i>, eli näytetään kaikki muistiinpanot, ei vastaava radiobutton ole valittuna. Ongelma on luonnollisestikin mahdollista korjata, mutta koska kyseessä on ikävä, mutta harmiton feature, jätämme korjauksen myöhemmäksi.
-
 
 </div>
 
@@ -373,22 +380,18 @@ Jatketaan tehtävässä 6.3 aloitetun reduxia käyttävän anekdoottisovelluksen
 Sovelluksessa on valmiina komponentin <i>Notification</i> runko:
 
 ```js
-import React from 'react'
+import React from "react";
 
 const Notification = () => {
   const style = {
-    border: 'solid',
+    border: "solid",
     padding: 10,
-    borderWidth: 1
-  }
-  return (
-    <div style={style}>
-      render here notification...
-    </div>
-  )
-}
+    borderWidth: 1,
+  };
+  return <div style={style}>render here notification...</div>;
+};
 
-export default Notification
+export default Notification;
 ```
 
 Laajenna komponenttia siten, että se renderöi redux-storeen talletetun viestin, eli renderöitävä komponentti muuttuu muotoon:
@@ -413,7 +416,7 @@ Laajenna sovellusta siten, että se näyttää <i>Notification</i>-komponentin a
 
 Notifikaation asettamista ja poistamista varten kannattaa toteuttaa [action creatorit](https://redux.js.org/basics/actions#action-creators).
 
-#### 6.11* paremmat anekdootit, step9
+#### 6.11\* paremmat anekdootit, step9
 
 Toteuta sovellukseen näytettävien muistiinpanojen filtteröiminen
 
@@ -424,24 +427,24 @@ Säilytä filtterin tila redux storessa, eli käytännössä kannattaa jälleen 
 Tee filtterin ruudulla näyttämistä varten komponentti <i>Filter</i>. Voit ottaa sen pohjaksi seuraavan
 
 ```js
-import React from 'react'
+import React from "react";
 
 const Filter = (props) => {
   const handleChange = (event) => {
     // input-kentän arvo muuttujassa event.target.value
-  }
+  };
   const style = {
-    marginBottom: 10
-  }
+    marginBottom: 10,
+  };
 
   return (
     <div style={style}>
       filter <input onChange={handleChange} />
     </div>
-  )
-}
+  );
+};
 
-export default Filter
+export default Filter;
 ```
 
 </div>
@@ -452,50 +455,50 @@ export default Filter
 
 Reduxin käytön ansiosta sovelluksen rakenne alkaa jo olla mukavan modulaarinen. Pystymme kuitenkin vielä parempaan.
 
-Eräs tämänhetkisen ratkaisun ikävistä puolista on se, että Redux-store täytyy välittää propseina kaikille sitä tarvitseville komponenteille. <i>App</i> ei itse tarvitse ollenkaan Reduxia, mutta joutuu silti välittämään sen eteenpäin lapsikomponenteille: 
+Eräs tämänhetkisen ratkaisun ikävistä puolista on se, että Redux-store täytyy välittää propseina kaikille sitä tarvitseville komponenteille. <i>App</i> ei itse tarvitse ollenkaan Reduxia, mutta joutuu silti välittämään sen eteenpäin lapsikomponenteille:
 
 ```js
 const App = (props) => {
-  const store = props.store
+  const store = props.store;
 
   return (
     <div>
-      <NewNote store={store}/>  
-      <VisibilityFilter store={store} />    
+      <NewNote store={store} />
+      <VisibilityFilter store={store} />
       <Notes store={store} />
     </div>
-  )
-}
+  );
+};
 ```
 
 Otetaan nyt käyttöön
 [React Redux](https://github.com/reactjs/react-redux) -kirjaston määrittelemä funktio [connect](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options), joka on tämän hetken defacto-ratkaisu sille, miten Redux-store saadaan välitettyä React-componenteille.
 
-Connect voi olla aluksi haastava sisäistää, mutta hieman vaivaa kannattaa ehdottomasti nähdä. Tutustutaan nyt connectin käyttöön. 
+Connect voi olla aluksi haastava sisäistää, mutta hieman vaivaa kannattaa ehdottomasti nähdä. Tutustutaan nyt connectin käyttöön.
 
 ```js
 npm install --save react-redux
 ```
 
-Edellytyksenä kirjaston tarjoaman _connect_-funktion käytölle on se, että sovellus on määritelty React redux -kirjaston tarjoaman [Provider](https://github.com/reactjs/react-redux/blob/master/docs/api.md#provider-store)-komponentin lapsena ja että sovelluksen käyttämä store on annettu Provider-komponentin attribuutiksi <i>store</i>. 
+Edellytyksenä kirjaston tarjoaman _connect_-funktion käytölle on se, että sovellus on määritelty React redux -kirjaston tarjoaman [Provider](https://github.com/reactjs/react-redux/blob/master/docs/api.md#provider-store)-komponentin lapsena ja että sovelluksen käyttämä store on annettu Provider-komponentin attribuutiksi <i>store</i>.
 
 Eli tiedosto <i>index.js</i> tulee muuttaa seuraavaan muotoon
 
 ```js
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { createStore, combineReducers } from 'redux'
-import { Provider } from 'react-redux' // highlight-line
-import App from './App'
-import noteReducer from './reducers/noteReducer'
-import filterReducer from './reducers/filterReducer'
+import React from "react";
+import ReactDOM from "react-dom";
+import { createStore, combineReducers } from "redux";
+import { Provider } from "react-redux"; // highlight-line
+import App from "./App";
+import noteReducer from "./reducers/noteReducer";
+import filterReducer from "./reducers/filterReducer";
 
 const reducer = combineReducers({
   notes: noteReducer,
-  filter: filterReducer
-})
+  filter: filterReducer,
+});
 
-const store = createStore(reducer)
+const store = createStore(reducer);
 
 ReactDOM.render(
   // highlight-start
@@ -503,8 +506,8 @@ ReactDOM.render(
     <App />
   </Provider>,
   // highlight-end
-  document.getElementById('root')
-)
+  document.getElementById("root")
+);
 ```
 
 Tutkitaan ensin komponenttia <i>Notes</i>. Funktiota _connect_ käyttämällä "normaaleista" React-komponenteista saadaan muodostettua komponentteja, joiden <i>propseihin</i> on "mäpätty" eli yhdistetty haluttuja osia storen määrittelemästä tilasta.
@@ -512,17 +515,17 @@ Tutkitaan ensin komponenttia <i>Notes</i>. Funktiota _connect_ käyttämällä "
 Muodostetaan ensin komponentista <i>Notes</i> connectin avulla <i>yhdistetty komponentti</i>:
 
 ```js
-import React from 'react'
-import { connect } from 'react-redux' // highlight-line
-import Note from './Note'
-import { toggleImportanceOf } from '../reducers/noteReducer'
+import React from "react";
+import { connect } from "react-redux"; // highlight-line
+import Note from "./Note";
+import { toggleImportanceOf } from "../reducers/noteReducer";
 
 const Notes = ({ store }) => {
   // ...
-}
+};
 
-const ConnectedNotes = connect()(Notes) // highlight-line
-export default ConnectedNotes           // highlight-line
+const ConnectedNotes = connect()(Notes); // highlight-line
+export default ConnectedNotes; // highlight-line
 ```
 
 Moduuli eksporttaa nyt alkuperäisen komponentin sijaan <i>yhdistetyn komponentin</i>, joka toimii toistaiseksi täsmälleen alkuperäisen komponentin kaltaisesti.
@@ -534,18 +537,18 @@ Jos määritellään:
 ```js
 const Notes = (props) => {
   // ...
-}
+};
 
 const mapStateToProps = (state) => {
   return {
     notes: state.notes,
     filter: state.filter,
-  }
-}
+  };
+};
 
-const ConnectedNotes = connect(mapStateToProps)(Notes)
+const ConnectedNotes = connect(mapStateToProps)(Notes);
 
-export default ConnectedNotes
+export default ConnectedNotes;
 ```
 
 on komponentin <i>Notes</i> sisällä mahdollista viitata storen tilaan, esim. muistiinpanoihin suoraan propsin kautta <i>props.notes</i> sen sijaan, että käytettäisiin suoraan propseina saatua storea muodossa <i>props.store.getState().notes</i>. Vastaavasti <i>props.filter</i> viittaa storessa olevaan filter-kentän tilaan.
@@ -553,31 +556,31 @@ on komponentin <i>Notes</i> sisällä mahdollista viitata storen tilaan, esim. m
 Komponentti muuttuu seuraavasti
 
 ```js
-const Notes = (props) => {  // highlight-line
+const Notes = (props) => {
+  // highlight-line
   const notesToShow = () => {
-    if ( props.filter === 'ALL' ) { // highlight-line
-      return props.notes // highlight-line
+    if (props.filter === "ALL") {
+      // highlight-line
+      return props.notes; // highlight-line
     }
 
-    return props.filter === 'IMPORTANT' // highlight-line
-      ? props.notes.filter(note => note.important) // highlight-line
-      : props.notes.filter(note => !note.important) // highlight-line
-  }
+    return props.filter === "IMPORTANT" // highlight-line
+      ? props.notes.filter((note) => note.important) // highlight-line
+      : props.notes.filter((note) => !note.important); // highlight-line
+  };
 
-  return(
+  return (
     <ul>
-      {notesToShow().map(note =>
+      {notesToShow().map((note) => (
         <Note
           key={note.id}
           note={note}
-          onClick={() =>
-            props.store.dispatch(toggleImportanceOf(note.id))
-          }
+          onClick={() => props.store.dispatch(toggleImportanceOf(note.id))}
         />
-      )}
+      ))}
     </ul>
-  )
-}
+  );
+};
 ```
 
 Connect-komennolla ja <i>mapStateToProps</i>-määrittelyllä aikaan saatua tilannetta voidaan visualisoida seuraavasti:
@@ -592,12 +595,11 @@ eli komponentin <i>Notes</i> sisältä on propsien <i>props.notes</i> ja <i>prop
 <Note
   key={note.id}
   note={note}
-  onClick={() =>
-    props.store.dispatch(toggleImportanceOf(note.id)) // highlight-line
+  onClick={
+    () => props.store.dispatch(toggleImportanceOf(note.id)) // highlight-line
   }
 />
 ```
-
 
 Propsia <i>store</i> ei kuitenkaan ole enää olemassa, joten tilan muutos ei tällä hetkellä toimi.
 
@@ -608,19 +610,19 @@ const mapStateToProps = (state) => {
   return {
     notes: state.notes,
     filter: state.filter,
-  }
-}
+  };
+};
 
 // highlight-start
 const mapDispatchToProps = {
   toggleImportanceOf,
-}
+};
 // highlight-end
 
 const ConnectedNotes = connect(
   mapStateToProps,
   mapDispatchToProps // highlight-line
-)(Notes)
+)(Notes);
 ```
 
 Nyt komponentti voi dispatchata suoraan action creatorin _toggleImportanceOf_ määrittelemän actionin kutsumalla propsien kautta saamaansa funktiota koodissa:
@@ -636,13 +638,13 @@ Nyt komponentti voi dispatchata suoraan action creatorin _toggleImportanceOf_ m�
 Eli se sijaan että kutsuttaisiin
 
 ```js
-props.store.dispatch(toggleImportanceOf(note.id))
+props.store.dispatch(toggleImportanceOf(note.id));
 ```
 
 _connect_-metodia käytettäessä actionin dispatchaamiseen riittää
 
 ```js
-props.toggleImportanceOf(note.id)
+props.toggleImportanceOf(note.id);
 ```
 
 Storen _dispatch_-funktiota ei enää tarvitse kutsua, sillä _connect_ on muokannut action creatorin _toggleImportanceOf_ sellaiseen muotoon, joka sisältää dispatchauksen.
@@ -653,85 +655,79 @@ Connectin aikaansaamaa tilannetta voidaan havainnollistaa seuraavasti:
 
 ![](../../images/6/25b.png)
 
-eli sen lisäksi että <i>Notes</i> pääsee storen tilaan propsien <i>props.notes</i> ja <i>props.filter</i> kautta, se viittaa <i>props.toggleImportanceOf</i>:lla funktioon, jonka avulla storeen saadaan dispatchattua <i>TOGGLE\_IMPORTANCE</i>-tyyppisiä actioneja.
+eli sen lisäksi että <i>Notes</i> pääsee storen tilaan propsien <i>props.notes</i> ja <i>props.filter</i> kautta, se viittaa <i>props.toggleImportanceOf</i>:lla funktioon, jonka avulla storeen saadaan dispatchattua <i>TOGGLE_IMPORTANCE</i>-tyyppisiä actioneja.
 
 Connectia käyttämään refaktoroitu komponentti <i>Notes</i> on kokonaisuudessaan seuraava:
 
 ```js
-import React from 'react'
-import { connect } from 'react-redux'
-import Note from './Note'
-import { toggleImportanceOf } from '../reducers/noteReducer'
+import React from "react";
+import { connect } from "react-redux";
+import Note from "./Note";
+import { toggleImportanceOf } from "../reducers/noteReducer";
 
 const Notes = (props) => {
   const notesToShow = () => {
-    if ( props.filter === 'ALL' ) {
-      return props.notes
+    if (props.filter === "ALL") {
+      return props.notes;
     }
 
-    return props.filter === 'IMPORTANT'
-      ? props.notes.filter(note => note.important)
-      : props.notes.filter(note => !note.important)
-  }
+    return props.filter === "IMPORTANT"
+      ? props.notes.filter((note) => note.important)
+      : props.notes.filter((note) => !note.important);
+  };
 
-  return(
+  return (
     <ul>
-      {notesToShow().map(note =>
+      {notesToShow().map((note) => (
         <Note
           key={note.id}
           note={note}
           onClick={() => props.toggleImportanceOf(note.id)}
         />
-      )}
+      ))}
     </ul>
-  )
-}
+  );
+};
 
 const mapStateToProps = (state) => {
   return {
     notes: state.notes,
     filter: state.filter,
-  }
-}
+  };
+};
 
 const mapDispatchToProps = {
   toggleImportanceOf,
-}
+};
 
 // eksportoidaan suoraan connectin palauttama komponentti
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Notes)
+export default connect(mapStateToProps, mapDispatchToProps)(Notes);
 ```
 
 Otetaan _connect_ käyttöön myös uuden muistiinpanon luomisessa:
 
 ```js
-import React from 'react'
-import { connect } from 'react-redux'
-import { createNote } from '../reducers/noteReducer'
+import React from "react";
+import { connect } from "react-redux";
+import { createNote } from "../reducers/noteReducer";
 
 const NewNote = (props) => {
   const addNote = (event) => {
-    event.preventDefault()
-    const content = event.target.note.value
-    event.target.note.value = ''
-    props.createNote(content)
-  }
+    event.preventDefault();
+    const content = event.target.note.value;
+    event.target.note.value = "";
+    props.createNote(content);
+  };
 
   return (
     <form onSubmit={addNote}>
       <input name="note" />
       <button type="submit">add</button>
     </form>
-  )
-}
+  );
+};
 
-export default connect(
-  null,
-  { createNote }
-)(NewNote)
+export default connect(null, { createNote })(NewNote);
 ```
 
 Koska komponentti ei tarvitse storen tilasta mitään, on funktion _connect_ ensimmäinen parametri <i>null</i>.
@@ -743,24 +739,20 @@ Sovelluksen tämänhetkinen koodi on [githubissa](https://github.com/fullstackop
 Tarkastellaan vielä erästä mielenkiintoista seikkaa komponentista <i>NewNote</i>:
 
 ```js
-import React from 'react'
-import { connect } from 'react-redux'
-import { createNote } from '../reducers/noteReducer' // highlight-line
+import React from "react";
+import { connect } from "react-redux";
+import { createNote } from "../reducers/noteReducer"; // highlight-line
 
 const NewNote = (props) => {
-
   const addNote = (event) => {
-    event.preventDefault()
-    props.createNote(event.target.note.value) // highlight-line
-    event.target.note.value = ''
-  }
+    event.preventDefault();
+    props.createNote(event.target.note.value); // highlight-line
+    event.target.note.value = "";
+  };
   // ...
-}
+};
 
-export default connect(
-  null,
-  { createNote }
-)(NewNote)
+export default connect(null, { createNote })(NewNote);
 ```
 
 Aloittelevalle connectin käyttäjälle aiheuttaa joskus ihmetystä se, että action creatorista <i>createNote</i> on komponentin sisällä käytettävissä <i>kaksi eri versiota</i>.
@@ -770,7 +762,7 @@ Funktioon tulee viitata propsien kautta, eli <i>props.createNote</i>, tällöin 
 Moduulissa olevan import-lauseen
 
 ```js
-import { createNote } from './../reducers/noteReducer'
+import { createNote } from "./../reducers/noteReducer";
 ```
 
 ansiosta komponentin sisältä on mahdollista viitata funktioon myös suoraan, eli _createNote_. Näin ei kuitenkaan tule tehdä, sillä silloin on kyseessä alkuperäinen action creator joka <i>ei sisällä dispatchausta</i>.
@@ -779,17 +771,17 @@ Jos tulostamme funktiot koodin sisällä (emme olekaan vielä käyttäneet kurss
 
 ```js
 const NewNote = (props) => {
-  console.log(createNote)
-  console.log(props.createNote)
+  console.log(createNote);
+  console.log(props.createNote);
 
   const addNote = (event) => {
-    event.preventDefault()
-    props.createNote(event.target.note.value)
-    event.target.note.value = ''
-  }
+    event.preventDefault();
+    props.createNote(event.target.note.value);
+    event.target.note.value = "";
+  };
 
   // ...
-}
+};
 ```
 
 näemme eron:
@@ -807,12 +799,9 @@ Määrittelimme siis connectin komponentille <i>NewNote</i> antamat actioneja di
 ```js
 const NewNote = () => {
   // ...
-}
+};
 
-export default connect(
-  null,
-  { createNote }
-)(NewNote)
+export default connect(null, { createNote })(NewNote);
 ```
 
 Eli määrittelyn ansiosta komponentti dispatchaa uuden muistiinpanon lisäyksen suorittavan actionin suoraan komennolla <code>props.createNote('uusi muistiinpano')</code>.
@@ -823,7 +812,7 @@ Kannattaa huomata, että parametri <i>mapDispatchToProps</i> on nyt <i>olio</i>,
 
 ```js
 {
-  createNote
+  createNote;
 }
 ```
 
@@ -831,7 +820,7 @@ on lyhempi tapa määritellä olioliteraali
 
 ```js
 {
-  createNote: createNote
+  createNote: createNote;
 }
 ```
 
@@ -842,30 +831,27 @@ Voimme määritellä saman myös "pitemmän kaavan" kautta, antamalla _connectin
 ```js
 const NewNote = (props) => {
   // ...
-}
+};
 
 // highlight-start
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    createNote: value => {
-      dispatch(createNote(value))
+    createNote: (value) => {
+      dispatch(createNote(value));
     },
-  }
-}
+  };
+};
 // highlight-end
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(NewNote)
+export default connect(null, mapDispatchToProps)(NewNote);
 ```
 
 Tässä vaihtoehtoisessa tavassa <i>mapDispatchToProps</i> on funktio, jota _connect_ kutsuu antaen sille parametriksi storen _dispatch_-funktion. Funktion paluuarvona on olio, joka määrittelee joukon funktioita, jotka annetaan connectoitavalle komponentille propsiksi. Esimerkkimme määrittelee propsin <i>createNote</i> olevan funktion
 
 ```js
-value => {
-  dispatch(createNote(value))
-}
+(value) => {
+  dispatch(createNote(value));
+};
 ```
 
 eli action creatorilla luodun actionin dispatchaus.
@@ -874,20 +860,19 @@ Komponentti siis viittaa funktioon propsin <i>props.createNote</i> kautta:
 
 ```js
 const NewNote = (props) => {
-
   const addNote = (event) => {
-    event.preventDefault()
-    props.createNote(event.target.note.value)
-    event.target.note.value = ''
-  }
+    event.preventDefault();
+    props.createNote(event.target.note.value);
+    event.target.note.value = "";
+  };
 
   return (
     <form onSubmit={addNote}>
       <input name="note" />
       <button type="submit">add</button>
     </form>
-  )
-}
+  );
+};
 ```
 
 Konsepti on hiukan monimutkainen ja sen selittäminen sanallisesti on haastavaa. Useimmissa tapauksissa onneksi riittää <i>mapDispatchToProps</i>:in yksinkertaisempi muoto. On kuitenkin tilanteita, joissa monimutkaisempi muoto on tarpeen, esim. jos määriteltäessä propseiksi mäpättyjä <i>dispatchattavia actioneja</i> on [viitattava komponentin omiin propseihin](https://github.com/gaearon/redux-devtools/issues/250#issuecomment-186429931).
@@ -901,66 +886,66 @@ Komponentti <i>Notes</i> käyttää apumetodia <i>notesToShow</i>, joka päätte
 ```js
 const Notes = (props) => {
   const notesToShow = () => {
-    if ( props.filter === 'ALL' ) {
-      return props.notes
+    if (props.filter === "ALL") {
+      return props.notes;
     }
 
-    return props.filter === 'IMPORTANT'
-      ? props.notes.filter(note => note.important)
-      : props.notes.filter(note => !note.important)
-  }
+    return props.filter === "IMPORTANT"
+      ? props.notes.filter((note) => note.important)
+      : props.notes.filter((note) => !note.important);
+  };
 
   // ...
-}
+};
 ```
 
 Komponentin on tarpeetonta sisältää kaikkea tätä logiikkaa. Eriytetään se komponentin ulkopuolelle _connect_-metodin parametrin <i>mapStateToProps</i> yhteyteen:
 
 ```js
-import React from 'react'
-import { connect } from 'react-redux'
-import Note from './Note'
-import { toggleImportanceOf } from '../reducers/noteReducer'
+import React from "react";
+import { connect } from "react-redux";
+import Note from "./Note";
+import { toggleImportanceOf } from "../reducers/noteReducer";
 
 const Notes = (props) => {
-  return(
+  return (
     <ul>
-      {props.visibleNotes.map(note => // highlight-line
-        <Note
-          key={note.id}
-          note={note}
-          onClick={() => props.toggleImportanceOf(note.id)}
-        />
+      {props.visibleNotes.map(
+        (
+          note // highlight-line
+        ) => (
+          <Note
+            key={note.id}
+            note={note}
+            onClick={() => props.toggleImportanceOf(note.id)}
+          />
+        )
       )}
     </ul>
-  )
-}
+  );
+};
 
-const notesToShow = ({ notes, filter }) => { // highlight-line
-  if (filter === 'ALL') {
-    return notes
+const notesToShow = ({ notes, filter }) => {
+  // highlight-line
+  if (filter === "ALL") {
+    return notes;
   }
-  return filter === 'IMPORTANT'
-    ? notes.filter(note => note.important)
-    : notes.filter(note => !note.important)
-}
+  return filter === "IMPORTANT"
+    ? notes.filter((note) => note.important)
+    : notes.filter((note) => !note.important);
+};
 
 const mapStateToProps = (state) => {
   return {
     visibleNotes: notesToShow(state), // highlight-line
-  }
-}
-
+  };
+};
 
 const mapDispatchToProps = {
   toggleImportanceOf,
-}
+};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Notes)
-
+export default connect(mapStateToProps, mapDispatchToProps)(Notes);
 ```
 
 <i>mapStateToProps</i> ei siis tällä kertaa mäppää propsiksi suoraan storessa olevaa asiaa, vaan storen tilasta funktion _notesToShow_ avulla muodostetun sopivasti filtteröidyn datan. Uusi versio funktiosta _notesToShow_ siis saa parametriksi koko tilan ja <i>valitsee</i> siitä sopivan osajoukon välitettäväksi komponentille. Tämänkaltaisia funktioita kutsutaan [selektoreiksi](https://medium.com/@pearlmcphee/selectors-react-redux-reselect-9ab984688dd4).
@@ -979,24 +964,21 @@ Uudistettu <i>Notes</i> keskittyy lähes ainoastaan muistiinpanojen renderöimis
 Connect-metodin avulla muodostettu _yhdistetty komponentti_
 
 ```js
-const notesToShow = ({notes, filter}) => {
+const notesToShow = ({ notes, filter }) => {
   // ...
-}
+};
 
 const mapStateToProps = (state) => {
   return {
     visibleNotes: notesToShow(state),
-  }
-}
+  };
+};
 
 const mapDispatchToProps = {
   toggleImportanceOf,
-}
+};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Notes)
+export default connect(mapStateToProps, mapDispatchToProps)(Notes);
 ```
 
 taas on selkeästi <i>container</i>-komponentti, joita Dan Abramov [luonnehtii](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0) seuraavasti:
@@ -1036,7 +1018,7 @@ Huomaa muutokset kompnenteissa <i>VisibilityFilter</i> ja <i>App</i>
 
 Sovelluksessa välitetään <i>redux store</i> tällä hetkellä kaikille komponenteille propseina.
 
-Ota käyttöön kirjasto [react-redux](https://github.com/reactjs/react-redux) ja muuta komponenttia <i>AnecdoteList</i> niin, että se pääsee käsiksi tilaan _connect_-funktion välityksellä. 
+Ota käyttöön kirjasto [react-redux](https://github.com/reactjs/react-redux) ja muuta komponenttia <i>AnecdoteList</i> niin, että se pääsee käsiksi tilaan _connect_-funktion välityksellä.
 
 Anekdoottien äänestyksen ja uusien anekdoottien luomisen **ei tarvitse vielä toimia** tämän tehtävän jälkeen.
 
@@ -1045,17 +1027,17 @@ Tehtävässä tarvitsemasi <i>mapStateToProps</i> on suunnilleen seuraavanlainen
 ```js
 const mapStateToProps = (state) => {
   // joskus on hyödyllistä tulostaa mapStateToProps:ista...
-  console.log(state)
+  console.log(state);
   return {
     anecdotes: state.anecdotes,
-    filter: state.filter
-  }
-}
+    filter: state.filter,
+  };
+};
 ```
 
 #### 6.13 paremmat anekdootit, step11
 
-Tee sama komponentille  <i>Filter</i> ja <i>AnecdoteForm</i>.
+Tee sama komponentille <i>Filter</i> ja <i>AnecdoteForm</i>.
 
 #### 6.14 paremmat anekdootit, step12
 
@@ -1076,7 +1058,7 @@ const = () => {
 }
 ```
 
-#### 6.15* paremmat anekdootit, step13
+#### 6.15\* paremmat anekdootit, step13
 
 Välitä komponentille <i>AnecdoteList</i> connectin avulla ainoastaan yksi stateen liittyvä propsi, filtterin tilan perusteella näytettävät anekdootit samaan tapaan kuin materiaalin luvussa [Presentational/Container revisited](/osa6/monta_reduseria_connect#presentational-container-revisited).
 
@@ -1086,24 +1068,26 @@ Komponentti <i>AnecdoteList</i> siis typistyy suunnilleen seuraavaan muotoon
 const AnecdoteList = (props) => {
   const vote = (id) => {
     // ...
-  }
+  };
 
   return (
     <div>
-      {props.anecdotesToShow.map(anecdote => // highlight-line
-        <div key={anecdote.id}>
-          <div>
-            {anecdote.content}
+      {props.anecdotesToShow.map(
+        (
+          anecdote // highlight-line
+        ) => (
+          <div key={anecdote.id}>
+            <div>{anecdote.content}</div>
+            <div>
+              has {anecdote.votes}
+              <button onClick={() => vote(anecdote.id)}>vote</button>
+            </div>
           </div>
-          <div>
-            has {anecdote.votes}
-            <button onClick={() => vote(anecdote.id)}>vote</button>
-          </div>
-        </div>
+        )
       )}
     </div>
-  )
-}
+  );
+};
 ```
 
 </div>

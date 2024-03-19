@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-0.svg
+mainImage: '../../public/images/part-0.svg'
 part: 0
 lang: fi
 ---

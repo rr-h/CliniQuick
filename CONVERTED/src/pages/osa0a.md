@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-0.svg
+mainImage: "../../../images/part-0.svg"
 part: 0
 letter: a
 lang: fi
@@ -65,17 +65,17 @@ Voit halutessasi laajentaa 3 op suorituksen myöhemmin laajempaan 5-8 op suoritu
 
 Arvosana/opintopisterajat:
 
-| tehtäviä     | opintopisteitä | arvosana | 
-| ------------ | :------------: | :------: |
-| 138          |       7        | 5        |
-| 127          |       6        | 5        |
-| 116          |       5        | 5        |
-| 105          |       5        | 4        |
-| 94           |       5        | 3        |
-| 83           |       5        | 2        |
-| 72           |       5        | 1        |
+| tehtäviä | opintopisteitä | arvosana |     |
+| -------- | :------------: | :------: | --- |
+| 138      |       7        |    5     |
+| 127      |       6        |    5     |
+| 116      |       5        |    5     |
+| 105      |       5        |    4     |
+| 94       |       5        |    3     |
+| 83       |       5        |    2     |
+| 72       |       5        |    1     |
 
-Myös 5-7 op:n suorituksen edellytyksenä on hyväksytysti suoritettu koe. Koe suoritetaan Moodlessa. Pääset Moodleen Avoimen yliopiston kurssisivun kautta. Kokeen voi suorittaa 1.4. alkaen. Kokeen viimeinen suorituspäivä on 10.1.2020.  <b>Huomaa, että viimeinen päivä kokeeseen ilmoittautumiselle on 9.1.2020.</b>
+Myös 5-7 op:n suorituksen edellytyksenä on hyväksytysti suoritettu koe. Koe suoritetaan Moodlessa. Pääset Moodleen Avoimen yliopiston kurssisivun kautta. Kokeen voi suorittaa 1.4. alkaen. Kokeen viimeinen suorituspäivä on 10.1.2020. <b>Huomaa, että viimeinen päivä kokeeseen ilmoittautumiselle on 9.1.2020.</b>
 
 Voit osallistua kokeeseen vasta siinä vaiheessa kun olet tehnyt riittävästi tehtäviä 5 opintopisteen suoritukseen. Käytännössä kokeeseen ei kuitenkaan kannata osallistua heti kun riittävä tehtäväpistemäärä on suoritettu. Koe on sisällöltään sama riippumatta onko suorituksesi laajuus 5-7 opintopistettä. Koe ei vaikuta kurssilta saamaasi arvosanaan.
 

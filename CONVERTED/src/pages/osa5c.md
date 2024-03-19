@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-5.svg
+mainImage: "../../../images/part-5.svg"
 part: 5
 letter: c
 lang: fi
@@ -23,21 +23,20 @@ Testataan aluksi muistiinpanon renderöivää komponenttia:
 
 ```js
 const Note = ({ note, toggleImportance }) => {
-  const label = note.important
-    ? 'make not important'
-    : 'make important'
+  const label = note.important ? "make not important" : "make important";
 
   return (
-    <li className='note'> // highlight-line
+    <li className="note">
+      {" "}
+      // highlight-line
       {note.content}
       <button onClick={toggleImportance}>{label}</button>
     </li>
-  )
-}
+  );
+};
 ```
 
 Huomaa, että muistiinpanon sisältävällä <i>li</i>-elementillä on [CSS](https://reactjs.org/docs/dom-elements.html#classname)-luokka <i>note</i>, pääsemme sen avulla muistiinpanoon käsiksi testistä.
-
 
 ### Komponentin renderöinti testiä varten
 
@@ -46,38 +45,34 @@ Tehdään testi tiedostoon <i>src/components/Note.test.js</i>, eli samaan hakemi
 Ensimmäinen testi varmistaa, että komponentti renderöi muistiinpanon sisällön:
 
 ```js
-import React from 'react'
-import '@testing-library/jest-dom/extend-expect'
-import { render, cleanup } from '@testing-library/react'
-import Note from './Note'
+import React from "react";
+import "@testing-library/jest-dom/extend-expect";
+import { render, cleanup } from "@testing-library/react";
+import Note from "./Note";
 
-afterEach(cleanup)
+afterEach(cleanup);
 
-test('renders content', () => {
+test("renders content", () => {
   const note = {
-    content: 'Component testing is done with react-testing-library',
-    important: true
-  }
+    content: "Component testing is done with react-testing-library",
+    important: true,
+  };
 
-  const component = render(
-    <Note note={note} />
-  )
+  const component = render(<Note note={note} />);
 
   expect(component.container).toHaveTextContent(
-    'Component testing is done with react-testing-library'
-  )
-})
+    "Component testing is done with react-testing-library"
+  );
+});
 ```
 
 Alun konfiguroinnin jälkeen testi renderöi komponentin metodin react-testing-library-kirjaston tarjoaman [render](https://testing-library.com/docs/react-testing-library/api#render) avulla:
 
 ```js
-const component = render(
-  <Note note={note} />
-)
+const component = render(<Note note={note} />);
 ```
 
-Normaalisti React-komponentit renderöityvät <i>DOM</i>:iin. Nyt kuitenkin renderöimme komponentteja testeille sopivaan muotoon laittamatta niitä DOM:iin. 
+Normaalisti React-komponentit renderöityvät <i>DOM</i>:iin. Nyt kuitenkin renderöimme komponentteja testeille sopivaan muotoon laittamatta niitä DOM:iin.
 
 _render_ palauttaa olion, jolla on useita kenttiä. Yksi kentistä on <i>container</i>, se sisältää koko komponentin renderöimän HTML:n.
 
@@ -85,8 +80,8 @@ Ekspektaatiossa varmistamme, että komponenttiin on renderöitynyt oikea teksti,
 
 ```js
 expect(component.container).toHaveTextContent(
-  'Component testing is done with react-testing-library'
-)
+  "Component testing is done with react-testing-library"
+);
 ```
 
 ### Testien suorittaminen
@@ -117,36 +112,34 @@ Itse en pidä siitä, että testit ja normaali koodi ovat samassa hakemistossa. 
 react-testing-library-kirjasto tarjoaa runsaasti tapoja, miten voimme tutkia testattavan komponentin sisältöä. Laajennetaan testiämme hiukan:
 
 ```js
-test('renders content', () => {
+test("renders content", () => {
   const note = {
-    content: 'Component testing is done with react-testing-library',
-    important: true
-  }
+    content: "Component testing is done with react-testing-library",
+    important: true,
+  };
 
-  const component = render(
-    <Note note={note} />
-  )
+  const component = render(<Note note={note} />);
 
   // tapa 1
   expect(component.container).toHaveTextContent(
-    'Component testing is done with react-testing-library'
-  )
+    "Component testing is done with react-testing-library"
+  );
 
   // tapa 2
   const element = component.getByText(
-    'Component testing is done with react-testing-library'
-  )
-  expect(element).toBeDefined()
+    "Component testing is done with react-testing-library"
+  );
+  expect(element).toBeDefined();
 
   // tapa 3
-  const div = component.container.querySelector('.note')
+  const div = component.container.querySelector(".note");
   expect(div).toHaveTextContent(
-    'Component testing is done with react-testing-library'
-  )
-})
+    "Component testing is done with react-testing-library"
+  );
+});
 ```
 
-Ensimmäinen tapa siis etsii tiettyä tekstiä koko komponentin renderöimästä HTML-koodista. 
+Ensimmäinen tapa siis etsii tiettyä tekstiä koko komponentin renderöimästä HTML-koodista.
 
 Toisena käytimme render-metodin palauttamaan olioon liitettyä [getByText](https://testing-library.com/docs/dom-testing-library/api-queries#bytext)-metodia, joka palauttaa sen elementin, jolla on määritelty teksti. Jos elementtiä ei ole, tapahtuu poikkeus. Eli mitään ekspektaatiota ei välttämättä edes tarvittaisi.
 
@@ -154,25 +147,23 @@ Kolmas tapa on etsiä komponentin sisältä tietty elementti metodilla [querySel
 
 ### Testien debuggaaminen
 
-Testejä tehdessä törmäämme tyypillisesti erittäin moniin ongelmiin. 
+Testejä tehdessä törmäämme tyypillisesti erittäin moniin ongelmiin.
 
 Renderin palauttaman olion metodilla [debug](https://testing-library.com/docs/react-testing-library/api#debug) voimme tulostaa komponentin tuottaman HTML:n konsoliin, eli kun muutamme testiä seuraavasti,
 
 ```js
-test('renders content', () => {
+test("renders content", () => {
   const note = {
-    content: 'Component testing is done with react-testing-library',
-    important: true
-  }
+    content: "Component testing is done with react-testing-library",
+    important: true,
+  };
 
-  const component = render(
-    <Note note={note} />
-  )
+  const component = render(<Note note={note} />);
 
-  component.debug() // highlight-line
+  component.debug(); // highlight-line
 
   // ...
-})
+});
 ```
 
 konsoliin tulostuu komponentin generoima HTML:
@@ -196,25 +187,23 @@ console.log node_modules/@testing-library/react/dist/index.js:90
 On myös mahdollista etsiä komponentista pienempi osa, ja tulostaa sen HTML-koodi, tällöin tarvitsemme metodia _prettyDOM_, joka löytyy react-testing-library:n mukana tulevasta kirjastosta <i>@testing-library/dom</i>:
 
 ```js
-import React from 'react'
-import '@testing-library/jest-dom/extend-expect'
-import { render, cleanup } from '@testing-library/react'
-import { prettyDOM } from '@testing-library/dom' // highlight-line
-import Note from './Note'
+import React from "react";
+import "@testing-library/jest-dom/extend-expect";
+import { render, cleanup } from "@testing-library/react";
+import { prettyDOM } from "@testing-library/dom"; // highlight-line
+import Note from "./Note";
 
-test('renders content', () => {
+test("renders content", () => {
   const note = {
-    content: 'Component testing is done with react-testing-library',
-    important: true
-  }
+    content: "Component testing is done with react-testing-library",
+    important: true,
+  };
 
-  const component = render(
-    <Note note={note} />
-  )
-  const li = component.container.querySelector('li')
-  
-  console.log(prettyDOM(li)) // highlight-line
-})
+  const component = render(<Note note={note} />);
+  const li = component.container.querySelector("li");
+
+  console.log(prettyDOM(li)); // highlight-line
+});
 ```
 
 Eli haimme selektorin avulla komponentin sisältä <i>li</i>-elementin ja tulostimme sen HTML:n konsoliin:
@@ -236,21 +225,21 @@ console.log src/components/Note.test.js:21
 react-testing-library:n manuaali kehoittaa kutsumaan jokaisen testin jälkeen metodia
 [cleanup](https://testing-library.com/docs/react-testing-library/api#cleanup). Hoidimme asian lisäämällä testitiedostoon [afterEach](https://jestjs.io/docs/en/setup-teardown)-määreen, joka kutsuu metodia:
 
-```js 
-import React from 'react'
-import '@testing-library/jest-dom/extend-expect' // highlight-line
-import { render, cleanup } from '@testing-library/react'
-import { prettyDOM } from '@testing-library/dom' 
-import Note from './Note'
+```js
+import React from "react";
+import "@testing-library/jest-dom/extend-expect"; // highlight-line
+import { render, cleanup } from "@testing-library/react";
+import { prettyDOM } from "@testing-library/dom";
+import Note from "./Note";
 
-afterEach(cleanup)  // highlight-line
+afterEach(cleanup); // highlight-line
 ```
 
 Voisimme toistaa saman kaikkiin testitiedostoihin. Parempi vaihtoehto on kuitenkin [konfiguroida](https://testing-library.com/docs/react-testing-library/setup) cleanup tapahtumaan automaattisesti. Tehdään konfiguraatiota varten tiedosto <i>src/setupTests.js</i> jolla on seuraava sisältö:
 
 ```js
-import '@testing-library/jest-dom/extend-expect'
-import '@testing-library/react/cleanup-after-each'
+import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/react/cleanup-after-each";
 ```
 
 Nyt pääsemme eroon molemmista ylläolevan testikoodin korostetuista riveistä.
@@ -274,43 +263,43 @@ Sisällön näyttämisen lisäksi toinen <i>Note</i>-komponenttien vastuulla ole
 Testaus onnistuu seuraavasti:
 
 ```js
-import React from 'react'
-import { render, fireEvent } from '@testing-library/react' // highlight-line
-import { prettyDOM } from '@testing-library/dom' 
-import Note from './Note'
+import React from "react";
+import { render, fireEvent } from "@testing-library/react"; // highlight-line
+import { prettyDOM } from "@testing-library/dom";
+import Note from "./Note";
 
 // ...
 
-test('clicking the button calls event handler once', async () => {
+test("clicking the button calls event handler once", async () => {
   const note = {
-    content: 'Component testing is done with react-testing-library',
-    important: true
-  }
+    content: "Component testing is done with react-testing-library",
+    important: true,
+  };
 
-  const mockHandler = jest.fn()
+  const mockHandler = jest.fn();
 
   const { getByText } = render(
     <Note note={note} toggleImportance={mockHandler} />
-  )
+  );
 
-  const button = getByText('make not important')
-  fireEvent.click(button)
+  const button = getByText("make not important");
+  fireEvent.click(button);
 
-  expect(mockHandler.mock.calls.length).toBe(1)
-})
+  expect(mockHandler.mock.calls.length).toBe(1);
+});
 ```
 
 Testissä on muutama mielenkiintoinen seikka. Tapahtumankäsittelijäksi annetaan Jestin avulla määritelty [mock](https://facebook.github.io/jest/docs/en/mock-functions.html)-funktio:
 
 ```js
-const mockHandler = jest.fn()
+const mockHandler = jest.fn();
 ```
 
 Testi hakee renderöidystä komponentista napin <i>tekstin perusteella</i> ja klikkaa sitä:
 
 ```js
-const button = getByText('make not important')
-fireEvent.click(button)
+const button = getByText("make not important");
+fireEvent.click(button);
 ```
 
 Klikkaaminen tapahtuu metodin [fireEvent](https://testing-library.com/docs/api-events#fireevent) avulla.
@@ -318,7 +307,7 @@ Klikkaaminen tapahtuu metodin [fireEvent](https://testing-library.com/docs/api-e
 Testin ekspektaatio varmistaa, että <i>mock-funktiota</i> on kutsuttu täsmälleen kerran:
 
 ```js
-expect(mockHandler.mock.calls.length).toBe(1)
+expect(mockHandler.mock.calls.length).toBe(1);
 ```
 
 [Mockoliot ja -funktiot](https://en.wikipedia.org/wiki/Mock_object) ovat testauksessa yleisesti käytettyjä valekomponentteja, joiden avulla korvataan testattavien komponenttien riippuvuuksia, eli niiden tarvitsemia muita komponentteja. Mockit mahdollistavat mm. kovakoodattujen syötteiden palauttamisen sekä niiden metodikutsujen lukumäärän sekä parametrien testauksen aikaisen tarkkailun.
@@ -336,68 +325,67 @@ const Togglable = React.forwardRef((props, ref) => {
   return (
     <div>
       <div style={hideWhenVisible}>
-        <button onClick={toggleVisibility}>
-          {props.buttonLabel}
-        </button>
+        <button onClick={toggleVisibility}>{props.buttonLabel}</button>
       </div>
-      <div style={showWhenVisible} className="togglableContent"> // highlight-line
+      <div style={showWhenVisible} className="togglableContent">
+        {" "}
+        // highlight-line
         {props.children}
         <button onClick={toggleVisibility}>cancel</button>
       </div>
     </div>
-  )
-})
+  );
+});
 ```
 
 Testit ovat seuraavassa
 
 ```js
-import React from 'react'
-import { render, fireEvent } from '@testing-library/react'
-import Togglable from './Togglable'
+import React from "react";
+import { render, fireEvent } from "@testing-library/react";
+import Togglable from "./Togglable";
 
-describe('<Togglable />', () => {
-  let component
+describe("<Togglable />", () => {
+  let component;
 
   beforeEach(() => {
     component = render(
       <Togglable buttonLabel="show...">
         <div className="testDiv" />
       </Togglable>
-    )
-  })
+    );
+  });
 
-  test('renders its children', () => {
-    component.container.querySelector('.testDiv')
-  })
+  test("renders its children", () => {
+    component.container.querySelector(".testDiv");
+  });
 
-  test('at start the children are not displayed', () => {
-    const div = component.container.querySelector('.togglableContent')
+  test("at start the children are not displayed", () => {
+    const div = component.container.querySelector(".togglableContent");
 
-    expect(div).toHaveStyle('display: none')
-  })
+    expect(div).toHaveStyle("display: none");
+  });
 
-  test('after clicking the button, children are displayed', () => {
-    const button = component.getByText('show...')
-    fireEvent.click(button)
+  test("after clicking the button, children are displayed", () => {
+    const button = component.getByText("show...");
+    fireEvent.click(button);
 
-    const div = component.container.querySelector('.togglableContent')
-    expect(div).not.toHaveStyle('display: none')
-  })
-
-})
+    const div = component.container.querySelector(".togglableContent");
+    expect(div).not.toHaveStyle("display: none");
+  });
+});
 ```
 
 Ennen jokaista testiä suoritettava _beforeEach_ renderöi <i>Togglable</i>-komponentin muuttujaan _component_.
 
-Ensimmäinen testi tarkastaa, että <i>Togglable</i> renderöi sen lapsikomponentin `<div className="testDiv" />`. 
+Ensimmäinen testi tarkastaa, että <i>Togglable</i> renderöi sen lapsikomponentin `<div className="testDiv" />`.
 
-Loput testit varmistavat metodia [toHaveStyle](https://www.npmjs.com/package/jest-dom#tohavestyle) käyttäen, että Togglablen sisältämä lapsikomponentti on alussa näkymättömissä, eli sen sisältävään <i>div</i>-elementtiin liittyy tyyli `{ display: 'none' }`, ja että nappia painettaessa komponentti näkyy, eli näkymättömäksi tekevää tyyliä <i>ei</i> enää ole. 
+Loput testit varmistavat metodia [toHaveStyle](https://www.npmjs.com/package/jest-dom#tohavestyle) käyttäen, että Togglablen sisältämä lapsikomponentti on alussa näkymättömissä, eli sen sisältävään <i>div</i>-elementtiin liittyy tyyli `{ display: 'none' }`, ja että nappia painettaessa komponentti näkyy, eli näkymättömäksi tekevää tyyliä <i>ei</i> enää ole.
 
 Nappi etsitään jälleen nappiin liittyvän tekstin perusteella. Nappi oltaisiin voitu etsiä myös CSS-selektorin avulla
 
 ```js
-const button = component.container.querySelector('button')
+const button = component.container.querySelector("button");
 ```
 
 Komponentissa on kaksi nappia, mutta koska [querySelector](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector) palauttaa <i>ensimmäisen</i> löytyvän napin, löytyy napeista oikea.
@@ -405,33 +393,31 @@ Komponentissa on kaksi nappia, mutta koska [querySelector](https://developer.moz
 Lisätään vielä mukaan testi, joka varmistaa että auki togglattu sisältö saadaan piilotettua painamalla komponentin toisena olevaa nappia
 
 ```js
-test('toggled content can be closed', () => {
-  const button = component.container.querySelector('button')
-  fireEvent.click(button)
+test("toggled content can be closed", () => {
+  const button = component.container.querySelector("button");
+  fireEvent.click(button);
 
-  const closeButton = component.container.querySelector(
-    'button:nth-child(2)'
-  )
-  fireEvent.click(closeButton)
+  const closeButton = component.container.querySelector("button:nth-child(2)");
+  fireEvent.click(closeButton);
 
-  const div = component.container.querySelector('.togglableContent')
-  expect(div).toHaveStyle('display: none')
-})
+  const div = component.container.querySelector(".togglableContent");
+  expect(div).toHaveStyle("display: none");
+});
 ```
 
 eli määrittelimme selektorin, joka palauttaa toisena olevan napin `button:nth-child(2)`. Testeissä ei kuitenkaan ole viisasta olla riippuvainen komponentin nappien järjestyksestä, joten parempi onkin hakea napit niiden tekstin perusteella:
 
 ```js
-test('toggled content can be closed', () => {
-  const button = component.getByText('show...')
-  fireEvent.click(button)
+test("toggled content can be closed", () => {
+  const button = component.getByText("show...");
+  fireEvent.click(button);
 
-  const closeButton = component.getByText('cancel')
-  fireEvent.click(closeButton)
+  const closeButton = component.getByText("cancel");
+  fireEvent.click(closeButton);
 
-  const div = component.container.querySelector('.togglableContent')
-  expect(div).toHaveStyle('display: none')
-})
+  const div = component.container.querySelector(".togglableContent");
+  expect(div).toHaveStyle("display: none");
+});
 ```
 
 Käyttämämme _getByText_ on vain yksi monista [queryistä](https://testing-library.com/docs/api-queries#queries), joita <i>react-testing-library</i> tarjoaa.
@@ -449,7 +435,7 @@ Sovelluksen tämänhetkinen koodi on kokonaisuudessaan [githubissa](https://gith
 Lisää sovellukseesi tilapäisesti seuraava komponentti
 
 ```js
-import React from 'react'
+import React from "react";
 
 const SimpleBlog = ({ blog, onClick }) => (
   <div>
@@ -461,9 +447,9 @@ const SimpleBlog = ({ blog, onClick }) => (
       <button onClick={onClick}>like</button>
     </div>
   </div>
-)
+);
 
-export default SimpleBlog
+export default SimpleBlog;
 ```
 
 Tee testi, joka varmistaa, että komponentti renderöi blogin titlen, authorin ja likejen määrän.
@@ -474,7 +460,7 @@ Lisää komponenttiin tarvittaessa testausta helpottavia CSS-luokkia.
 
 Tee testi, joka varmistaa, että jos komponentin <i>like</i>-nappia painetaan kahdesti, komponentin propsina saamaa tapahtumankäsittelijäfunktiota kutsutaan kaksi kertaa.
 
-#### 5.15*: blogilistan testit, step3
+#### 5.15\*: blogilistan testit, step3
 
 Tee oman sovelluksesi komponentille <i>Blog</i> testit, jotka varmistavat, että oletusarvoisesti blogista on näkyvissä ainoastaan nimi ja kirjoittaja, ja että klikkaamalla niitä saadaan näkyviin myös muut osat blogin tiedoista.
 
@@ -487,8 +473,8 @@ Tee oman sovelluksesi komponentille <i>Blog</i> testit, jotka varmistavat, että
 Käytimme jo edellisissä testeissä [fireEvent](https://testing-library.com/docs/api-events#fireevent)-funktiota nappien klikkaamiseen:
 
 ```js
-const button = component.getByText('show...')
-fireEvent.click(button)
+const button = component.getByText("show...");
+fireEvent.click(button);
 ```
 
 Käytännössä siis loimme <i>fireEventin</i> avulla tapahtuman <i>click</i> nappia vastaavalle komponentille. Voimme myös simuloida lomakkeisiin kirjoittamista <i>fireEventin</i> avulla.
@@ -502,15 +488,12 @@ const NoteForm = ({ onSubmit, handleChange, value }) => {
       <h2>Luo uusi muistiinpano</h2>
 
       <form onSubmit={onSubmit}>
-        <input
-          value={value}
-          onChange={handleChange}
-        />
+        <input value={value} onChange={handleChange} />
         <button type="submit">save</button>
       </form>
     </div>
-  )
-}
+  );
+};
 ```
 
 Lomakkeen toimintaperiaatteena on synkronoida syötekentän tila sen ulkopuolella olevan React-komponentin tilaan. Lomakettamme on jossain määrin vaikea testata yksistään.
@@ -519,10 +502,9 @@ Teemmekin testejä varten apukomponentin <i>Wrapper</i>, joka renderöi <i>NoteF
 
 ```js
 const Wrapper = (props) => {
-
   const onChange = (event) => {
-    props.state.value = event.target.value
-  }
+    props.state.value = event.target.value;
+  };
 
   return (
     <NoteForm
@@ -530,52 +512,51 @@ const Wrapper = (props) => {
       onSubmit={props.onSubmit}
       handleChange={onChange}
     />
-  )
-} 
-
+  );
+};
 ```
 
 Testi on seuraavassa:
 
 ```js
-import React from 'react'
-import { render, fireEvent } from '@testing-library/react'
-import NoteForm from './NoteForm'
+import React from "react";
+import { render, fireEvent } from "@testing-library/react";
+import NoteForm from "./NoteForm";
 
 const Wrapper = (props) => {
   // ...
-}
+};
 
-test('<NoteForm /> updates parent state and calls onSubmit', () => {
-  const onSubmit = jest.fn()
+test("<NoteForm /> updates parent state and calls onSubmit", () => {
+  const onSubmit = jest.fn();
   const state = {
-    value: ''
-  }
+    value: "",
+  };
 
-  const component = render(
-    <Wrapper onSubmit={onSubmit} state={state} />
-  )
+  const component = render(<Wrapper onSubmit={onSubmit} state={state} />);
 
-  const input = component.container.querySelector('input')
-  const form = component.container.querySelector('form')
+  const input = component.container.querySelector("input");
+  const form = component.container.querySelector("form");
 
-  fireEvent.change(input, { target: { value: 'testing of forms could be easier' } })
-  fireEvent.submit(form)
+  fireEvent.change(input, {
+    target: { value: "testing of forms could be easier" },
+  });
+  fireEvent.submit(form);
 
-  expect(onSubmit.mock.calls.length).toBe(1)
-  expect(state.value).toBe('testing of forms could be easier')  
-})
+  expect(onSubmit.mock.calls.length).toBe(1);
+  expect(state.value).toBe("testing of forms could be easier");
+});
 ```
 
 Testi luo <i>Wrapper</i>-komponentin, jolle se välittää propseina mockatun funktion _onSubmit_ sekä tilaa edustavan olion <i>state</i>.
 
-Wrapper välittää funktion edelleen <i>NoteFormille</i> tapahtuman <i>onSubmit</i> käsittelijäksi ja saamansa propsin <i>state</i> kentän <i>value</i> syötekentän <i>input</i> arvoksi. 
+Wrapper välittää funktion edelleen <i>NoteFormille</i> tapahtuman <i>onSubmit</i> käsittelijäksi ja saamansa propsin <i>state</i> kentän <i>value</i> syötekentän <i>input</i> arvoksi.
 
 Syötekenttään <i>input</i> kirjoittamista simuloidaan tekemällä syötekenttään tapahtuma <i>change</i> ja määrittelemällä sopiva olio, joka määrittelee syötekenttään 'kirjoitetun' sisällön.
 
 Lomake lähetetään simuloimalla tapahtuma <i>submit</i> lomakkeelle.
 
-Testin ensimmäinen ekspektaatio varmistaa, että lomakkeen lähetys on aikaansaanut tapahtumankäsittelijän kutsumisen. Toinen ekspektaatio tutkii komponentille <i>Wrapper</i> propsina välitettyä muuttujaa <i>state</i>, ja varmistaa, että lomakkeelle kirjoitettu teksti on siirtynyt tilaan. 
+Testin ensimmäinen ekspektaatio varmistaa, että lomakkeen lähetys on aikaansaanut tapahtumankäsittelijän kutsumisen. Toinen ekspektaatio tutkii komponentille <i>Wrapper</i> propsina välitettyä muuttujaa <i>state</i>, ja varmistaa, että lomakkeelle kirjoitettu teksti on siirtynyt tilaan.
 
 ### Frontendin integraatiotestaus
 
@@ -590,35 +571,33 @@ Local storage ei ole oletusarvoiseti käytettävissä testejä suorittaessa, sil
 Koska testimme ei edellytä local storagelta juuri mitään toiminnallisuutta, teemme tiedostoon [src/setupTests.js](https://github.com/facebookincubator/create-react-app/blob/ed5c48c81b2139b4414810e1efe917e04c96ee8d/packages/react-scripts/template/README.md#initializing-test-environment) hyvin yksinkertaisen mockin
 
 ```js
-let savedItems = {}
+let savedItems = {};
 
 const localStorageMock = {
   setItem: (key, item) => {
-    savedItems[key] = item
+    savedItems[key] = item;
   },
   getItem: (key) => savedItems[key],
-  clear: savedItems = {}
-}
+  clear: (savedItems = {}),
+};
 
-Object.defineProperty(window, 'localStorage', { value: localStorageMock })
+Object.defineProperty(window, "localStorage", { value: localStorageMock });
 ```
 
 Toinen ongelmistamme on se, että sovellus hakee näytettävät muistiinpanot palvelimelta. Muistiinpanojen haku tapahtuu heti komponentin <i>App</i> luomisen jälkeen suoritettavassa effect hookissa:
-
 
 ```js
 const App = () => {
   // ...
 
   useEffect(() => {
-    noteService
-      .getAll().then(initialNotes => {
-        setNotes(initialNotes)
-      })
-  }, [])
+    noteService.getAll().then((initialNotes) => {
+      setNotes(initialNotes);
+    });
+  }, []);
 
-// ...
-}
+  // ...
+};
 ```
 
 Jestin [manual mock](https://facebook.github.io/jest/docs/en/manual-mocks.html#content) -konsepti tarjoaa tilanteeseen hyvän ratkaisun. Manual mockien avulla voidaan kokonainen moduuli, tässä tapauksessa _noteService_ korvata testien ajaksi vaihtoehtoisella esim. kovakoodattua dataa tarjoavalla toiminnallisuudella.
@@ -628,82 +607,75 @@ Luodaan Jestin ohjeiden mukaisesti hakemistoon <i>src/services</i> alihakemisto 
 ```js
 const notes = [
   {
-    id: '5a451df7571c224a31b5c8ce',
-    content: 'HTML is easy',
-    date: '2019-06-11T16:38:15.541Z',
+    id: "5a451df7571c224a31b5c8ce",
+    content: "HTML is easy",
+    date: "2019-06-11T16:38:15.541Z",
     important: false,
     user: {
-      _id: '5a437a9e514ab7f168ddf138',
-      username: 'mluukkai',
-      name: 'Matti Luukkainen'
-    }
+      _id: "5a437a9e514ab7f168ddf138",
+      username: "mluukkai",
+      name: "Matti Luukkainen",
+    },
   },
   {
-    id: '5a451e21e0b8b04a45638211',
-    content: 'Browser can execute only javascript',
-    date: '2019-06-11T16:38:57.694Z',
+    id: "5a451e21e0b8b04a45638211",
+    content: "Browser can execute only javascript",
+    date: "2019-06-11T16:38:57.694Z",
     important: true,
     user: {
-      _id: '5a437a9e514ab7f168ddf138',
-      username: 'mluukkai',
-      name: 'Matti Luukkainen'
-    }
+      _id: "5a437a9e514ab7f168ddf138",
+      username: "mluukkai",
+      name: "Matti Luukkainen",
+    },
   },
   {
-    id: '5a451e30b5ffd44a58fa79ab',
-    content: 'The most important methods of HTTP are GET and POST',
-    date: '2019-06-11T16:39:12.713Z',
+    id: "5a451e30b5ffd44a58fa79ab",
+    content: "The most important methods of HTTP are GET and POST",
+    date: "2019-06-11T16:39:12.713Z",
     important: true,
     user: {
-      _id: '5a437a9e514ab7f168ddf138',
-      username: 'mluukkai',
-      name: 'Matti Luukkainen'
-    }
-  }
-]
+      _id: "5a437a9e514ab7f168ddf138",
+      username: "mluukkai",
+      name: "Matti Luukkainen",
+    },
+  },
+];
 
 const getAll = () => {
-  return Promise.resolve(notes)
-}
+  return Promise.resolve(notes);
+};
 
-export default { getAll }
+export default { getAll };
 ```
 
 Määritelty metodi _getAll_ palauttaa muistiinpanojen listan käärittynä promiseksi metodin [Promise.resolve](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/resolve) avulla sillä käytettäessä metodia, oletetaan sen paluuarvon olevan promise:
 
-
 Olemme valmiina määrittelemään testin. Koska kyseessä on koko sovellusta koskeva testi, tehdään se tiedostoon <i>App.test.js</i>:
 
 ```js
-import React from 'react'
-import { render,  waitForElement } from '@testing-library/react'
-jest.mock('./services/notes')
-import App from './App'
+import React from "react";
+import { render, waitForElement } from "@testing-library/react";
+jest.mock("./services/notes");
+import App from "./App";
 
-describe('<App />', () => {
-  test('renders all notes it gets from backend', async () => {
-    const component = render(
-      <App />
-    )
-    component.rerender(<App />)
-    await waitForElement(
-      () => component.container.querySelector('.note')
-    )
+describe("<App />", () => {
+  test("renders all notes it gets from backend", async () => {
+    const component = render(<App />);
+    component.rerender(<App />);
+    await waitForElement(() => component.container.querySelector(".note"));
 
-    const notes = component.container.querySelectorAll('.note')
-    expect(notes.length).toBe(3) 
+    const notes = component.container.querySelectorAll(".note");
+    expect(notes.length).toBe(3);
 
+    expect(component.container).toHaveTextContent("HTML is easy");
     expect(component.container).toHaveTextContent(
-      'HTML is easy'
-    )
+      "Browser can execute only javascript"
+    );
     expect(component.container).toHaveTextContent(
-      'Browser can execute only javascript'
-    )
-    expect(component.container).toHaveTextContent(
-      'The most important methods of HTTP are GET and POST'
-    )
-  })
-})
+      "The most important methods of HTTP are GET and POST"
+    );
+  });
+});
 ```
 
 Komennolla <i>jest.mock('./services/notes')</i> otetaan juuri määritelty mock käyttöön. Loogisempi paikka komennolle olisi kenties testien määrittelyt tekevä tiedosto <i>src/setupTests.js</i>.
@@ -713,7 +685,7 @@ Testi aloittaa renderöimällä komponentin uudelleen `component.rerender(<App /
 Koska efektin käynnistämä muistiinpanojen haku palvelimelta on [asynkroninen](https://testing-library.com/docs/api-async) tapahtuma, varmistamme funktion [waitForElement](https://testing-library.com/docs/api-async#waitforelement) avulla, että <i>App</i> ehtii renderöidä muistiinpanot
 
 ```js
-await waitForElement(() => component.container.querySelector('.note'))
+await waitForElement(() => component.container.querySelector(".note"));
 ```
 
 Tämän jälkeen teemme varsinaiset expektaatiot, eli varmistetaan että sovelluksessa on kolme CSS-luokalla <i>note</i> merkittyä elementtiä, ja että kaikkien muistiinpanojen sisältö on renderöity.
@@ -734,9 +706,9 @@ Melko primitiivinen HTML-muotoinen raportti generoituu hakemistoon <i>coverage/l
 
 Huomaamme, että parannettavaa jäi vielä runsaasti.
 
-### Warning testejä suoritettaessa 
+### Warning testejä suoritettaessa
 
-Jos käytössäsi on Reactin version 16.8.6  tai aiempi, saatat saada testien läpimenosta huolimatta seuraavan varoituksen
+Jos käytössäsi on Reactin version 16.8.6 tai aiempi, saatat saada testien läpimenosta huolimatta seuraavan varoituksen
 
 ![](../../images/5/23e.png)
 
@@ -745,19 +717,19 @@ Kuten [täällä](https://github.com/facebook/react/issues/14769), kerrotaan the
 VAroituksen saa vaiennettua lisäämällä seuraavan koodin tiedostoon <i>src/setupTests.js</i>
 
 ```js
-const originalError = console.error
+const originalError = console.error;
 beforeAll(() => {
   console.error = (...args) => {
     if (/Warning.*not wrapped in act/.test(args[0])) {
-      return
+      return;
     }
-    originalError.call(console, ...args)
-  }
-})
+    originalError.call(console, ...args);
+  };
+});
 
 afterAll(() => {
-  console.error = originalError
-}) 
+  console.error = originalError;
+});
 ```
 
 Sovelluksen tämänhetkinen koodi on kokonaisuudessaan [githubissa](https://github.com/fullstackopen-2019/part2-notes/tree/part5-8), branchissa <i>part5-8</i>.
@@ -768,41 +740,35 @@ Sovelluksen tämänhetkinen koodi on kokonaisuudessaan [githubissa](https://gith
 
 ### Tehtäviä
 
-#### 5.16*: blogilistan testit, step4
+#### 5.16\*: blogilistan testit, step4
 
 Tee sovelluksesi integraatiotesti, joka varmistaa, että jos käyttäjä ei ole kirjautunut järjestelmään, näyttää sovellus ainoastaan kirjautumislomakkeen, eli yhtään blogia ei vielä renderöidä.
 
 Testi voi odottaa komponentin sisällön renderöitymistä funktiolla _waitForElement_
 
 ```js
-import React from 'react'
-import { 
-  render, waitForElement 
-} from '@testing-library/react' // highlight-line
-jest.mock('./services/blogs')
-import App from './App'
+import React from "react";
+import { render, waitForElement } from "@testing-library/react"; // highlight-line
+jest.mock("./services/blogs");
+import App from "./App";
 
-describe('<App />', () => {
-  test('if no user logged, notes are not rendered', async () => {
-    const component = render(
-      <App />
-    )
-    component.rerender(<App />)
+describe("<App />", () => {
+  test("if no user logged, notes are not rendered", async () => {
+    const component = render(<App />);
+    component.rerender(<App />);
 
-// highlight-start
-    await waitForElement(
-      () => component.getByText('login')
-    ) 
+    // highlight-start
+    await waitForElement(() => component.getByText("login"));
     // highlight-end
 
     // expectations here
-  })
-})
+  });
+});
 ```
 
 **VAROITUS** kun tein tehtävää, esiintyi testeissä ajoittain epästabiiliutta sen suhteen, toimiko _waitForElement_ tai joku sitä vastaavista asynkronisten operaatioiden odottamiseen tarkoitetuista metodeista.
 
-#### 5.17*: blogilistan testit, step5
+#### 5.17\*: blogilistan testit, step5
 
 Tee myös testi, joka varmistaa, että kun käyttäjä on kirjautuneena, blogit renderöityvät sivulle.
 
@@ -812,12 +778,12 @@ Kirjautuminen kannattaa toteuttaa manipuloimalla testeissä local storagea. Jos 
 
 ```js
 const user = {
-  username: 'tester',
-  token: '1231231214',
-  name: 'Donald Tester'
-}
+  username: "tester",
+  token: "1231231214",
+  name: "Donald Tester",
+};
 
-localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
+localStorage.setItem("loggedBlogAppUser", JSON.stringify(user));
 ```
 
 </div>

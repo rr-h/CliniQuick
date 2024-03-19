@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-2.svg
+mainImage: "../../../images/part-2.svg"
 part: 2
 letter: b
 lang: fi
@@ -9,53 +9,47 @@ lang: fi
 
 Jatketaan sovelluksen laajentamista siten, että se mahdollistaa uusien muistiinpanojen lisäämisen.
 
-Jotta saisimme sivun päivittymään uusien muistiinpanojen lisäyksen yhteydessä, on parasta sijoittaa muistiinpanot komponentin <i>App</i> tilaan. Eli importataan funktio [useState](https://reactjs.org/docs/hooks-state.html) ja määritellään sen avulla komponentille tila, joka saa aluksi arvokseen propsina välitettävän muistiinpanot alustavan taulukon: 
+Jotta saisimme sivun päivittymään uusien muistiinpanojen lisäyksen yhteydessä, on parasta sijoittaa muistiinpanot komponentin <i>App</i> tilaan. Eli importataan funktio [useState](https://reactjs.org/docs/hooks-state.html) ja määritellään sen avulla komponentille tila, joka saa aluksi arvokseen propsina välitettävän muistiinpanot alustavan taulukon:
 
 ```js
-import React, { useState } from 'react' // highlight-line
-import Note from './components/Note'
+import React, { useState } from "react"; // highlight-line
+import Note from "./components/Note";
 
-const App = (props) => { // highlight-line
-  const [notes, setNotes] = useState(props.notes) // highlight-line
+const App = (props) => {
+  // highlight-line
+  const [notes, setNotes] = useState(props.notes); // highlight-line
 
-  const rows = () => notes.map(note =>
-    <Note
-      key={note.id}
-      note={note}
-    />
-  )
+  const rows = () => notes.map((note) => <Note key={note.id} note={note} />);
 
   return (
     <div>
       <h1>Notes</h1>
-      <ul>
-        {rows()}
-      </ul>
+      <ul>{rows()}</ul>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
 ```
 
-Komponentti siis alustaa funktion <em>useState</em> avulla tilan  <em>notes</em> arvoksi propseina välitettävän alustavan muistiinpanojen listan:
+Komponentti siis alustaa funktion <em>useState</em> avulla tilan <em>notes</em> arvoksi propseina välitettävän alustavan muistiinpanojen listan:
 
 ```js
-const App = (props) => { 
-  const [notes, setNotes] = useState(props.notes) 
+const App = (props) => {
+  const [notes, setNotes] = useState(props.notes);
 
   // ...
-}
+};
 ```
 
 Jos haluaisimme lähteä liikkeelle tyhjästä muistiinpanojen listasta, annettaisiin tilan alkuarvoksi tyhjä taulukko, ja koska komponentti ei käyttäisi ollenkaan propseja, voitaisiin parametri <em>props</em> jättää kokonaan määrittelemättä:
 
 ```js
-const App = () => { 
-  const [notes, setNotes] = useState([]) 
+const App = () => {
+  const [notes, setNotes] = useState([]);
 
   // ...
-}  
+};
 ```
 
 Jätetään kuitenkin toistaiseksi tilalle alkuarvon asettava määrittely voimaan.
@@ -64,16 +58,16 @@ Lisätään seuraavaksi komponenttiin lomake eli HTML [form](https://developer.m
 
 ```js
 const App = (props) => {
-  const [notes, setNotes] = useState(props.notes) 
+  const [notes, setNotes] = useState(props.notes)
 
   const rows = () => // ...
 
-// highlight-start 
+// highlight-start
   const addNote = (event) => {
     event.preventDefault()
     console.log('button clicked', event.target)
   }
- // highlight-end  
+ // highlight-end
 
   return (
     <div>
@@ -81,12 +75,12 @@ const App = (props) => {
       <ul>
         {rows()}
       </ul>
-// highlight-start    
+// highlight-start
       <form onSubmit={addNote}>
         <input />
         <button type="submit">save</button>
-      </form>   
-// highlight-end       
+      </form>
+// highlight-end
     </div>
   )
 }
@@ -121,27 +115,23 @@ Lisätään komponentille <i>App</i> tila <em>newNote</em> lomakkeen syötettä 
 
 ```js
 const App = (props) => {
-  const [notes, setNotes] = useState(props.notes) 
+  const [notes, setNotes] = useState(props.notes);
   // highlight-start
-  const [newNote, setNewNote] = useState(
-    'a new note...'
-  ) 
+  const [newNote, setNewNote] = useState("a new note...");
   // highlight-end
   // ...
 
   return (
     <div>
       <h1>Notes</h1>
-      <ul>
-        {rows()}
-      </ul>
+      <ul>{rows()}</ul>
       <form onSubmit={addNote}>
         <input value={newNote} /> // highlight-line
         <button type="submit">save</button>
-      </form>      
+      </form>
     </div>
-  )
-}
+  );
+};
 ```
 
 Tilaan <em>newNote</em> määritelty "placeholder"-teksti <i>uusi muistiinpano...</i> ilmestyy syötekomponenttiin, tekstiä ei kuitenkaan voi muuttaa. Konsoliin tuleekin ikävä varoitus joka kertoo mistä on kyse
@@ -154,53 +144,46 @@ Jotta kontrolloidun syötekomponentin editoiminen olisi mahdollista, täytyy sil
 
 ```js
 const App = (props) => {
-  const [notes, setNotes] = useState(props.notes) 
-  const [newNote, setNewNote] = useState(
-    'a new note...'
-  )
+  const [notes, setNotes] = useState(props.notes);
+  const [newNote, setNewNote] = useState("a new note...");
 
   // ...
-// highlight-start
+  // highlight-start
   const handleNoteChange = (event) => {
-    console.log(event.target.value)
-    setNewNote(event.target.value)
-  }
-// highlight-end
+    console.log(event.target.value);
+    setNewNote(event.target.value);
+  };
+  // highlight-end
 
   return (
     <div>
       <h1>Notes</h1>
-      <ul>
-        {rows()}
-      </ul>
+      <ul>{rows()}</ul>
       <form onSubmit={addNote}>
         <input
           value={newNote}
           onChange={handleNoteChange} // highlight-line
         />
         <button type="submit">save</button>
-      </form>      
+      </form>
     </div>
-  )
-}
+  );
+};
 ```
 
 Lomakkeen <i>input</i>-komponentille on nyt rekisteröity tapahtumankäsittelijä tilanteeseen <i>onChange</i>:
 
 ```js
-<input
-  value={newNote}
-  onChange={handleNoteChange}
-/>
+<input value={newNote} onChange={handleNoteChange} />
 ```
 
 Tapahtumankäsittelijää kutsutaan <i>aina kun syötekomponentissa tapahtuu jotain</i>. Tapahtumankäsittelijämetodi saa parametriksi tapahtumaolion <em>event</em>
 
 ```js
 const handleNoteChange = (event) => {
-  console.log(event.target.value)
-  setNewNote(event.target.value)
-}
+  console.log(event.target.value);
+  setNewNote(event.target.value);
+};
 ```
 
 Tapahtumaolion kenttä <em>target</em> vastaa nyt kontrolloitua <i>input</i>-kenttää ja <em>event.target.value</em> viittaa inputin syötekentän arvoon.
@@ -219,17 +202,17 @@ Nyt komponentin <i>App</i> tila <em>newNote</em> heijastaa koko ajan syötekent�
 
 ```js
 const addNote = (event) => {
-  event.preventDefault()
+  event.preventDefault();
   const noteObject = {
     content: newNote,
     date: new Date().toISOString(),
     important: Math.random() > 0.5,
     id: notes.length + 1,
-  }
+  };
 
-  setNotes(notes.concat(noteObject))
-  setNewNote('')
-}
+  setNotes(notes.concat(noteObject));
+  setNewNote("");
+};
 ```
 
 Ensin luodaan uutta muistiinpanoa vastaava olio <em>noteObject</em>, jonka sisältökentän arvo saadaan komponentin tilasta <em>newNote</em>. Yksikäsitteinen tunnus eli <i>id</i> generoidaan kaikkien muistiinpanojen lukumäärän perusteella. Koska muistiinpanoja ei poisteta, menetelmä toimii sovelluksessamme. Komennon <em>Math.random()</em> avulla muistiinpanosta tulee 50% todennäköisyydellä tärkeä.
@@ -237,7 +220,7 @@ Ensin luodaan uutta muistiinpanoa vastaava olio <em>noteObject</em>, jonka sisä
 Uusi muistiinpano lisätään vanhojen joukkoon oikeaoppisesti käyttämällä [osasta 1](/osa1/javascriptia#taulukot) tuttua taulukon metodia [concat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/concat):
 
 ```js
-setNotes(notes.concat(noteObject))
+setNotes(notes.concat(noteObject));
 ```
 
 Metodi ei muuta alkuperäistä tilaa <em>notes</em> vaan luo <i>uuden taulukon, joka sisältää myös lisättävän alkion</i>. Tämä on tärkeää, sillä Reactin tilaa [ei saa muuttaa suoraan](https://reactjs.org/docs/state-and-lifecycle.html#using-state-correctly)!
@@ -245,7 +228,7 @@ Metodi ei muuta alkuperäistä tilaa <em>notes</em> vaan luo <i>uuden taulukon, 
 Tapahtumankäsittelijä tyhjentää myös syötekenttää kontrolloivan tilan <em>newNote</em> sen funktiolla <em>setNewNote</em>
 
 ```js
-setNewNote('')
+setNewNote("");
 ```
 
 Sovelluksen tämän hetkinen koodi on kokonaisuudessaan [githubissa](https://github.com/fullstackopen-2019/part2-notes/tree/part2-2), branchissä <i>part2-2</i>.
@@ -258,12 +241,12 @@ Lisätään komponentin <i>App</i> tilaan tieto siitä näytetäänkö muistiinp
 
 ```js
 const App = (props) => {
-  const [notes, setNotes] = useState(props.notes) 
-  const [newNote, setNewNote] = useState('')
-  const [showAll, setShowAll] = useState(true) // highlight-line
-  
+  const [notes, setNotes] = useState(props.notes);
+  const [newNote, setNewNote] = useState("");
+  const [showAll, setShowAll] = useState(true); // highlight-line
+
   // ...
-}
+};
 ```
 
 Muutetaan komponenttia siten, että se tallettaa muuttujaan <em>notesToShow</em> näytettävien muistiinpanojen listan riippuen siitä tuleeko näyttää kaikki vai vain tärkeät:
@@ -272,21 +255,21 @@ Muutetaan komponenttia siten, että se tallettaa muuttujaan <em>notesToShow</em>
 const App = (props) => {
   // ..
 
-// highlight-start
+  // highlight-start
   const notesToShow = showAll
     ? notes
-    : notes.filter(note => note.important === true)
-// highlight-end
+    : notes.filter((note) => note.important === true);
+  // highlight-end
 
-  const rows = () => notesToShow.map(note => // highlight-line
-    <Note
-      key={note.id}
-      note={note}
-    />
-  )
+  const rows = () =>
+    notesToShow.map(
+      (
+        note // highlight-line
+      ) => <Note key={note.id} note={note} />
+    );
 
   // ...
-}  
+};
 ```
 
 Muuttujan <em>notesToShow</em> määrittely on melko kompakti
@@ -294,7 +277,7 @@ Muuttujan <em>notesToShow</em> määrittely on melko kompakti
 ```js
 const notesToShow = showAll
   ? notes
-  : notes.filter(note => note.important === true)
+  : notes.filter((note) => note.important === true);
 ```
 
 Käytössä on monissa muissakin kielissä oleva [ehdollinen](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator) operaattori.
@@ -302,7 +285,7 @@ Käytössä on monissa muissakin kielissä oleva [ehdollinen](https://developer.
 Operaattori toimii seuraavasti. Jos meillä on esim:
 
 ```js
-const tulos = ehto ? val1 : val2
+const tulos = ehto ? val1 : val2;
 ```
 
 muuttujan <em>tulos</em> arvoksi asetetaan <em>val1</em>:n arvo jos <em>ehto</em> on tosi. Jos <em>ehto</em> ei ole tosi, muuttujan <em>tulos</em> arvoksi tulee <em>val2</em>:n arvo.
@@ -310,13 +293,13 @@ muuttujan <em>tulos</em> arvoksi asetetaan <em>val1</em>:n arvo jos <em>ehto</em
 Eli jos tilan arvo <em>showAll</em> on epätosi, muuttuja <em>notesToShow</em> saa arvokseen vaan ne muistiinpanot, joiden <em>important</em>-kentän arvo on tosi. Filtteröinti tapahtuu taulukon metodilla [filter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter):
 
 ```js
-notes.filter(note => note.important === true)
+notes.filter((note) => note.important === true);
 ```
 
 vertailu-operaatio on oikeastaan turha, koska <em>note.important</em> on arvoltaan joko <i>true</i> tai <i>false</i>, eli riittää kirjoittaa
 
 ```js
-notes.filter(note => note.important)
+notes.filter((note) => note.important);
 ```
 
 Tässä käytettiin kuitenkin ensin vertailuoperaattoria, mm. korostamaan erästä tärkeää seikkaa: Javascriptissa <em>arvo1 == arvo2</em> ei toimi kaikissa tilanteissa loogisesti ja onkin varmempi käyttää aina vertailuissa muotoa <em>arvo1 === arvo2</em>. Enemmän aiheesta [täällä](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness).
@@ -328,45 +311,40 @@ Lisätään sitten toiminnallisuus, joka mahdollistaa <em>showAll</em>:in tilan 
 Oleelliset muutokset ovat seuraavassa:
 
 ```js
-import React, { useState } from 'react' 
-import Note from './components/Note'
+import React, { useState } from "react";
+import Note from "./components/Note";
 
 const App = (props) => {
-  const [notes, setNotes] = useState(props.notes) 
-  const [newNote, setNewNote] = useState('')
-  const [showAll, setShowAll] = useState(true)
+  const [notes, setNotes] = useState(props.notes);
+  const [newNote, setNewNote] = useState("");
+  const [showAll, setShowAll] = useState(true);
 
   // ...
 
   return (
     <div>
       <h1>Notes</h1>
-// highlight-start      
+      // highlight-start
       <div>
         <button onClick={() => setShowAll(!showAll)}>
-          show {showAll ? 'important' : 'all' }
+          show {showAll ? "important" : "all"}
         </button>
       </div>
-// highlight-end            
-      <ul>
-        {rows()}
-      </ul>
+      // highlight-end
+      <ul>{rows()}</ul>
       <form onSubmit={addNote}>
-        <input
-          value={newNote}
-          onChange={handleNoteChange}
-        />
+        <input value={newNote} onChange={handleNoteChange} />
         <button type="submit">save</button>
-      </form>      
+      </form>
     </div>
-  )
-}
+  );
+};
 ```
 
 Näkyviä muistiinpanoja (kaikki vai ainoastaan tärkeät) siis kontrolloidaan napin avulla. Napin tapahtumankäsittelijä on niin yksinkertainen että se on kirjotettu suoraan napin attribuutiksi. Tapahtumankäsittelijä muuttaa _showAll_:n arvon truesta falseksi ja päinvastoin:
 
 ```js
-() => setShowAll(!showAll)
+() => setShowAll(!showAll);
 ```
 
 Napin teksti riippuu tilan <em>showAll</em> arvosta:
@@ -394,13 +372,11 @@ Toteutetaan yksinkertainen puhelinluettelo. <i>**Aluksi luetteloon lisätään v
 Voit ottaa sovelluksesi komponentin <i>App</i> pohjaksi seuraavan:
 
 ```js
-import React, { useState } from 'react'
+import React, { useState } from "react";
 
 const App = () => {
-  const [ persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
-  ]) 
-  const [ newName, setNewName ] = useState('')
+  const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
+  const [newName, setNewName] = useState("");
 
   return (
     <div>
@@ -416,16 +392,15 @@ const App = () => {
       <h2>Numbers</h2>
       ...
     </div>
-  )
+  );
+};
 
-}
-
-export default App
+export default App;
 ```
 
 Tila <em>newName</em> on tarkoitettu lomakkeen kentän kontrollointiin.
 
-Joskus tilaa tallettavia ja tarvittaessa muitakin muuttujia voi olla hyödyllistä renderöidä debugatessa komponenttiin, eli voi tilapäisesti lisätä komponentin  palauttamaan koodiin esim. seuraavan:
+Joskus tilaa tallettavia ja tarvittaessa muitakin muuttujia voi olla hyödyllistä renderöidä debugatessa komponenttiin, eli voi tilapäisesti lisätä komponentin palauttamaan koodiin esim. seuraavan:
 
 ```
 <div>debug: {newName}</div>
@@ -455,19 +430,19 @@ Anna tilanteessa virheilmoitus komennolla [alert](https://developer.mozilla.org/
 **Muistutus edellisestä osasta:** kun muodostat Javascriptissä merkkijonoja muuttujaan perustuen, on tyylikkäin tapa asian hoitamiseen [template string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals):
 
 ```js
-`${newName} is already added to phonebook`
+`${newName} is already added to phonebook`;
 ```
 
 Jos muuttujalla <em>newName</em> on arvona <i>arto</i>, on tuloksena merkkijono
 
 ```js
-`arto is already added to phonebook`
+`arto is already added to phonebook`;
 ```
 
 Sama toki hoituisi javamaisesti merkkijonojen plus-metodilla
 
 ```js
-newName + ' is already added to phonebook'
+newName + " is already added to phonebook";
 ```
 
 Template stringin käyttö antaa kuitenkin ammattimaisemman vaikutelman.
@@ -478,9 +453,15 @@ Lisää sovellukseen mahdollisuus antaa henkilöille puhelinnumero. Tarvitset si
 
 ```js
 <form>
-  <div>name: <input /></div>
-  <div>number: <input /></div>
-  <div><button type="submit">add</button></div>
+  <div>
+    name: <input />
+  </div>
+  <div>
+    number: <input />
+  </div>
+  <div>
+    <button type="submit">add</button>
+  </div>
 </form>
 ```
 
@@ -501,14 +482,14 @@ Rajausehdon syöttämisen voi hoitaa omana lomakkeeseen kuulumattomana <i>input<
 ```js
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ])
+    { name: "Arto Hellas", number: "040-123456" },
+    { name: "Ada Lovelace", number: "39-44-5323523" },
+    { name: "Dan Abramov", number: "12-43-234345" },
+    { name: "Mary Poppendieck", number: "39-23-6423122" },
+  ]);
 
   // ...
-}
+};
 ```
 
 Näin vältytään turhalta manuaaliselta työltä, missä testaaminen edellyttäisi myös testiaineiston syöttämistä käsin soveluksen lomakkeen kautta.
@@ -533,7 +514,7 @@ const App = () => {
 
       <h3>Add a new</h3>
 
-      <PersonForm 
+      <PersonForm
         ...
       />
 

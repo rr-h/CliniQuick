@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-7.svg
+mainImage: "../../../images/part-7.svg"
 part: 7
 letter: f
 lang: fi
@@ -7,7 +7,7 @@ lang: fi
 
 <div class="content">
 
-Kurssin seitsemännessä osassa on luvun [React router](/osa7/react_router) kolmen tehtävän lisäksi 17 tehtävää, joissa jatketaan osissa 4 ja 5 tehtyä Bloglist-sovellusta.  Osa seuraavassa olevista tehtävistä on toisistaan riippumattomia "featureita", eli tehtäviä ei tarvitse tehdä järjestyksessä, voit jättää osan aivan hyvin toteuttamatta.
+Kurssin seitsemännessä osassa on luvun [React router](/osa7/react_router) kolmen tehtävän lisäksi 17 tehtävää, joissa jatketaan osissa 4 ja 5 tehtyä Bloglist-sovellusta. Osa seuraavassa olevista tehtävistä on toisistaan riippumattomia "featureita", eli tehtäviä ei tarvitse tehdä järjestyksessä, voit jättää osan aivan hyvin toteuttamatta.
 
 Voit ottaa pohjaksi oman sovelluksesi sijaan myös mallivastauksen koodin.
 
@@ -31,7 +31,7 @@ Muuta tässä tehtävässä notifikaatio käyttämään Reduxia.
 
 Siirrä blogien tietojen talletus Reduxiin.
 
-Kirjautumisen ja uuden blogin luomisen lomakkeiden tilaa voit halutessasi hallita edelleen Reactin tilan avulla. 
+Kirjautumisen ja uuden blogin luomisen lomakkeiden tilaa voit halutessasi hallita edelleen Reactin tilan avulla.
 
 Tämä ja seuraava osa ovat kohtuullisen työläitä, mutta erittäin opettavaisia.
 
@@ -61,27 +61,26 @@ Näkymään päästään klikkaamalla nimeä kaikkien käyttäjien näkymästä
 
 ![](../../images/7/42a.png)
 
-vika ilmenee jos uudelleenlataat sivun ollessasi yksittäisen käyttäjän sivulla. 
+vika ilmenee jos uudelleenlataat sivun ollessasi yksittäisen käyttäjän sivulla.
 
 Vian syynä on se, että jos mennään suoraan jonkin käyttäjän sivulle, eivät käyttäjien tiedot ole vielä ehtineet palvelimelta React-sovellukseen. Ongelman voi kiertää ehdollisella renderöinnillä esim. seuraavasti:
 
 ```js
 const User = (props) => {
   // highlight-start
-  if ( props.user === undefined) { 
-    return null
+  if (props.user === undefined) {
+    return null;
   }
   // highlight-end
 
   return (
     <div>
       <h2>{props.user.name}</h2>
-
       <h3>added blogs</h3>
       // ...
     </div>
-  )
-}
+  );
+};
 ```
 
 #### 7.9 blogin näkymä
@@ -140,9 +139,9 @@ Tee sovellukselle sopiva webpack-konfiguraatio
 
 Tee sovellukselle ainakin kaksi E2E-testiä [Cypress-kirjaston](/osa7/luokkakomponentit_e_2_e_testaus#sovelluksen-end-to-end-testaus) avulla. Sopiva testattava asia on esim. käyttäjän kirjautuminen sovellukseen.
 
-Tämän tehtävän testeissä voit olettaa, että tietokannan tila on testien kannalta sopiva, eli että tietokannassa on olemassa ainakin yksi käyttäjä. 
+Tämän tehtävän testeissä voit olettaa, että tietokannan tila on testien kannalta sopiva, eli että tietokannassa on olemassa ainakin yksi käyttäjä.
 
-Kannattanee käyttää hetki aikaa Cypressin dokumentaation silmäilemiseen, erityisesti 
+Kannattanee käyttää hetki aikaa Cypressin dokumentaation silmäilemiseen, erityisesti
 [best practices](https://docs.cypress.io/guides/references/best-practices.html) sisältää monia asioita, joita on hyvä pitää mielessä testejä kirjoittaessa.
 
 #### 7.18 End to end -testaus, step2

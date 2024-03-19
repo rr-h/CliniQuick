@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-7.svg
+mainImage: "../../../images/part-7.svg"
 part: 7
 letter: a
 lang: en
@@ -7,14 +7,9 @@ lang: en
 
 <div class="content">
 
-
-
 The exercises in this seventh part of the course differ a bit from the ones before. In this chapter there is, as usual, [three exercises related to the theory in this chapter](/en/part7/react_router#exercises).
 
-
-
 In addition to the exercises in this chapter, there is a series of exercises which revise what we've learned, and where the theory in this part is applied. In this part, we expand the Bloglist application which we worked on during parts 4 and 5.
-
 
 ### Application navigation structure
 
@@ -23,7 +18,6 @@ Following part 6, we return to React without Redux.
 It is very common for web-applications to have a navigation bar, which enables switching the view of the application.
 
 ![](../../images/7/1b.png)
-
 
 and separate pages for showing information on notes and users:
 
@@ -38,63 +32,72 @@ The navigation bar and an application containing multiple views is very easy to 
 Here is one way:
 
 ```js
-import React, { useState } from 'react'
-import ReactDOM from 'react-dom'
+import React, { useState } from "react";
+import ReactDOM from "react-dom";
 
 const Home = () => (
-  <div> <h2>TKTL notes app</h2> </div>
-)
+  <div>
+    {" "}
+    <h2>TKTL notes app</h2>{" "}
+  </div>
+);
 
 const Notes = () => (
-  <div> <h2>Notes</h2> </div>
-)
+  <div>
+    {" "}
+    <h2>Notes</h2>{" "}
+  </div>
+);
 
 const Users = () => (
-  <div> <h2>Users</h2> </div>
-)
+  <div>
+    {" "}
+    <h2>Users</h2>{" "}
+  </div>
+);
 
 const App = () => {
-  const [page, setPage] = useState('home')
+  const [page, setPage] = useState("home");
 
- const toPage = (page) => (event) => {
-    event.preventDefault()
-    setPage(page)
-  }
+  const toPage = (page) => (event) => {
+    event.preventDefault();
+    setPage(page);
+  };
 
   const content = () => {
-    if (page === 'home') {
-      return <Home />
-    } else if (page === 'notes') {
-      return <Notes />
-    } else if (page === 'users') {
-      return <Users />
+    if (page === "home") {
+      return <Home />;
+    } else if (page === "notes") {
+      return <Notes />;
+    } else if (page === "users") {
+      return <Users />;
     }
-  }
+  };
 
   const padding = {
-    padding: 5
-  }
+    padding: 5,
+  };
 
   return (
     <div>
       <div>
-        <a href="" onClick={toPage('home')} style={padding}>
+        <a href="" onClick={toPage("home")} style={padding}>
           home
         </a>
-        <a href="" onClick={toPage('notes')} style={padding}>
+        <a href="" onClick={toPage("notes")} style={padding}>
           notes
         </a>
-        <a href="" onClick={toPage('users')} style={padding}>
+        <a href="" onClick={toPage("users")} style={padding}>
           users
         </a>
       </div>
 
       {content()}
     </div>
-  )
-}
+  );
+};
 
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
 Each view is implemented as its own component. We store the view component information in the application state called <i>page</i>. This information tells us which component, representing a view, should be shown below the menu bar.
@@ -112,21 +115,29 @@ The routing provided by React Router is enabled by changing the application as f
 ```js
 import {
   BrowserRouter as Router,
-  Route, Link, Redirect, withRouter
-} from 'react-router-dom'
+  Route,
+  Link,
+  Redirect,
+  withRouter,
+} from "react-router-dom";
 
 const App = () => {
-
-  const padding = { padding: 5 }
+  const padding = { padding: 5 };
 
   return (
     <div>
       <Router>
         <div>
           <div>
-            <Link style={padding} to="/">home</Link>
-            <Link style={padding} to="/notes">notes</Link>
-            <Link style={padding} to="/users">users</Link>
+            <Link style={padding} to="/">
+              home
+            </Link>
+            <Link style={padding} to="/notes">
+              notes
+            </Link>
+            <Link style={padding} to="/users">
+              users
+            </Link>
           </div>
           <Route exact path="/" render={() => <Home />} />
           <Route path="/notes" render={() => <Notes />} />
@@ -134,26 +145,23 @@ const App = () => {
         </div>
       </Router>
     </div>
-  )
-}
+  );
+};
 ```
 
-
-
 Routing, or the conditional rendering of components <i>based on the url</i> in the browser, is used by placing components as children of the <i>Router</i> component, meaning inside <i>Router</i>-tags.
-
-
 
 Notice that, even though the component is referred to by the name <i>Router</i>, we are in fact talking about [BrowserRouter](https://reacttraining.com/react-router/web/api/BrowserRouter), because here the import happens by renaming the imported object:
 
 ```js
 import {
   BrowserRouter as Router,
-  Route, Link, Redirect, withRouter
-} from 'react-router-dom'
+  Route,
+  Link,
+  Redirect,
+  withRouter,
+} from "react-router-dom";
 ```
-
-
 
 According to the manual
 
@@ -169,7 +177,7 @@ Inside the router we define <i>links</i> that modify the address bar with the he
 
 creates a link in the application with the text <i>notes</i>, which when clicked changes the URL in the address bar to <i>/notes</i>.
 
-Components rendered based on the URL of the browser are defined with the help of the component [Route](https://reacttraining.com/react-router/web/api/Route). For example, 
+Components rendered based on the URL of the browser are defined with the help of the component [Route](https://reacttraining.com/react-router/web/api/Route). For example,
 
 ```js
 <Route path="/notes" render={() => <Notes />} />
@@ -191,11 +199,9 @@ Let's examine the slightly modified version from the previous example. The compl
 
 The application now contains five different views, the display of which is controlled by the router. In addition to the components from the previous example (<i>Home</i>, <i>Notes</i> and <i>Users</i>), we have <i>Login</i> representing the login view and <i>Note</i> representing the view of a single note.
 
-<i>Home</i> and <i>Users</i> are unchanged from the previous exercise.  <i>Notes</i> is a bit more complicated. It renders the list of notes passed to it as props in such a way that the name of each note is clickable.
+<i>Home</i> and <i>Users</i> are unchanged from the previous exercise. <i>Notes</i> is a bit more complicated. It renders the list of notes passed to it as props in such a way that the name of each note is clickable.
 
 ![](../../images/7/3e.png)
-
-
 
 The ability to click a name is implemented with the component <i>Link</i>, and clicking the name of a note whose id is 3 would trigger an event that changes the address of the browser into <i>notes/3</i>:
 
@@ -204,14 +210,14 @@ const Notes = (props) => (
   <div>
     <h2>Notes</h2>
     <ul>
-      {props.notes.map(note =>
+      {props.notes.map((note) => (
         <li key={note.id}>
           <Link to={`/notes/${note.id}`}>{note.content}</Link>
         </li>
-      )}
+      ))}
     </ul>
   </div>
-)
+);
 ```
 
 When the browser transitions to the address singling out the specific note, such as <i>notes/3</i>, the component <i>Note</i> is rendered:
@@ -221,9 +227,11 @@ const Note = ({ note }) => (
   <div>
     <h2>{note.content}</h2>
     <div>{note.user}</div>
-    <div><strong>{note.important ? 'important' : ''}</strong></div>
+    <div>
+      <strong>{note.important ? "important" : ""}</strong>
+    </div>
   </div>
-)
+);
 ```
 
 This happens by expanding the routing in the <i>App</i> component as follows:
@@ -232,27 +240,28 @@ This happens by expanding the routing in the <i>App</i> component as follows:
 <Router>
   <div>
     <div>
-      <Link style={padding} to="/">home</Link>
-      <Link style={padding} to="/notes">notes</Link>
-      <Link style={padding} to="/users">users</Link>
+      <Link style={padding} to="/">
+        home
+      </Link>
+      <Link style={padding} to="/notes">
+        notes
+      </Link>
+      <Link style={padding} to="/users">
+        users
+      </Link>
     </div>
-
-    <Route exact path="/" render={() =>
-      <Home />
-    } />
+    <Route exact path="/" render={() => <Home />} />
     // highlight-start
-    <Route exact path="/notes" render={() =>
-      <Notes notes={notes} />
-    } />
-    <Route exact path="/notes/:id" render={({ match }) =>
-      <Note note={noteById(match.params.id)} />
-    } />
+    <Route exact path="/notes" render={() => <Notes notes={notes} />} />
+    <Route
+      exact
+      path="/notes/:id"
+      render={({ match }) => <Note note={noteById(match.params.id)} />}
+    />
   </div>
   // highlight-end
 </Router>
 ```
-
-
 
 A modifier <i>exact path="/notes"</i> has been added to the route rendering all notes, because otherwise it would also be rendered for all paths that are in the form <i>/notes/3</i>.
 
@@ -269,11 +278,10 @@ render={({ match }) =>
   <Note note={noteById(match.params.id)} />}
 ```
 
-The note corresponding to the id in <i>match.params.id</i> is resolved using a helper function _noteById_ 
+The note corresponding to the id in <i>match.params.id</i> is resolved using a helper function _noteById_
 
 ```js
-const noteById = (id) =>
-  notes.find(note => note.id === Number(id))
+const noteById = (id) => notes.find((note) => note.id === Number(id));
 ```
 
 and finally the <i>Note</i>-component being rendered gets the note singled out by the unique part of the URL as one of its props.
@@ -288,15 +296,17 @@ The option to navigate to the <i>Login</i>-view is rendered conditionally in the
 <Router>
   <div>
     <div>
-      <Link style={padding} to="/">home</Link>
-      <Link style={padding} to="/notes">notes</Link>
-      <Link style={padding} to="/users">users</Link>
+      <Link style={padding} to="/">
+        home
+      </Link>
+      <Link style={padding} to="/notes">
+        notes
+      </Link>
+      <Link style={padding} to="/users">
+        users
+      </Link>
       // highlight-start
-      {user
-        ? <em>{user} logged in</em>
-
-        : <Link to="/login">login</Link>
-      }
+      {user ? <em>{user} logged in</em> : <Link to="/login">login</Link>}
       // highlight-end
     </div>
   </div>
@@ -307,20 +317,20 @@ So if the user is already logged in, instead of displaying the link <i>Login</i>
 
 ![](../../images/7/4a.png)
 
-The code of the component handling the login functionality is as follows 
+The code of the component handling the login functionality is as follows
 
 ```js
 import {
   // ...
-  withRouter // highlight-line
-} from 'react-router-dom'
+  withRouter, // highlight-line
+} from "react-router-dom";
 
 const LoginNoHistory = (props) => {
   const onSubmit = (event) => {
-    event.preventDefault()
-    props.onLogin('mluukkai')
-    props.history.push('/') // highlight-line
-  }
+    event.preventDefault();
+    props.onLogin("mluukkai");
+    props.history.push("/"); // highlight-line
+  };
 
   return (
     <div>
@@ -330,15 +340,15 @@ const LoginNoHistory = (props) => {
           username: <input />
         </div>
         <div>
-          password: <input type='password' />
+          password: <input type="password" />
         </div>
         <button type="submit">login</button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-const Login = withRouter(LoginNoHistory) // highlight-line
+const Login = withRouter(LoginNoHistory); // highlight-line
 ```
 
 There are a few notable things about the implementation of the form. When logging in, we call the function _onSubmit_, which calls a method called _push_ of the [history](https://reacttraining.com/react-router/web/api/history)-object received by the component as a prop. The command _props.history.push('/')_ results in the address bar of the browser changing its address to <code>/</code> thereby making the application render the respective component, which in this case is <i>Home</i>.
@@ -347,12 +357,13 @@ The component gets access to the <i>history</i>-prop after it is "wrapped" by th
 
 ### redirect
 
-There is one more interesting detail about the <i>Users</i> route: 
+There is one more interesting detail about the <i>Users</i> route:
 
 ```js
-<Route path="/users" render={() =>
-  user ? <Users /> : <Redirect to="/login" />
-} />
+<Route
+  path="/users"
+  render={() => (user ? <Users /> : <Redirect to="/login" />)}
+/>
 ```
 
 If a user isn't logged in, the <i>Users</i> component is not rendered. Instead the user is <i>redirected</i> using the <i>Redirect</i>-component to the login view
@@ -370,53 +381,52 @@ const App = () => {
   const [notes, setNotes] = useState([
     {
       id: 1,
-      content: 'HTML on helppoa',
+      content: "HTML on helppoa",
       important: true,
-      user: 'Matti Luukkainen'
+      user: "Matti Luukkainen",
     },
     // ...
-  ])
+  ]);
 
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(null);
 
   const login = (user) => {
-    setUser(user)
-  }
+    setUser(user);
+  };
 
-  const noteById = (id) =>
-    notes.find(note => note.id === Number(id))
+  const noteById = (id) => notes.find((note) => note.id === Number(id));
 
-  const padding = { padding: 5 }
+  const padding = { padding: 5 };
 
   return (
     <div>
       <Router>
         <div>
           <div>
-            <Link style={padding} to="/">home</Link>
-            <Link style={padding} to="/notes">notes</Link>
-            <Link style={padding} to="/users">users</Link>
-            {user
-              ? <em>{user} logged in</em>
-              : <Link to="/login">login</Link>
-            }
+            <Link style={padding} to="/">
+              home
+            </Link>
+            <Link style={padding} to="/notes">
+              notes
+            </Link>
+            <Link style={padding} to="/users">
+              users
+            </Link>
+            {user ? <em>{user} logged in</em> : <Link to="/login">login</Link>}
           </div>
 
-          <Route exact path="/" render={() =>
-            <Home />
-          } />
-          <Route exact path="/notes" render={() =>
-            <Notes notes={notes} />
-          } />
-          <Route exact path="/notes/:id" render={({ match }) =>
-            <Note note={noteById(match.params.id)} />
-          } />
-          <Route path="/users" render={() =>
-            user ? <Users /> : <Redirect to="/login" />
-          } />
-          <Route path="/login" render={() =>
-            <Login onLogin={login} />
-          } />
+          <Route exact path="/" render={() => <Home />} />
+          <Route exact path="/notes" render={() => <Notes notes={notes} />} />
+          <Route
+            exact
+            path="/notes/:id"
+            render={({ match }) => <Note note={noteById(match.params.id)} />}
+          />
+          <Route
+            path="/users"
+            render={() => (user ? <Users /> : <Redirect to="/login" />)}
+          />
+          <Route path="/login" render={() => <Login onLogin={login} />} />
         </div>
       </Router>
       <div>
@@ -424,11 +434,9 @@ const App = () => {
         <em>Note app, Department of Computer Science 2019</em>
       </div>
     </div>
-  )
-}
+  );
+};
 ```
-
-
 
 We define an element common for modern web apps called <i>footer</i>, which defines the part at the bottom of the screen, outside of the <i>Router</i>, so that it is shown regardless of the component shown in the routed part of the application.
 
@@ -461,23 +469,15 @@ At the root of the application, meaning the path _/_, show the list of anecdotes
 
 ![](../../assets/teht/40.png)
 
-
-
 The <i>Footer</i>-component should always be visible at the bottom.
-
-
 
 The creation of a new anecdote should happen e.g. in the path <i>create</i>:
 
 ![](../../assets/teht/41.png)
 
-
-
 NB: If you get the following error message:
 
 ![](../../assets/teht/39.png)
-
-
 
 you can get rid of it by enclosing everything inside a <i>div</i>-element placed inside the Router-element:
 

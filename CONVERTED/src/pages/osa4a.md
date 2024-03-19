@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-4.svg
+mainImage: "../../../images/part-4.svg"
 part: 4
 letter: a
 lang: fi
@@ -28,45 +28,45 @@ Seuraavassa läpikäytävien muutosten jälkeen sovelluksemme hakemistorakenne n
 ├── package.json
 ├── utils
 │   ├── config.js
-│   └── middleware.js  
+│   └── middleware.js
 ```
 
 Sovelluksen käynnistystiedosto <i>index.js</i> pelkistyy seuraavaan muotoon:
 
 ```js
-const app = require('./app') // varsinainen Express-sovellus
-const http = require('http')
-const config = require('./utils/config')
+const app = require("./app"); // varsinainen Express-sovellus
+const http = require("http");
+const config = require("./utils/config");
 
-const server = http.createServer(app)
+const server = http.createServer(app);
 
 server.listen(config.PORT, () => {
-  console.log(`Server running on port ${config.PORT}`)
-})
+  console.log(`Server running on port ${config.PORT}`);
+});
 ```
 
-<i>index.js</i> ainoastaan importaa tiedostossa <i>app.js</i> olevan varsinaisen sovelluksen ja käynnistää sen. Sovelluksen käynnistäminen tapahtuu nyt <em>server</em>-muuttujassa olevan olion kautta. 
+<i>index.js</i> ainoastaan importaa tiedostossa <i>app.js</i> olevan varsinaisen sovelluksen ja käynnistää sen. Sovelluksen käynnistäminen tapahtuu nyt <em>server</em>-muuttujassa olevan olion kautta.
 
 Ympäristömuuttujien käsittely on eriytetty moduulin <i>utils/config.js</i> vastuulle:
 
 ```js
-require('dotenv').config()
+require("dotenv").config();
 
-let PORT = process.env.PORT
-let MONGODB_URI = process.env.MONGODB_URI
+let PORT = process.env.PORT;
+let MONGODB_URI = process.env.MONGODB_URI;
 
 module.exports = {
   MONGODB_URI,
-  PORT
-}
+  PORT,
+};
 ```
 
 Sovelluksen muut osat pääsevät ympäristömuuttujiin käsiksi importtaamalla konfiguraatiomoduulin
 
 ```js
-const config = require('./utils/config')
+const config = require("./utils/config");
 
-console.log(`Server running on port ${config.PORT}`)
+console.log(`Server running on port ${config.PORT}`);
 ```
 
 Routejen määrittely siirretään omaan tiedostoonsa, eli myös siitä tehdään moduuli. Routejen tapahtumankäsittelijöitä kutsutaan usein <i>kontrollereiksi</i>. Sovellukselle onkin luotu hakemisto <i>controllers</i> ja sinne tiedosto <i>notes.js</i>, johon kaikki muistiinpanoihin liittyvien reittien määrittelyt on siirretty.
@@ -74,67 +74,68 @@ Routejen määrittely siirretään omaan tiedostoonsa, eli myös siitä tehdää
 Tiedoston sisältö on seuraava:
 
 ```js
-const notesRouter = require('express').Router()
-const Note = require('../models/note')
+const notesRouter = require("express").Router();
+const Note = require("../models/note");
 
-notesRouter.get('/', (request, response) => {
-  Note.find({}).then(notes => {
-    response.json(notes.map(note => note.toJSON()))
-  })
-})
+notesRouter.get("/", (request, response) => {
+  Note.find({}).then((notes) => {
+    response.json(notes.map((note) => note.toJSON()));
+  });
+});
 
-notesRouter.get('/:id', (request, response, next) => {
+notesRouter.get("/:id", (request, response, next) => {
   Note.findById(request.params.id)
-    .then(note => {
+    .then((note) => {
       if (note) {
-        response.json(note.toJSON())
+        response.json(note.toJSON());
       } else {
-        response.status(404).end()
+        response.status(404).end();
       }
     })
-    .catch(error => next(error))
-})
+    .catch((error) => next(error));
+});
 
-notesRouter.post('/', (request, response, next) => {
-  const body = request.body
+notesRouter.post("/", (request, response, next) => {
+  const body = request.body;
 
   const note = new Note({
     content: body.content,
     important: body.important || false,
     date: new Date(),
-  })
+  });
 
-  note.save()
-    .then(savedNote => {
-      response.json(savedNote.toJSON())
+  note
+    .save()
+    .then((savedNote) => {
+      response.json(savedNote.toJSON());
     })
-    .catch(error => next(error))
-})
+    .catch((error) => next(error));
+});
 
-notesRouter.delete('/:id', (request, response, next) => {
+notesRouter.delete("/:id", (request, response, next) => {
   Note.findByIdAndRemove(request.params.id)
     .then(() => {
-      response.status(204).end()
+      response.status(204).end();
     })
-    .catch(error => next(error))
-})
+    .catch((error) => next(error));
+});
 
-notesRouter.put('/:id', (request, response, next) => {
-  const body = request.body
+notesRouter.put("/:id", (request, response, next) => {
+  const body = request.body;
 
   const note = {
     content: body.content,
     important: body.important,
-  }
+  };
 
   Note.findByIdAndUpdate(request.params.id, note, { new: true })
-    .then(updatedNote => {
-      response.json(updatedNote.toJSON())
+    .then((updatedNote) => {
+      response.json(updatedNote.toJSON());
     })
-    .catch(error => next(error))
-})
+    .catch((error) => next(error));
+});
 
-module.exports = notesRouter
+module.exports = notesRouter;
 ```
 
 Kyseessä on käytännössä melkein suora copypaste tiedostosta <i>index.js</i>.
@@ -142,11 +143,11 @@ Kyseessä on käytännössä melkein suora copypaste tiedostosta <i>index.js</i>
 Muutoksia on muutama. Tiedoston alussa luodaan [router](http://expressjs.com/en/api.html#router)-olio:
 
 ```js
-const notesRouter = require('express').Router()
+const notesRouter = require("express").Router();
 
 //...
 
-module.exports = notesRouter
+module.exports = notesRouter;
 ```
 
 Tiedosto eksporttaa moduulin käyttäjille määritellyn routerin.
@@ -174,8 +175,8 @@ Router on siis <i>middleware</i>, jonka avulla on mahdollista määritellä jouk
 Varsinaisen sovelluslogiikan määrittelevä tiedosto <i>app.js</i> ottaa määrittelemämme routerin käyttöön seuraavasti:
 
 ```js
-const notesRouter = require('./controllers/notes')
-app.use('/api/notes', notesRouter)
+const notesRouter = require("./controllers/notes");
+app.use("/api/notes", notesRouter);
 ```
 
 Näin määrittelemäämme routeria käytetään <i>jos</i> polun alkuosa on <i>/api/notes</i>. notesRouter-olion sisällä täytyy tämän takia käyttää ainoastaan polun loppuosia, eli tyhjää polkua <i>/</i> tai pelkkää parametria <i>/:id</i>.
@@ -183,36 +184,37 @@ Näin määrittelemäämme routeria käytetään <i>jos</i> polun alkuosa on <i>
 Sovelluksen määrittelevä <i>app.js</i> näyttää muutosten jälkeen seuraavalta:
 
 ```js
-const config = require('./utils/config')
-const express = require('express')
-const bodyParser = require('body-parser')
-const app = express()
-const cors = require('cors')
-const notesRouter = require('./controllers/notes')
-const middleware = require('./utils/middleware')
-const mongoose = require('mongoose')
+const config = require("./utils/config");
+const express = require("express");
+const bodyParser = require("body-parser");
+const app = express();
+const cors = require("cors");
+const notesRouter = require("./controllers/notes");
+const middleware = require("./utils/middleware");
+const mongoose = require("mongoose");
 
-console.log('connecting to', config.MONGODB_URI)
+console.log("connecting to", config.MONGODB_URI);
 
-mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true })
+mongoose
+  .connect(config.MONGODB_URI, { useNewUrlParser: true })
   .then(() => {
-    console.log('connected to MongoDB')
+    console.log("connected to MongoDB");
   })
   .catch((error) => {
-    console.log('error connection to MongoDB:', error.message)
-  })
+    console.log("error connection to MongoDB:", error.message);
+  });
 
-app.use(cors())
-app.use(express.static('build'))
-app.use(bodyParser.json())
-app.use(middleware.requestLogger)
+app.use(cors());
+app.use(express.static("build"));
+app.use(bodyParser.json());
+app.use(middleware.requestLogger);
 
-app.use('/api/notes', notesRouter)
+app.use("/api/notes", notesRouter);
 
-app.use(middleware.unknownEndpoint)
-app.use(middleware.errorHandler)
+app.use(middleware.unknownEndpoint);
+app.use(middleware.errorHandler);
 
-module.exports = app
+module.exports = app;
 ```
 
 Tiedostossa siis otetaan käyttöön joukko middlewareja, näistä yksi on polkuun <i>/api/notes</i> kiinnitettävä <i>notesRouter</i> (tai notes-kontrolleri niin kuin jotkut sitä kutsuisivat).
@@ -221,61 +223,60 @@ Itse toteutettujen middlewarejen määritelty on siirretty tiedostoon <i>utils/m
 
 ```js
 const requestLogger = (request, response, next) => {
-  console.log('Method:', request.method)
-  console.log('Path:  ', request.path)
-  console.log('Body:  ', request.body)
-  console.log('---')
-  next()
-}
+  console.log("Method:", request.method);
+  console.log("Path:  ", request.path);
+  console.log("Body:  ", request.body);
+  console.log("---");
+  next();
+};
 
 const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' })
-}
+  response.status(404).send({ error: "unknown endpoint" });
+};
 
 const errorHandler = (error, request, response, next) => {
-  console.error(error.message)
+  console.error(error.message);
 
-  if (error.name === 'CastError' && error.kind === 'ObjectId') {
-    return response.status(400).send({ error: 'malformatted id' })
-  } else if (error.name === 'ValidationError') {
-    return response.status(400).json({ error: error.message })
+  if (error.name === "CastError" && error.kind === "ObjectId") {
+    return response.status(400).send({ error: "malformatted id" });
+  } else if (error.name === "ValidationError") {
+    return response.status(400).json({ error: error.message });
   }
 
-  next(error)
-}
-
+  next(error);
+};
 
 module.exports = {
   requestLogger,
   unknownEndpoint,
-  errorHandler
-}
+  errorHandler,
+};
 ```
 
 Koska tietokantayhteyden muodostaminen on siirretty tiedoston <i>app.js</i>:n vastuulle. Hakemistossa <i>models</i> oleva tiedosto <i>note.js</i> sisältää nyt ainoastaan muistiinpanojen skeeman määrittelyn.
 
 ```js
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const noteSchema = new mongoose.Schema({
   content: {
     type: String,
     required: true,
-    minlength: 5
+    minlength: 5,
   },
   date: Date,
   important: Boolean,
-})
+});
 
-noteSchema.set('toJSON', {
+noteSchema.set("toJSON", {
   transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id
-    delete returnedObject._id
-    delete returnedObject.__v
-  }
-})
+    returnedObject.id = returnedObject._id;
+    delete returnedObject._id;
+    delete returnedObject.__v;
+  },
+});
 
-module.exports = mongoose.model('Note', noteSchema)
+module.exports = mongoose.model("Note", noteSchema);
 ```
 
 Sovelluksen hakemistorakenne siis näyttää refaktoroinnin jälkeen seuraavalta:
@@ -293,7 +294,7 @@ Sovelluksen hakemistorakenne siis näyttää refaktoroinnin jälkeen seuraavalta
 ├── package.json
 ├── utils
 │   ├── config.js
-│   └── middleware.js  
+│   └── middleware.js
 ```
 
 Jos sovellus on pieni, ei rakenteella ole kovin suurta merkitystä. Sovelluksen kasvaessa kannattaa sille muodostaa jonkinlainen rakenne eli arkkitehtuuri, ja jakaa erilaisten vastuut omiin moduuleihin. Tämä helpottaa huomattavasti ohjelman jatkokehitystä.
@@ -312,56 +313,51 @@ Jos kloonaat projektin itsellesi, suorita komento _npm install_ ennen käynnist�
 
 Rakennamme tämän osan tehtävissä <i>blogilistasovellusta</i>, jonka avulla käyttäjien on mahdollista tallettaa tietoja internetistä löytämistään mielenkiintoisista blogeista. Kustakin blogista talletetaan sen kirjoittaja (author), aihe (title), url sekä blogilistasovelluksen käyttäjien antamien äänien määrä.
 
-
 #### 4.1 blogilista, step1
 
 Kuvitellaan tilanne, jossa saat sähköpostitse seuraavan, yhteen tiedostoon koodatun sovellusrungon:
 
 ```js
-const http = require('http')
-const express = require('express')
-const app = express()
-const bodyParser = require('body-parser')
-const cors = require('cors')
-const mongoose = require('mongoose')
+const http = require("http");
+const express = require("express");
+const app = express();
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const mongoose = require("mongoose");
 
 const blogSchema = mongoose.Schema({
   title: String,
   author: String,
   url: String,
-  likes: Number
-})
+  likes: Number,
+});
 
-const Blog = mongoose.model('Blog', blogSchema)
+const Blog = mongoose.model("Blog", blogSchema);
 
-const mongoUrl = 'mongodb://localhost/bloglist'
-mongoose.connect(mongoUrl, { useNewUrlParser: true })
+const mongoUrl = "mongodb://localhost/bloglist";
+mongoose.connect(mongoUrl, { useNewUrlParser: true });
 
-app.use(cors())
-app.use(bodyParser.json())
+app.use(cors());
+app.use(bodyParser.json());
 
-app.get('/api/blogs', (request, response) => {
-  Blog
-    .find({})
-    .then(blogs => {
-      response.json(blogs)
-    })
-})
+app.get("/api/blogs", (request, response) => {
+  Blog.find({}).then((blogs) => {
+    response.json(blogs);
+  });
+});
 
-app.post('/api/blogs', (request, response) => {
-  const blog = new Blog(request.body)
+app.post("/api/blogs", (request, response) => {
+  const blog = new Blog(request.body);
 
-  blog
-    .save()
-    .then(result => {
-      response.status(201).json(result)
-    })
-})
+  blog.save().then((result) => {
+    response.status(201).json(result);
+  });
+});
 
-const PORT = 3003
+const PORT = 3003;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-})
+  console.log(`Server running on port ${PORT}`);
+});
 ```
 
 Tee sovelluksesta toimiva <i>npm</i>-projekti. Jotta sovelluskehitys olisi sujuvaa, konfiguroi sovellus suoritettavaksi <i>nodemonilla</i>. Voit luoda sovellukselle uuden tietokannan MongoDB Atlasiin tai käyttää edellisen osan sovelluksen tietokantaa.
@@ -376,7 +372,6 @@ Jaa sovelluksen koodi tämän osan alun tapaan useaan moduuliin.
 
 Paras käytänne on commitoida koodi aina stabiilissa tilanteessa, tällöin on helppo palata aina toimivaan tilanteeseen jos koodi menee liian solmuun.
 
-
 </div>
 
 <div class="content">
@@ -388,25 +383,22 @@ Olemme laiminlyöneet ikävästi yhtä oleellista ohjelmistokehityksen osa-aluet
 Aloitamme yksikkötestauksesta. Sovelluksemme logiikka on sen verran yksinkertaista, että siinä ei ole juurikaan mielekästä yksikkötestattavaa. Luodaan tiedosto <i>utils/for_testing.js</i> ja määritellään sinne pari yksinkertaista funktiota testattavaksi:
 
 ```js
-const palindrome = string => {
-  return string
-    .split('')
-    .reverse()
-    .join('')
-}
+const palindrome = (string) => {
+  return string.split("").reverse().join("");
+};
 
-const average = array => {
+const average = (array) => {
   const reducer = (sum, item) => {
-    return sum + item
-  }
+    return sum + item;
+  };
 
-  return array.reduce(reducer, 0) / array.length
-}
+  return array.reduce(reducer, 0) / array.length;
+};
 
 module.exports = {
   palindrome,
   average,
-}
+};
 ```
 
 > Metodi _average_ käyttää taulukoiden metodia [reduce](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce). Jos metodi ei ole vieläkään tuttu, on korkea aika katsoa Youtubesta [Functional Javascript](https://www.youtube.com/watch?v=BMUiFMZr7vk&list=PL0zVEGEvSaeEd9hlmCXrk5yUyqUag-n84) -sarjasta ainakin kolme ensimmäistä videoa.
@@ -457,46 +449,46 @@ Tai vaihtoehtoisesti Jest löytää myös oletuksena asetustiedoston nimellä <i
 
 ```js
 module.exports = {
-  testEnvironment: 'node',
+  testEnvironment: "node",
 };
 ```
 
 Tehdään testejä varten hakemisto <i>tests</i> ja sinne tiedosto <i>palindrome.test.js</i>, jonka sisältö on seuraava
 
 ```js
-const palindrome = require('../utils/for_testing').palindrome
+const palindrome = require("../utils/for_testing").palindrome;
 
-test('palindrome of a', () => {
-  const result = palindrome('a')
+test("palindrome of a", () => {
+  const result = palindrome("a");
 
-  expect(result).toBe('a')
-})
+  expect(result).toBe("a");
+});
 
-test('palindrome of react', () => {
-  const result = palindrome('react')
+test("palindrome of react", () => {
+  const result = palindrome("react");
 
-  expect(result).toBe('tcaer')
-})
+  expect(result).toBe("tcaer");
+});
 
-test('palindrome of saippuakauppias', () => {
-  const result = palindrome('saippuakauppias')
+test("palindrome of saippuakauppias", () => {
+  const result = palindrome("saippuakauppias");
 
-  expect(result).toBe('saippuakauppias')
-})
+  expect(result).toBe("saippuakauppias");
+});
 ```
 
 Edellisessä osassa käyttöön ottamamme ESlint valittaa testien käyttämistä komennoista _test_ ja _expect_ sillä käyttämämme konfiguraatio kieltää <i>globaalina</i> määriteltyjen asioiden käytön. Poistetaan valitus lisäämällä <i>.eslintrc.js</i>-tiedoston kenttään <i>env</i> arvo <i>"jest": true</i>. Näin kerromme ESlintille, että käytämme projektissamme Jestiä ja sen globaaleja muuttujia.
 
 ```js
 module.exports = {
-  "env": {
-    "commonjs": true,
-    "es6": true,
-    "node": true,
-    "jest": true, // highlight-line
+  env: {
+    commonjs: true,
+    es6: true,
+    node: true,
+    jest: true, // highlight-line
   },
-  "extends": "eslint:recommended",
-  "rules": {
+  extends: "eslint:recommended",
+  rules: {
     // ...
   },
 };
@@ -505,17 +497,17 @@ module.exports = {
 Testi ottaa ensimmäisellä rivillä käyttöön testattavan funktion sijoittaen sen muuttujaan _palindrome_:
 
 ```js
-const palindrome = require('../utils/for_testing').palindrome
+const palindrome = require("../utils/for_testing").palindrome;
 ```
 
 Yksittäiset testitapaukset määritellään funktion _test_ avulla. Ensimmäisenä parametrina on merkkijonomuotoinen testin kuvaus. Toisena parametrina on <i>funktio</i>, joka määrittelee testitapauksen toiminnallisuuden. Esim. toisen testitapauksen toiminnallisuus näyttää seuraavalta:
 
 ```js
 () => {
-  const result = palindrome('react')
+  const result = palindrome("react");
 
-  expect(result).toBe('tcaer')
-}
+  expect(result).toBe("tcaer");
+};
 ```
 
 Ensin suoritetaan testattava koodi, eli generoidaan merkkijonon <i>react</i> palindromi. Seuraavaksi varmistetaan tulos metodin [expect](https://facebook.github.io/jest/docs/en/expect.html#content) avulla. Expect käärii tuloksena olevan arvon olioon, joka tarjoaa joukon <i>matcher</i>-funktioita, joiden avulla tuloksen oikeellisuutta voidaan tarkastella. Koska kyse on kahden merkkijonon samuuden vertailusta, sopii tilanteeseen matcheri [toBe](https://facebook.github.io/jest/docs/en/expect.html#tobevalue).
@@ -529,11 +521,11 @@ Jest olettaa oletusarvoisesti, että testitiedoston nimessä on merkkijono <i>.t
 Jestin antamat virheilmoitukset ovat hyviä, rikotaan testi
 
 ```js
-test('palindrome of react', () => {
-  const result = palindrome('react')
+test("palindrome of react", () => {
+  const result = palindrome("react");
 
-  expect(result).toBe('tkaer')
-})
+  expect(result).toBe("tkaer");
+});
 ```
 
 seurauksena on seuraava virheilmoitus
@@ -543,21 +535,21 @@ seurauksena on seuraava virheilmoitus
 Lisätään muutama testi metodille _average_, tiedostoon <i>tests/average.test.js</i>.
 
 ```js
-const average = require('../utils/for_testing').average
+const average = require("../utils/for_testing").average;
 
-describe('average', () => {
-  test('of one value is the value itself', () => {
-    expect(average([1])).toBe(1)
-  })
+describe("average", () => {
+  test("of one value is the value itself", () => {
+    expect(average([1])).toBe(1);
+  });
 
-  test('of many is calculated right', () => {
-    expect(average([1, 2, 3, 4, 5, 6])).toBe(3.5)
-  })
+  test("of many is calculated right", () => {
+    expect(average([1, 2, 3, 4, 5, 6])).toBe(3.5);
+  });
 
-  test('of empty array is zero', () => {
-    expect(average([])).toBe(0)
-  })
-})
+  test("of empty array is zero", () => {
+    expect(average([])).toBe(0);
+  });
+});
 ```
 
 Testi paljastaa, että metodi toimii väärin tyhjällä taulukolla (sillä nollallajaon tulos on Javascriptissä <i>NaN</i>):
@@ -567,14 +559,12 @@ Testi paljastaa, että metodi toimii väärin tyhjällä taulukolla (sillä noll
 Metodi on helppo korjata
 
 ```js
-const average = array => {
+const average = (array) => {
   const reducer = (sum, item) => {
-    return sum + item
-  }
-  return array.length === 0
-    ? 0 
-    : array.reduce(reducer, 0) / array.length
-}
+    return sum + item;
+  };
+  return array.length === 0 ? 0 : array.reduce(reducer, 0) / array.length;
+};
 ```
 
 Eli jos taulukon pituus on 0, palautetaan 0 ja muussa tapauksessa palautetaan metodin _reduce_ avulla laskettu keskiarvo.
@@ -582,9 +572,9 @@ Eli jos taulukon pituus on 0, palautetaan 0 ja muussa tapauksessa palautetaan me
 Pari huomiota keskiarvon testeistä. Määrittelimme testien ympärille nimellä _average_ varustetun <i>describe</i>-lohkon.
 
 ```js
-describe('average', () => {
+describe("average", () => {
   // tests
-})
+});
 ```
 
 Describejen avulla yksittäisessä tiedostossa olevat testit voidaan jaotella loogisiin kokonaisuuksiin. Testituloste hyödyntää myös describe-lohkon nimeä:
@@ -596,9 +586,9 @@ Kuten myöhemmin tulemme näkemään, <i>describe</i>-lohkot ovat tarpeellisia s
 Toisena huomiona se, että kirjoitimme testit aavistuksen tiiviimmässä muodossa, ottamatta testattavan metodin tulosta erikseen apumuuttujaan:
 
 ```js
-test('of empty array is zero', () => {
-  expect(average([])).toBe(0)
-})
+test("of empty array is zero", () => {
+  expect(average([])).toBe(0);
+});
 ```
 
 </div>
@@ -616,24 +606,24 @@ Määrittele ensin funktio _dummy_ joka saa parametrikseen taulukollisen blogeja
 ```js
 const dummy = (blogs) => {
   // ...
-}
+};
 
 module.exports = {
-  dummy
-}
+  dummy,
+};
 ```
 
 Varmista testikonfiguraatiosi toimivuus seuraavalla testillä:
 
 ```js
-const listHelper = require('../utils/list_helper')
+const listHelper = require("../utils/list_helper");
 
-test('dummy returns one', () => {
-  const blogs = []
+test("dummy returns one", () => {
+  const blogs = [];
 
-  const result = listHelper.dummy(blogs)
-  expect(result).toBe(1)
-})
+  const result = listHelper.dummy(blogs);
+  expect(result).toBe(1);
+});
 ```
 
 #### 4.4: apufunktioita ja yksikkötestejä, step2
@@ -647,30 +637,30 @@ Määrittele funktiolle sopivat testit. Funktion testit kannattaa laittaa <i>des
 Testisyötteiden määrittely onnistuu esim. seuraavaan tapaan:
 
 ```js
-describe('total likes', () => {
+describe("total likes", () => {
   const listWithOneBlog = [
     {
-      _id: '5a422aa71b54a676234d17f8',
-      title: 'Go To Statement Considered Harmful',
-      author: 'Edsger W. Dijkstra',
-      url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+      _id: "5a422aa71b54a676234d17f8",
+      title: "Go To Statement Considered Harmful",
+      author: "Edsger W. Dijkstra",
+      url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
       likes: 5,
-      __v: 0
-    }
-  ]
+      __v: 0,
+    },
+  ];
 
-  test('when list has only one blog equals the likes of that', () => {
-    const result = listHelper.totalLikes(listWithOneBlog)
-    expect(result).toBe(5)
-  })
-})
+  test("when list has only one blog equals the likes of that", () => {
+    const result = listHelper.totalLikes(listWithOneBlog);
+    expect(result).toBe(5);
+  });
+});
 ```
 
 Jos et viitsi itse määritellä testisyötteenä käytettäviä blogeja, saat valmiin listan [täältä.](https://github.com/fullstackopen-2019/misc/blob/master/blogs_for_test.md)
 
 Törmäät varmasti testien tekemisen yhteydessä erinäisiin ongelmiin. Pidä mielessä osassa 3 käsitellyt [debuggaukseen](osa3/tietojen_tallettaminen_mongo_db_tietokantaan#node-sovellusten-debuggaaminen) liittyvät asiat, voit testejäkin suorittaessasi printtailla konsoliin komennolla _console.log_. Myös debuggerin käyttö testejä suorittaessa on mahdollista, ohje [täällä](https://jestjs.io/docs/en/troubleshooting).
 
-**HUOM:** jos jokin testi ei mene läpi, ei ongelmaa korjatessa kannata suorittaa kaikkia testejä, vaan ainoastaan rikkinäistä testiä hyödyntäen [only](https://facebook.github.io/jest/docs/en/api.html#testonlyname-fn-timeout)-metodia. 
+**HUOM:** jos jokin testi ei mene läpi, ei ongelmaa korjatessa kannata suorittaa kaikkia testejä, vaan ainoastaan rikkinäistä testiä hyödyntäen [only](https://facebook.github.io/jest/docs/en/api.html#testonlyname-fn-timeout)-metodia.
 
 Toinen tapa suorittaa yksittäinen testi (tai describe-lohko) on kutsua jestiä suoraan ja määritellä sille suoritettava testi argumentin [-t](https://jestjs.io/docs/en/cli.html) avulla:
 
@@ -678,7 +668,7 @@ Toinen tapa suorittaa yksittäinen testi (tai describe-lohko) on kutsua jestiä 
 npx jest -t 'when list has only one blog equals the likes of that'
 ```
 
-#### 4.5*: apufunktioita ja yksikkötestejä, step3
+#### 4.5\*: apufunktioita ja yksikkötestejä, step3
 
 Määrittele funktio _favoriteBlog_ joka saa parametrikseen taulukollisen blogeja. Funktio selvittää millä blogilla on eniten likejä. Jos suosikkeja on monta, riittää että funktio palauttaa niistä jonkun.
 
@@ -696,7 +686,7 @@ Paluuarvo voi olla esim. seuraavassa muodossa:
 
 Tee myös tämän ja seuraavien kohtien testit kukin oman <i>describe</i>-lohkon sisälle.
 
-#### 4.6*: apufunktioita ja yksikkötestejä, step4
+#### 4.6\*: apufunktioita ja yksikkötestejä, step4
 
 Tämä ja seuraava tehtävä ovat jo hieman haastavampia. Tehtävien tekeminen ei ole osan jatkon kannalta oleellista, eli voi olla hyvä idea palata näihin vasta kun muu osa on kahlattu läpi.
 
@@ -713,7 +703,7 @@ Määrittele funktio _mostBlogs_ joka saa parametrikseen taulukollisen blogeja. 
 
 Jos ennätysblogaajia on monta, riittää että funktio palauttaa niistä jonkun.
 
-#### 4.7*: apufunktioita ja yksikkötestejä, step5
+#### 4.7\*: apufunktioita ja yksikkötestejä, step5
 
 Määrittele funktio _mostLikes_ joka saa parametrikseen taulukollisen blogeja. Funktio selvittää kirjoittajan, kenen blogeilla on eniten likejä. Funktion paluuarvo kertoo myös suosikkiblogaajan likejen yhteenlasketun määrän:
 

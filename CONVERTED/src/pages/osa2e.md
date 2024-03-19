@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-2.svg
+mainImage: "../../../images/part-2.svg"
 part: 2
 letter: e
 lang: fi
@@ -14,7 +14,7 @@ Katsotaan vielä tämän osan lopussa nopeasti kahta tapaa liittää tyylejä Re
 Tehdään sovelluksen hakemistoon <i>src</i> tiedosto <i>index.css</i> ja liitetään se sovellukseen lisäämällä tiedostoon <i>index.js</i> seuraava import:
 
 ```js
-import './index.css'
+import "./index.css";
 ```
 
 Lisätään seuraava sääntö tiedostoon <i>index.css</i>:
@@ -44,17 +44,15 @@ Jos haluamme kohdistaa tyylejä esim. jokaiseen muistiinpanoon, voisimme nyt kä
 
 ```js
 const Note = ({ note, toggleImportance }) => {
-  const label = note.important 
-    ? 'make not important' 
-    : 'make important';
+  const label = note.important ? "make not important" : "make important";
 
   return (
     <li>
-      {note.content} 
+      {note.content}
       <button onClick={toggleImportance}>{label}</button>
     </li>
-  )
-}
+  );
+};
 ```
 
 lisätään tyylitiedostoon seuraava (koska osaamiseni tyylikkäiden web-sivujen tekemiseen on lähellä nollaa, nyt käytettävissä tyyleissä ei ole sinänsä mitään järkeä):
@@ -67,11 +65,11 @@ li {
 }
 ```
 
-Tyylien kohdistaminen elementtityypin sijaan on kuitenkin hieman ongelmallista, jos sovelluksessa olisi myös muita  <i>li</i>-tageja, kaikki saisivat samat tyylit.
+Tyylien kohdistaminen elementtityypin sijaan on kuitenkin hieman ongelmallista, jos sovelluksessa olisi myös muita <i>li</i>-tageja, kaikki saisivat samat tyylit.
 
 Jos haluamme kohdistaa tyylit nimenomaan muistiinpanoihin, on parempi käyttää [class selectoreja](https://developer.mozilla.org/en-US/docs/Web/CSS/Class_selectors).
 
-Normaalissa HTML:ssä luokat määritellään elementtien attribuutin  <i>class</i> arvona:
+Normaalissa HTML:ssä luokat määritellään elementtien attribuutin <i>class</i> arvona:
 
 ```html
 <li class="note">tekstiä</li>
@@ -81,17 +79,17 @@ Reactissa tulee kuitenkin classin sijaan käyttää attribuuttia [className](htt
 
 ```js
 const Note = ({ note, toggleImportance }) => {
-  const label = note.important 
-    ? 'make not important' 
-    : 'make important';
+  const label = note.important ? "make not important" : "make important";
 
   return (
-    <li className='note'> // highlight-line
-      {note.content} 
+    <li className="note">
+      {" "}
+      // highlight-line
+      {note.content}
       <button onClick={toggleImportance}>{label}</button>
     </li>
-  )
-}
+  );
+};
 ```
 
 Luokkaselektori määritellään syntaksilla _.classname_, eli:
@@ -115,15 +113,11 @@ Komponentti on yksinkertainen:
 ```js
 const Notification = ({ message }) => {
   if (message === null) {
-    return null
+    return null;
   }
 
-  return (
-    <div className="error">
-      {message}
-    </div>
-  )
-}
+  return <div className="error">{message}</div>;
+};
 ```
 
 Jos propsin <em>message</em> arvo on <em>null</em> ei renderöidä mitään, muussa tapauksessa renderöidään viesti div-elementtiin. Elementille on liitetty tyylien lisäämistä varten luokka <i>error</i>.
@@ -132,38 +126,30 @@ Lisätään komponentin <i>App</i> tilaan kenttä <i>error</i> virheviestiä var
 
 ```js
 const App = () => {
-  const [notes, setNotes] = useState([]) 
-  const [newNote, setNewNote] = useState('')
-  const [showAll, setShowAll] = useState(true)
-  const [errorMessage, setErrorMessage] = useState('some error happened...') // highlight-line
+  const [notes, setNotes] = useState([]);
+  const [newNote, setNewNote] = useState("");
+  const [showAll, setShowAll] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("some error happened..."); // highlight-line
 
   // ...
 
   return (
     <div>
       <h1>Notes</h1>
-
       <Notification message={errorMessage} /> // highlight-line
-      
       <div>
         <button onClick={() => setShowAll(!showAll)}>
-          show {showAll ? 'important' : 'all'}
+          show {showAll ? "important" : "all"}
         </button>
       </div>
-      <ul>
-        {rows()}
-      </ul>
-
+      <ul>{rows()}</ul>
       <form onSubmit={addNote}>
-        <input
-          value={newNote}
-          onChange={handleNoteChange}
-        />
+        <input value={newNote} onChange={handleNoteChange} />
         <button type="submit">save</button>
-      </form>      
+      </form>
     </div>
-  )
-}
+  );
+};
 ```
 
 Lisätään sitten virheviestille sopiva tyyli:
@@ -183,26 +169,25 @@ Lisätään sitten virheviestille sopiva tyyli:
 Nyt olemme valmiina lisäämään virheviestin logiikan. Muutetaan metodia <em>toggleImportanceOf</em> seuraavasti:
 
 ```js
-  const toggleImportanceOf = id => {
-    const note = notes.find(n => n.id === id)
-    const changedNote = { ...note, important: !note.important }
+const toggleImportanceOf = (id) => {
+  const note = notes.find((n) => n.id === id);
+  const changedNote = { ...note, important: !note.important };
 
-    noteService
-      .update(changedNote).then(returnedNote => {
-        setNotes(notes.map(note => note.id !== id ? note : returnedNote))
-      })
-      .catch(error => {
-        // highlight-start
-        setErrorMessage(
-          `Note '${note.content}' was already removed from server`
-        )
-        setTimeout(() => {
-          setErrorMessage(null)
-        }, 5000)
-        // highlight-end
-        setNotes(notes.filter(n => n.id !== id))
-      })
-  }
+  noteService
+    .update(changedNote)
+    .then((returnedNote) => {
+      setNotes(notes.map((note) => (note.id !== id ? note : returnedNote)));
+    })
+    .catch((error) => {
+      // highlight-start
+      setErrorMessage(`Note '${note.content}' was already removed from server`);
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 5000);
+      // highlight-end
+      setNotes(notes.filter((n) => n.id !== id));
+    });
+};
 ```
 
 Eli virheen yhteydessä asetetaan tilaan <em>errorMessage</em> sopiva virheviesti. Samalla käynnistetään ajastin, joka asettaa 5 sekunnin kuluttua tilan <em>errorMessage</em>-kentän arvoksi <em>null</em>.
@@ -246,18 +231,20 @@ Voisimme nyt lisätä sovelluksemme "alapalkin", muodostavan komponentin <i>Foot
 ```js
 const Footer = () => {
   const footerStyle = {
-    color: 'green',
-    fontStyle: 'italic',
-    fontSize: 16
-  }
+    color: "green",
+    fontStyle: "italic",
+    fontSize: 16,
+  };
 
   return (
     <div style={footerStyle}>
       <br />
-      <em>Note app, Department of Computer Science, University of Helsinki 2019</em>
+      <em>
+        Note app, Department of Computer Science, University of Helsinki 2019
+      </em>
     </div>
-  )
-}
+  );
+};
 
 const App = () => {
   // ...
@@ -265,15 +252,12 @@ const App = () => {
   return (
     <div>
       <h1>Notes</h1>
-
       <Notification message={errorMessage} />
-
-      // ...  
-
+      // ...
       <Footer /> // highlight-line
     </div>
-  )
-}
+  );
+};
 ```
 
 Inline-tyyleillä on tiettyjä rajoituksia, esim. ns. pseudo-selektoreja ei ole mahdollisuutta käyttää (ainakaan helposti).
@@ -302,8 +286,8 @@ Avaa sovelluksesi kahteen selaimeen. **Jos poistat jonkun henkilön toisesta sel
 
 ![](../../images/2/29b.png)
 
-Korjaa ongelma osan 2 esimerkin [promise ja virheet](/osa2/palvelimella_olevan_datan_muokkaaminen#promise-ja-virheet) hengessä, mutta siten että 
- käyttäjälle ilmoitetaan operaation epäonnistumisesta. Onnistuneen ja epäonnistuneen operaation ilmoitusten tulee erota toisistaan: 
+Korjaa ongelma osan 2 esimerkin [promise ja virheet](/osa2/palvelimella_olevan_datan_muokkaaminen#promise-ja-virheet) hengessä, mutta siten että
+käyttäjälle ilmoitetaan operaation epäonnistumisesta. Onnistuneen ja epäonnistuneen operaation ilmoitusten tulee erota toisistaan:
 
 ![](../../images/2/28e.png)
 

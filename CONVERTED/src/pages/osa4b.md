@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-4.svg
+mainImage: "../../../images/part-4.svg"
 part: 4
 letter: b
 lang: fi
@@ -7,7 +7,7 @@ lang: fi
 
 <div class="content">
 
-Ruvetaan nyt tekemään testejä backendille. Koska backend ei sisällä monimutkaista laskentaa, ei yksittäisiä funktioita testaavia [yksikkötestejä](https://en.wikipedia.org/wiki/Unit_testing) oikeastaan kannata tehdä. Ainoa potentiaalinen yksikkötestattava asia olisi muistiinpanojen metodi _toJSON_. 
+Ruvetaan nyt tekemään testejä backendille. Koska backend ei sisällä monimutkaista laskentaa, ei yksittäisiä funktioita testaavia [yksikkötestejä](https://en.wikipedia.org/wiki/Unit_testing) oikeastaan kannata tehdä. Ainoa potentiaalinen yksikkötestattava asia olisi muistiinpanojen metodi _toJSON_.
 
 Joissain tilanteissa voisi olla mielekästä suorittaa ainakin osa backendin testauksesta siten, että oikea tietokanta eristettäisiin testeistä ja korvattaisiin "valekomponentilla" eli mockilla. Eräs tähän sopiva ratkaisu olisi [mongo-mock](https://github.com/williamkapke/mongo-mock).
 
@@ -17,9 +17,9 @@ Koska sovelluksemme backend on koodiltaan kuitenkin suhteellisen yksinkertainen,
 
 Edellisen osan luvussa [Tietokantaa käyttävän version vieminen tuotantoon](/osa3/validointi_ja_es_lint#tietokantaa-kayttavan-version-vieminen-tuotantoon) mainitsimme, että kun sovellusta suoritetaan Herokussa, on se <i>production</i>-moodissa.
 
-Noden konventiona on määritellä projektin suoritusmoodi ympäristömuuttujan <i>NODE\_ENV</i> avulla. Yleinen käytäntö on määritellä sovelluksille omat moodinsa tuotantokäyttöön,  sovelluskehitykseen ja testaukseen.
+Noden konventiona on määritellä projektin suoritusmoodi ympäristömuuttujan <i>NODE_ENV</i> avulla. Yleinen käytäntö on määritellä sovelluksille omat moodinsa tuotantokäyttöön, sovelluskehitykseen ja testaukseen.
 
-Määritellään nyt tiedostossa <i>package.json</i>, että testejä suoritettaessa sovelluksen <i>NODE\_ENV</i> saa arvokseen <i>test</i>:
+Määritellään nyt tiedostossa <i>package.json</i>, että testejä suoritettaessa sovelluksen <i>NODE_ENV</i> saa arvokseen <i>test</i>:
 
 ```json
 {
@@ -33,7 +33,7 @@ Määritellään nyt tiedostossa <i>package.json</i>, että testejä suoritettae
     "logs:prod": "heroku logs --tail",
     "lint": "eslint .",
     "test": "NODE_ENV=test jest --verbose --runInBand" // highlight-line
-  },
+  }
   // ...
 }
 ```
@@ -57,8 +57,8 @@ ja muuttamalla <i>package.json</i> kaikilla käyttöjärjestelmillä toimivaan m
     "start": "cross-env NODE_ENV=production node index.js",
     "watch": "cross-env NODE_ENV=development nodemon index.js",
     // ...
-    "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
-  },
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand"
+  }
   // ...
 }
 ```
@@ -72,21 +72,21 @@ Testaukseen kannattaisikin käyttää verkossa olevan jaetun tietokannan sijaan 
 Muutetaan konfiguraatiot suorittavaa moduulia seuraavasti:
 
 ```js
-require('dotenv').config()
+require("dotenv").config();
 
-let PORT = process.env.PORT
-let MONGODB_URI = process.env.MONGODB_URI
+let PORT = process.env.PORT;
+let MONGODB_URI = process.env.MONGODB_URI;
 
 // highlight-start
-if (process.env.NODE_ENV === 'test') {
-  MONGODB_URI = process.env.TEST_MONGODB_URI
+if (process.env.NODE_ENV === "test") {
+  MONGODB_URI = process.env.TEST_MONGODB_URI;
 }
 // highlight-end
 
 module.exports = {
   MONGODB_URI,
-  PORT
-}
+  PORT,
+};
 ```
 
 Koodi siis lataa ympäristömuuttujat tiedostosta <i>.env</i> jos se <i>ei ole</i> tuotantomoodissa. Tuotantomoodissa käytetään Herokuun asetettuja ympäristömuuttujia.
@@ -121,25 +121,25 @@ npm install --save-dev supertest
 Luodaan heti ensimmäinen testi tiedostoon <i>tests/note_api.test.js</i>
 
 ```js
-const mongoose = require('mongoose')
-const supertest = require('supertest')
-const app = require('../app')
+const mongoose = require("mongoose");
+const supertest = require("supertest");
+const app = require("../app");
 
-const api = supertest(app)
+const api = supertest(app);
 
-test('notes are returned as json', async () => {
+test("notes are returned as json", async () => {
   await api
-    .get('/api/notes')
+    .get("/api/notes")
     .expect(200)
-    .expect('Content-Type', /application\/json/)
-})
+    .expect("Content-Type", /application\/json/);
+});
 
 afterAll(() => {
-  mongoose.connection.close()
-})
+  mongoose.connection.close();
+});
 ```
 
-Testi importtaa tiedostoon <i>app.js</i> määritellyn Express-sovelluksen ja käärii sen  funktion <i>supertest</i> avulla ns. [superagent](https://github.com/visionmedia/superagent)-olioksi. Tämä olio sijoitetaan muuttujaan <i>api</i> ja sen kautta testit voivat tehdä HTTP-pyyntöjä backendiin.
+Testi importtaa tiedostoon <i>app.js</i> määritellyn Express-sovelluksen ja käärii sen funktion <i>supertest</i> avulla ns. [superagent](https://github.com/visionmedia/superagent)-olioksi. Tämä olio sijoitetaan muuttujaan <i>api</i> ja sen kautta testit voivat tehdä HTTP-pyyntöjä backendiin.
 
 Testimetodi tekee HTTP GET -pyynnön osoitteeseen <i>api/notes</i> ja varmistaa, että pyyntöön vastataan statuskoodilla 200 ja että data palautetaan oikeassa muodossa, eli että <i>Content-Type</i>:n arvo on <i>application/json</i>.
 
@@ -149,8 +149,8 @@ Kaikkien testien (joita siis tällä kertaa on vain yksi) päätteeksi on vielä
 
 ```js
 afterAll(() => {
-  mongoose.connection.close()
-})
+  mongoose.connection.close();
+});
 ```
 
 Testejä suorittaessa saattaa tulla seuraava ilmoitus
@@ -161,31 +161,32 @@ Jos näin käy, toimitaan [ohjeen](https://mongoosejs.com/docs/jest.html) mukaan
 
 ```js
 module.exports = {
-  testEnvironment: 'node'
-}
+  testEnvironment: "node",
+};
 ```
 
 Pieni mutta tärkeä huomio: eristimme tämän osan [alussa](/osa4/sovelluksen_rakenne_ja_testauksen_alkeet#sovelluksen-rakenne) Express-sovelluksen tiedostoon <i>app.js</i> ja tiedoston <i>index.js</i> rooliksi jäi sovelluksen käynnistäminen määriteltyyn porttiin Noden <i>http</i>-olion avulla:
 
 ```js
-const app = require('./app') // varsinainen Express-sovellus
-const http = require('http')
-const config = require('./utils/config')
+const app = require("./app"); // varsinainen Express-sovellus
+const http = require("http");
+const config = require("./utils/config");
 
-const server = http.createServer(app)
+const server = http.createServer(app);
 
 server.listen(config.PORT, () => {
-  console.log(`Server running on port ${config.PORT}`)
-})
+  console.log(`Server running on port ${config.PORT}`);
+});
 ```
 
 Testit käyttävät ainoastaan tiedostossa <i>app.js</i> määriteltyä express-sovellusta:
-```js
-const mongoose = require('mongoose')
-const supertest = require('supertest')
-const app = require('../app') // highlight-line
 
-const api = supertest(app) // highlight-line
+```js
+const mongoose = require("mongoose");
+const supertest = require("supertest");
+const app = require("../app"); // highlight-line
+
+const api = supertest(app); // highlight-line
 
 // ...
 ```
@@ -199,17 +200,17 @@ eli Supertest huolehtii testattavan sovelluksen käynnistämisestä sisäisesti 
 Tehdään pari testiä lisää:
 
 ```js
-test('there are five notes', async () => {
-  const response = await api.get('/api/notes')
+test("there are five notes", async () => {
+  const response = await api.get("/api/notes");
 
-  expect(response.body.length).toBe(4)
-})
+  expect(response.body.length).toBe(4);
+});
 
-test('the first note is about HTTP methods', async () => {
-  const response = await api.get('/api/notes')
+test("the first note is about HTTP methods", async () => {
+  const response = await api.get("/api/notes");
 
-  expect(response.body[0].content).toBe('HTML is easy')
-})
+  expect(response.body[0].content).toBe("HTML is easy");
+});
 ```
 
 Molemmat testit sijoittavat pyynnön vastauksen muuttujaan _response_ ja toisin kuin edellinen testi, joka käytti _supertestin_ mekanismeja statuskoodin ja vastauksen headereiden oikeellisuuden varmistamiseen, tällä kertaa tutkitaan vastauksessa olevan datan, eli <i>response.body</i>:n oikeellisuutta Jestin [expect](https://facebook.github.io/jest/docs/en/expect.html#content):in avulla.
@@ -217,11 +218,11 @@ Molemmat testit sijoittavat pyynnön vastauksen muuttujaan _response_ ja toisin 
 Async/await-kikan hyödyt tulevat nyt selkeästi esiin. Normaalisti tarvitsisimme asynkronisten pyyntöjen vastauksiin käsille pääsemiseen promiseja ja takaisinkutsuja, mutta nyt kaikki menee mukavasti:
 
 ```js
-const response = await api.get('/api/notes')
+const response = await api.get("/api/notes");
 
 // tänne tullaan vasta kun edellinen komento eli HTTP-pyyntö on suoritettu
 // muuttujassa response on nyt HTTP-pyynnön tulos
-expect(response.body.length).toBe(3)
+expect(response.body.length).toBe(3);
 ```
 
 ### Loggeri
@@ -230,18 +231,19 @@ HTTP-pyyntöjen tiedot konsoliin kirjoittava middleware häiritsee hiukan testie
 
 ```js
 const info = (...params) => {
-  if (process.env.NODE_ENV !== 'test') {
-    console.log(...params)
+  if (process.env.NODE_ENV !== "test") {
+    console.log(...params);
   }
-}
+};
 
 const error = (...params) => {
-  console.error(...params)
-}
+  console.error(...params);
+};
 
 module.exports = {
-  info, error
-}
+  info,
+  error,
+};
 ```
 
 Loggeri tarjoaa kaksi funktiota, joista _info_ ei tulosta mitään sovelluksen ollessa testausmoodissa. Virhetilanteisiin tarkoitettu funktio _error_ tulostaa konsoliin myös testausmoodissa.
@@ -249,56 +251,57 @@ Loggeri tarjoaa kaksi funktiota, joista _info_ ei tulosta mitään sovelluksen o
 Otetaan loggeri käyttöön muualla sovelluksessa. Muutoksia tulee middlewaret määrittelevään tiedostoon
 
 ```js
-const logger = require('./logger') // highlight-line
+const logger = require("./logger"); // highlight-line
 
 const requestLogger = (request, response, next) => {
   // highlight-start
-  logger.info('Method:', request.method)
-  logger.info('Path:  ', request.path)
-  logger.info('Body:  ', request.body)
-  logger.info('---')
+  logger.info("Method:", request.method);
+  logger.info("Path:  ", request.path);
+  logger.info("Body:  ", request.body);
+  logger.info("---");
   // highlight-end
-  next()
-}
+  next();
+};
 
 const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' })
-}
+  response.status(404).send({ error: "unknown endpoint" });
+};
 
 const errorHandler = (error, request, response, next) => {
-  logger.error(error.message) // highlight-line
+  logger.error(error.message); // highlight-line
 
-  if (error.name === 'CastError' && error.kind === 'ObjectId') {
-    return response.status(400).send({ error: 'malformatted id' })
-  } else if (error.name === 'ValidationError') {
-    return response.status(400).json({ error: error.message })
+  if (error.name === "CastError" && error.kind === "ObjectId") {
+    return response.status(400).send({ error: "malformatted id" });
+  } else if (error.name === "ValidationError") {
+    return response.status(400).json({ error: error.message });
   }
 
-  next(error)
-}
+  next(error);
+};
 
 module.exports = {
   requestLogger,
   unknownEndpoint,
-  errorHandler
-}
+  errorHandler,
+};
 ```
 
 ja express-sovelluksen määrittelevään tiedostoon <i>app.js</i>:
 
-```js 
+```js
 // ...
-const logger = require('./utils/logger') // highlight-line
+const logger = require("./utils/logger"); // highlight-line
 
-logger.info('connecting to', config.MONGODB_URI) // highlight-line
+logger.info("connecting to", config.MONGODB_URI); // highlight-line
 
-mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true })
+mongoose
+  .connect(config.MONGODB_URI, { useNewUrlParser: true })
   .then(() => {
-    logger.info('connected to MongoDB') // highlight-line
+    logger.info("connected to MongoDB"); // highlight-line
   })
   .catch((error) => {
-    logger.error('error connection to MongoDB:', error.message) // highlight-line
-  })
+    logger.error("error connection to MongoDB:", error.message); // highlight-line
+  });
 
 // ...
 ```
@@ -314,31 +317,31 @@ Testimme käyttää jo jestin metodia [afterAll](https://facebook.github.io/jest
 Päätetään alustaa tietokanta ennen <i>jokaisen testin suoritusta,</i> eli funktiossa [beforeEach](https://jestjs.io/docs/en/api.html#aftereachfn-timeout):
 
 ```js
-const supertest = require('supertest')
-const app = require('../app')
-const api = supertest(app)
-const Note = require('../models/note')
+const supertest = require("supertest");
+const app = require("../app");
+const api = supertest(app);
+const Note = require("../models/note");
 
 const initialNotes = [
   {
-    content: 'HTML is easy',
+    content: "HTML is easy",
     important: false,
   },
   {
-    content: 'Browser can execute only Javascript',
+    content: "Browser can execute only Javascript",
     important: true,
   },
-]
+];
 
 beforeEach(async () => {
-  await Note.deleteMany({})
+  await Note.deleteMany({});
 
-  let noteObject = new Note(initialNotes[0])
-  await noteObject.save()
+  let noteObject = new Note(initialNotes[0]);
+  await noteObject.save();
 
-  noteObject = new Note(initialNotes[1])
-  await noteObject.save()
-})
+  noteObject = new Note(initialNotes[1]);
+  await noteObject.save();
+});
 ```
 
 Tietokanta siis tyhjennetään aluksi ja sen jälkeen kantaan lisätään kaksi taulukkoon _initialNotes_ talletettua muistiinpanoa. Näin testien suoritus aloitetaan aina hallitusti samasta tilasta.
@@ -346,21 +349,21 @@ Tietokanta siis tyhjennetään aluksi ja sen jälkeen kantaan lisätään kaksi 
 Muutetaan kahta jälkimmäistä testiä vielä seuraavasti:
 
 ```js
-test('all notes are returned', async () => {
-  const response = await api.get('/api/notes')
+test("all notes are returned", async () => {
+  const response = await api.get("/api/notes");
 
-  expect(response.body.length).toBe(initialNotes.length) // highlight-line
-})
+  expect(response.body.length).toBe(initialNotes.length); // highlight-line
+});
 
-test('a specific note is within the returned notes', async () => {
-  const response = await api.get('/api/notes')
+test("a specific note is within the returned notes", async () => {
+  const response = await api.get("/api/notes");
 
-  const contents = response.body.map(r => r.content) // highlight-line
+  const contents = response.body.map((r) => r.content); // highlight-line
 
   expect(contents).toContain(
-    'Browser can execute only Javascript' // highlight-line
-  )
-})
+    "Browser can execute only Javascript" // highlight-line
+  );
+});
 ```
 
 Huomaa jälkimmäisen testin ekspektaatio. Komennolla <code>response.body.map(r => r.content)</code> muodostetaan taulukko API:n palauttamien muistiinpanojen sisällöistä. Jestin [toContain](https://facebook.github.io/jest/docs/en/expect.html#tocontainitem)-ekspektaatiometodilla tarkistetaan että parametrina oleva muistiinpano on kaikkien API:n palauttamien muistiinpanojen joukossa.
@@ -414,9 +417,9 @@ Async- ja await ovat ES7:n mukanaan tuoma uusi syntaksi, joka mahdollistaa <i>pr
 Esim. muistiinpanojen hakeminen tietokannasta hoidetaan promisejen avulla seuraavasti:
 
 ```js
-Note.find({}).then(notes => {
-  console.log('operation returned the following notes', notes)
-})
+Note.find({}).then((notes) => {
+  console.log("operation returned the following notes", notes);
+});
 ```
 
 Metodikutsu _Note.find()_ palauttaa promisen, ja saamme itse operaation tuloksen rekisteröimällä promiselle tapahtumankäsittelijän metodilla _then_.
@@ -427,13 +430,13 @@ Kaikki operaation suorituksen jälkeinen koodi kirjoitetaan tapahtumankäsitteli
 
 ```js
 Note.find({})
-  .then(notes => {
-    return notes[0].remove()
+  .then((notes) => {
+    return notes[0].remove();
   })
-  .then(response => {
-    console.log('the first note is removed')
+  .then((response) => {
+    console.log("the first note is removed");
     // more code here
-  })
+  });
 ```
 
 Then-ketju on ok, mutta parempaankin pystytään. Jo ES6:ssa esitellyt [generaattorifunktiot](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) mahdollistivat [ovelan tavan](https://github.com/getify/You-Dont-Know-JS/blob/master/async%20%26%20performance/ch4.md#iterating-generators-asynchronously) määritellä asynkronista koodia siten että se "näyttää synkroniselta". Syntaksi ei kuitenkaan ole täysin luonteva ja sitä ei käytetä kovin yleisesti.
@@ -443,9 +446,9 @@ ES7:ssa _async_ ja _await_ tuovat generaattoreiden tarjoaman toiminnallisuuden y
 Voisimme hakea tietokannasta kaikki muistiinpanot [await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await)-operaattoria hyödyntäen seuraavasti:
 
 ```js
-const notes = await Note.find({})
+const notes = await Note.find({});
 
-console.log('operation returned the following notes', notes)
+console.log("operation returned the following notes", notes);
 ```
 
 Koodi siis näyttää täsmälleen synkroniselta koodilta. Suoritettavan koodinpätkän suhteen tilanne on se, että suoritus pysähtyy komentoon <em>const notes = await Note.find({})</em> ja jatkuu kyselyä vastaavan promisen <i>fulfillmentin</i> eli onnistuneen suorituksen jälkeen seuraavalta riviltä. Kun suoritus jatkuu, promisea vastaavan operaation tulos on muuttujassa _notes_.
@@ -453,10 +456,10 @@ Koodi siis näyttää täsmälleen synkroniselta koodilta. Suoritettavan koodinp
 Ylempänä oleva monimutkaisempi esimerkki suoritettaisiin awaitin avulla seuraavasti:
 
 ```js
-const notes = await Note.find({})
-const response = await notes[0].remove()
+const notes = await Note.find({});
+const response = await notes[0].remove();
 
-console.log('the first note is removed')
+console.log("the first note is removed");
 ```
 
 Koodi siis yksinkertaistuu huomattavasti verrattuna promiseja käyttävään then-ketjuun.
@@ -468,17 +471,18 @@ Mistä tahansa kohtaa Javascript-koodia ei awaitia kuitenkaan pysty käyttämä�
 Eli jotta edelliset esimerkit toimisivat, on ne suoritettava async-funktioiden sisällä, huomaa funktion määrittelevä rivi:
 
 ```js
-const main = async () => { // highlight-line
-  const notes = await Note.find({})
-  console.log('operaatio palautti seuraavat muistiinpanot', notes)
+const main = async () => {
+  // highlight-line
+  const notes = await Note.find({});
+  console.log("operaatio palautti seuraavat muistiinpanot", notes);
 
-  const notes = await Note.find({})
-  const response = await notes[0].remove()
+  const notes = await Note.find({});
+  const response = await notes[0].remove();
 
-  console.log('the first note is removed')
-}
+  console.log("the first note is removed");
+};
 
-main() // highlight-line
+main(); // highlight-line
 ```
 
 Koodi määrittelee ensin asynkronisen funktion, joka sijoitetaan muuttujaan _main_. Määrittelyn jälkeen koodi kutsuu metodia komennolla <code>main()</code>
@@ -490,10 +494,10 @@ Muutetaan nyt backend käyttämään asyncia ja awaitia. Koska kaikki asynkronis
 Kaikkien muistiinpanojen hakemisesta vastaava route muuttuu seuraavasti:
 
 ```js
-notesRouter.get('/', async (request, response) => { 
-  const notes = await Note.find({})
-  response.json(notes.map(note => note.toJSON()))
-})
+notesRouter.get("/", async (request, response) => {
+  const notes = await Note.find({});
+  response.json(notes.map((note) => note.toJSON()));
+});
 ```
 
 Voimme varmistaa refaktoroinnin onnistumisen selaimella, sekä suorittamalla juuri määrittelemämme testit.
@@ -507,27 +511,25 @@ Koodia refaktoroidessa vaanii aina [regression](https://en.wikipedia.org/wiki/Re
 Aloitetaan lisäysoperaatiosta. Tehdään testi, joka lisää uuden muistiinpanon ja tarkistaa, että API:n palauttamien muistiinpanojen määrä kasvaa, ja että lisätty muistiinpano on palautettujen joukossa:
 
 ```js
-test('a valid note can be added ', async () => {
+test("a valid note can be added ", async () => {
   const newNote = {
-    content: 'async/await simplifies making async calls',
+    content: "async/await simplifies making async calls",
     important: true,
-  }
+  };
 
   await api
-    .post('/api/notes')
+    .post("/api/notes")
     .send(newNote)
     .expect(200)
-    .expect('Content-Type', /application\/json/)
+    .expect("Content-Type", /application\/json/);
 
-  const response = await api.get('/api/notes')
+  const response = await api.get("/api/notes");
 
-  const contents = response.body.map(r => r.content)
+  const contents = response.body.map((r) => r.content);
 
-  expect(response.body.length).toBe(initialNotes.length + 1)
-  expect(contents).toContain(
-    'async/await simplifies making async calls'
-  )
-})
+  expect(response.body.length).toBe(initialNotes.length + 1);
+  expect(contents).toContain("async/await simplifies making async calls");
+});
 ```
 
 Kuten odotimme ja toivoimme, menee testi läpi.
@@ -535,60 +537,59 @@ Kuten odotimme ja toivoimme, menee testi läpi.
 Tehdään myös testi, joka varmistaa, että muistiinpanoa, jolle ei ole asetettu sisältöä, ei talleteta
 
 ```js
-test('note without content is not added', async () => {
+test("note without content is not added", async () => {
   const newNote = {
-    important: true
-  }
+    important: true,
+  };
 
-  await api
-    .post('/api/notes')
-    .send(newNote)
-    .expect(400)
+  await api.post("/api/notes").send(newNote).expect(400);
 
-  const response = await api.get('/api/notes')
+  const response = await api.get("/api/notes");
 
-  expect(response.body.length).toBe(initialNotes.length)
-})
+  expect(response.body.length).toBe(initialNotes.length);
+});
 ```
 
 Molemmat testit tarkastavat lisäyksen jälkeen mihin tilaan tietokanta on päätynyt hakemalla kaikki sovelluksen muistiinpanot
 
 ```js
-const response = await api.get('/api/notes')
+const response = await api.get("/api/notes");
 ```
 
-Sama tulee toistumaan myöhemminkin monissa testeissä ja operaatio kannattaakin eristää apufunktioon. Sijoitetaan se testien yhteyteen tiedostoon <i>tests/test_helper.js</i> 
+Sama tulee toistumaan myöhemminkin monissa testeissä ja operaatio kannattaakin eristää apufunktioon. Sijoitetaan se testien yhteyteen tiedostoon <i>tests/test_helper.js</i>
 
 ```js
-const Note = require('../models/note')
+const Note = require("../models/note");
 
 const initialNotes = [
   {
-    content: 'HTML is easy',
-    important: false
+    content: "HTML is easy",
+    important: false,
   },
   {
-    content: 'Browser can execute only Javascript',
-    important: true
-  }
-]
+    content: "Browser can execute only Javascript",
+    important: true,
+  },
+];
 
 const nonExistingId = async () => {
-  const note = new Note({ content: 'willremovethissoon' })
-  await note.save()
-  await note.remove()
+  const note = new Note({ content: "willremovethissoon" });
+  await note.save();
+  await note.remove();
 
-  return note._id.toString()
-}
+  return note._id.toString();
+};
 
 const notesInDb = async () => {
-  const notes = await Note.find({})
-  return notes.map(note => note.toJSON())
-}
+  const notes = await Note.find({});
+  return notes.map((note) => note.toJSON());
+};
 
 module.exports = {
-  initialNotes, nonExistingId, notesInDb
-}
+  initialNotes,
+  nonExistingId,
+  notesInDb,
+};
 ```
 
 Moduuli määrittelee funktion _notesInDb_, jonka avulla voidaan tarkastaa sovelluksen tietokannassa olevat muistiinpanot. Tietokantaan alustettava sisältö _initialNotes_ on siirretty samaan tiedostoon. Määrittelimme myös tulevan varalta funktion _nonExistingId_, jonka avulla on mahdollista luoda tietokantaid, joka ei kuulu millekään kannassa olevalle oliolle.
@@ -596,86 +597,78 @@ Moduuli määrittelee funktion _notesInDb_, jonka avulla voidaan tarkastaa sovel
 Testit muuttuvat muotoon
 
 ```js
-const supertest = require('supertest')
-const mongoose = require('mongoose')
-const helper = require('./test_helper') // highlight-line
-const app = require('../app')
-const api = supertest(app)
+const supertest = require("supertest");
+const mongoose = require("mongoose");
+const helper = require("./test_helper"); // highlight-line
+const app = require("../app");
+const api = supertest(app);
 
-const Note = require('../models/note')
+const Note = require("../models/note");
 
 beforeEach(async () => {
-  await Note.deleteMany({})
+  await Note.deleteMany({});
 
-  let noteObject = new Note(helper.initialNotes[0]) // highlight-line
-  await noteObject.save()
+  let noteObject = new Note(helper.initialNotes[0]); // highlight-line
+  await noteObject.save();
 
-  noteObject = new Note(helper.initialNotes[1]) // highlight-line
-  await noteObject.save()
-})
+  noteObject = new Note(helper.initialNotes[1]); // highlight-line
+  await noteObject.save();
+});
 
-test('notes are returned as json', async () => {
+test("notes are returned as json", async () => {
   await api
-    .get('/api/notes')
+    .get("/api/notes")
     .expect(200)
-    .expect('Content-Type', /application\/json/)
-})
+    .expect("Content-Type", /application\/json/);
+});
 
-test('all notes are returned', async () => {
-  const response = await api.get('/api/notes')
+test("all notes are returned", async () => {
+  const response = await api.get("/api/notes");
 
-  expect(response.body.length).toBe(helper.initialNotes.length) // highlight-line
-})
+  expect(response.body.length).toBe(helper.initialNotes.length); // highlight-line
+});
 
-test('a specific note is within the returned notes', async () => {
-  const response = await api.get('/api/notes')
+test("a specific note is within the returned notes", async () => {
+  const response = await api.get("/api/notes");
 
-  const contents = response.body.map(r => r.content)
-  expect(contents).toContain(
-    'Browser can execute only Javascript'
-  )
-})
+  const contents = response.body.map((r) => r.content);
+  expect(contents).toContain("Browser can execute only Javascript");
+});
 
-test('a valid note can be added ', async () => {
+test("a valid note can be added ", async () => {
   const newNote = {
-    content: 'async/await simplifies making async calls',
+    content: "async/await simplifies making async calls",
     important: true,
-  }
+  };
 
   await api
-    .post('/api/notes')
+    .post("/api/notes")
     .send(newNote)
     .expect(200)
-    .expect('Content-Type', /application\/json/)
+    .expect("Content-Type", /application\/json/);
 
+  const notesAtEnd = await helper.notesInDb(); // highlight-line
+  expect(notesAtEnd.length).toBe(helper.initialNotes.length + 1); // highlight-line
 
-  const notesAtEnd = await helper.notesInDb() // highlight-line
-  expect(notesAtEnd.length).toBe(helper.initialNotes.length + 1) // highlight-line
+  const contents = notesAtEnd.map((n) => n.content); // highlight-line
+  expect(contents).toContain("async/await simplifies making async calls");
+});
 
-  const contents = notesAtEnd.map(n => n.content) // highlight-line
-  expect(contents).toContain(
-    'async/await simplifies making async calls'
-  )
-})
-
-test('note without content is not added', async () => {
+test("note without content is not added", async () => {
   const newNote = {
-    important: true
-  }
+    important: true,
+  };
 
-  await api
-    .post('/api/notes')
-    .send(newNote)
-    .expect(400)
+  await api.post("/api/notes").send(newNote).expect(400);
 
-  const notesAtEnd = await helper.notesInDb() // highlight-line
+  const notesAtEnd = await helper.notesInDb(); // highlight-line
 
-  expect(notesAtEnd.length).toBe(helper.initialNotes.length) // highlight-line
-})
+  expect(notesAtEnd.length).toBe(helper.initialNotes.length); // highlight-line
+});
 
 afterAll(() => {
-  mongoose.connection.close()
-}) 
+  mongoose.connection.close();
+});
 ```
 
 Promiseja käyttävä koodi toimii nyt ja testitkin menevät läpi. Olemme valmiit muuttamaan koodin käyttämään async/await-syntaksia.
@@ -683,18 +676,18 @@ Promiseja käyttävä koodi toimii nyt ja testitkin menevät läpi. Olemme valmi
 Koodi muuttuu seuraavasti (huomaa, että käsittelijän alkuun on laitettava määre _async_):
 
 ```js
-notesRouter.post('/', async (request, response, next) => {
-  const body = request.body
+notesRouter.post("/", async (request, response, next) => {
+  const body = request.body;
 
   const note = new Note({
     content: body.content,
     important: body.important === undefined ? false : body.important,
     date: new Date(),
-  })
+  });
 
-  const savedNote = await note.save()
-  response.json(savedNote.toJSON())
-})
+  const savedNote = await note.save();
+  response.json(savedNote.toJSON());
+});
 ```
 
 Koodiin jää kuitenkin pieni ongelma: virhetilanteita ei nyt käsitellä ollenkaan. Miten niiden suhteen tulisi toimia?
@@ -710,23 +703,23 @@ eli käsittelemätön promisen rejektoituminen. Pyyntöön ei vastata tilanteess
 Async/awaitia käyttäessä kannattaa käyttää vanhaa kunnon _try/catch_-mekanismia virheiden käsittelyyn:
 
 ```js
-notesRouter.post('/', async (request, response, next) => {
-  const body = request.body
+notesRouter.post("/", async (request, response, next) => {
+  const body = request.body;
 
   const note = new Note({
     content: body.content,
     important: body.important === undefined ? false : body.important,
     date: new Date(),
-  })
+  });
   // highlight-start
-  try { 
-    const savedNote = await note.save()
-    response.json(savedNote.toJSON())
-  } catch(exception) {
-    next(exception)
+  try {
+    const savedNote = await note.save();
+    response.json(savedNote.toJSON());
+  } catch (exception) {
+    next(exception);
   }
   // highlight-end
-})
+});
 ```
 
 Catch-lohkossa siis ainoastaan kutsutaan funktiota _next_ siirretään poikkeuksen käsittely virheidenkäsittelymiddlewarelle.
@@ -736,69 +729,65 @@ Muutoksen jälkeen testit menevät läpi.
 Tehdään sitten testit yksittäisen muistiinpanon tietojen katsomiselle ja muistiinpanon poistolle:
 
 ```js
-test('a specific note can be viewed', async () => {
-  const notesAtStart = await helper.notesInDb()
+test("a specific note can be viewed", async () => {
+  const notesAtStart = await helper.notesInDb();
 
-  const noteToView = notesAtStart[0]
+  const noteToView = notesAtStart[0];
 
-// highlight-start
+  // highlight-start
   const resultNote = await api
     .get(`/api/notes/${noteToView.id}`)
     .expect(200)
-    .expect('Content-Type', /application\/json/)
-// highlight-end
+    .expect("Content-Type", /application\/json/);
+  // highlight-end
 
-  expect(resultNote.body).toEqual(noteToView)
-})
+  expect(resultNote.body).toEqual(noteToView);
+});
 
-test('a note can be deleted', async () => {
-  const notesAtStart = await helper.notesInDb()
-  const noteToDelete = notesAtStart[0]
+test("a note can be deleted", async () => {
+  const notesAtStart = await helper.notesInDb();
+  const noteToDelete = notesAtStart[0];
 
-// highlight-start
-  await api
-    .delete(`/api/notes/${noteToDelete.id}`)
-    .expect(204)
-// highlight-end
+  // highlight-start
+  await api.delete(`/api/notes/${noteToDelete.id}`).expect(204);
+  // highlight-end
 
-  const notesAtEnd = await helper.notesInDb()
+  const notesAtEnd = await helper.notesInDb();
 
-  expect(notesAtEnd.length).toBe(
-    helper.initialNotes.length - 1
-  )
+  expect(notesAtEnd.length).toBe(helper.initialNotes.length - 1);
 
-  const contents = notesAtEnd.map(r => r.content)
+  const contents = notesAtEnd.map((r) => r.content);
 
-  expect(contents).not.toContain(noteToDelete.content)
-})
+  expect(contents).not.toContain(noteToDelete.content);
+});
 ```
 
-Molemmat testit ovat rakenteeltaan samankaltaisia. Alustusvaiheessa ne hakevat kannasta yksittäisen muistiinpanon. Tämän jälkeen on itse testattava operaatio, joka on koodissa korostettuna. Lopussa tarkastetaan, että operaation tulos on haluttu. 
+Molemmat testit ovat rakenteeltaan samankaltaisia. Alustusvaiheessa ne hakevat kannasta yksittäisen muistiinpanon. Tämän jälkeen on itse testattava operaatio, joka on koodissa korostettuna. Lopussa tarkastetaan, että operaation tulos on haluttu.
 
 Testit menevät läpi, joten voimme turvallisesti refaktoroida testatut routet käyttämään async/awaitia:
 
 ```js
-notesRouter.get('/:id', async (request, response, next) => {
-  try{
-    const note = await Note.findById(request.params.id)
-    if (note) {
-      response.json(note.toJSON())
-    } else {
-      response.status(404).end()
-    }
-  } catch(exception) {
-    next(exception)
-  }
-})
-
-notesRouter.delete('/:id', async (request, response, next) => {
+notesRouter.get("/:id", async (request, response, next) => {
   try {
-    await Note.findByIdAndRemove(request.params.id)
-    response.status(204).end()
+    const note = await Note.findById(request.params.id);
+    if (note) {
+      response.json(note.toJSON());
+    } else {
+      response.status(404).end();
+    }
   } catch (exception) {
-    next(exception)
+    next(exception);
   }
-})
+});
+
+notesRouter.delete("/:id", async (request, response, next) => {
+  try {
+    await Note.findByIdAndRemove(request.params.id);
+    response.status(204).end();
+  } catch (exception) {
+    next(exception);
+  }
+});
 ```
 
 Async/await ehkä selkeyttää koodia jossain määrin, mutta saavutettava hyöty ei ole sovelluksessamme vielä niin iso mitä se tulee olemaan jos asynkronisia kutsuja on tehtävä useampia. Async/awaitin 'hinta' on poikkeusten käsittelyn edellyttämä iso <i>try/catch</i>-rakenne. Kaikki routejen käsittelijät noudattavatkin samaa kaavaa
@@ -806,8 +795,8 @@ Async/await ehkä selkeyttää koodia jossain määrin, mutta saavutettava hyöt
 ```js
 try {
   // do the async operations here
-} catch(exception) {
-  next(exception)
+} catch (exception) {
+  next(exception);
 }
 ```
 
@@ -817,21 +806,20 @@ Kaikki eivät ole vakuuttuneita siitä, että async/await on hyvä lisä Javascr
 
 Sovelluksen tämänhetkinen koodi on kokonaisuudessaan [githubissa](https://github.com/fullstackopen-2019/part3-notes-backend/tree/part4-4), haarassa <i>part4-4</i>. Samassa on "vahingossa" mukana testeistä seuraavan luvun jälkeinen paranneltu versio.
 
-
 ### Testin beforeEach-metodin optimointi
 
 Palataan takaisin testien pariin, ja tarkastellaan määrittelemäämme testit alustavaa funktiota _beforeEach_:
 
 ```js
 beforeEach(async () => {
-  await Note.deleteMany({})
+  await Note.deleteMany({});
 
-  let noteObject = new Note(helper.initialNotes[0])
-  await noteObject.save()
+  let noteObject = new Note(helper.initialNotes[0]);
+  await noteObject.save();
 
-  noteObject = new Note(helper.initialNotes[1])
-  await noteObject.save()
-})
+  noteObject = new Note(helper.initialNotes[1]);
+  await noteObject.save();
+});
 ```
 
 Funktio tallettaa tietokantaan taulukon _helper.initialNotes_ nollannen ja ensimmäisen alkion, kummankin erikseen taulukon alkioita indeksöiden. Ratkaisu on ok, mutta jos haluaisimme tallettaa alustuksen yhteydessä kantaan useampia alkioita, olisi toisto parempi ratkaisu:
@@ -859,9 +847,9 @@ Helpoimmalla kuitenkin päästään, kun hyödynnetään mongoosen valmista meto
 
 ```js
 beforeEach(async () => {
-  await Note.deleteMany({})
-  await Note.insertMany(helper.initialNotes)
-})
+  await Note.deleteMany({});
+  await Note.insertMany(helper.initialNotes);
+});
 ```
 
 Talletamme siis taulukossa olevat muistiinpanot tietokantaan _forEach_-loopissa. Testeissä kuitenkin ilmenee jotain häikkää, ja sitä varten koodin sisään on lisätty aputulosteita.
@@ -886,13 +874,12 @@ Toimiva ratkaisu tilanteessa on odottaa asynkronisten talletusoperaatioiden valm
 
 ```js
 beforeEach(async () => {
-  await Note.remove({})
+  await Note.remove({});
 
-  const noteObjects = helper.initialNotes
-    .map(note => new Note(note))
-  const promiseArray = noteObjects.map(note => note.save())
-  await Promise.all(promiseArray)
-})
+  const noteObjects = helper.initialNotes.map((note) => new Note(note));
+  const promiseArray = noteObjects.map((note) => note.save());
+  await Promise.all(promiseArray);
+});
 ```
 
 Ratkaisu on varmasti aloittelijalle tiiviydestään huolimatta hieman haastava. Taulukkoon _noteObjects_ talletetaan taulukkossa _helper.initialNotes_ olevia Javascript-oliota vastaavat _Note_-konstruktorifunktiolla generoidut Mongoose-oliot. Seuraavalla rivillä luodaan uusi taulukko, joka <i>muodostuu promiseista</i>, jotka saadaan kun jokaiselle _noteObjects_ taulukon alkiolle kutsutaan metodia _save_, eli ne talletetaan kantaan.
@@ -906,13 +893,13 @@ Promise.all suorittaa kaikkia syötteenä saamiaan promiseja rinnakkain. Jos ope
 
 ```js
 beforeEach(async () => {
-  await Note.remove({})
+  await Note.remove({});
 
   for (let note of initialNotes) {
-    let noteObject = new Note(note)
-    await noteObject.save()
+    let noteObject = new Note(note);
+    await noteObject.save();
   }
-})
+});
 ```
 
 Javascriptin asynkroninen suoritusmalli aiheuttaakin siis helposti yllätyksiä ja myös async/await-syntaksin kanssa pitää olla koko ajan tarkkana. Vaikka async/await peittää monia promisejen käsittelyyn liittyviä seikkoja, promisejen toiminta on syytä tuntea mahdollisimman hyvin!
@@ -929,7 +916,7 @@ Javascriptin asynkroninen suoritusmalli aiheuttaakin siis helposti yllätyksiä 
 
 #### 4.8: blogilistan testit, step 1
 
-Tee supertest-kirjastolla testit blogilistan osoitteeseen <i>/api/blogs</i> tapahtuvalle HTTP GET -pyynnölle. Testaa, että sovellus palauttaa oikean määrän JSON-muotoisia blogeja. 
+Tee supertest-kirjastolla testit blogilistan osoitteeseen <i>/api/blogs</i> tapahtuvalle HTTP GET -pyynnölle. Testaa, että sovellus palauttaa oikean määrän JSON-muotoisia blogeja.
 
 Kun testi on valmis, refaktoroi operaatio käyttämään promisejen sijaan async/awaitia.
 
@@ -943,17 +930,17 @@ Jos näin käy, toimi [ohjeen](https://mongoosejs.com/docs/jest.html) mukaan ja 
 
 ```js
 module.exports = {
-  testEnvironment: 'node'
-}
+  testEnvironment: "node",
+};
 ```
 
 **Huom2:** testien kehitysvaiheessa yleensä **<i>ei kannata suorittaa joka kerta kaikkia testejä</i>**, vaan keskittyä yhteen testiin kerrallaan. Katso lisää [täältä](/osa4/backendin_testaaminen#testien-suorittaminen-yksitellen).
 
-#### 4.9*: blogilistan testit, step2
+#### 4.9\*: blogilistan testit, step2
 
-Tee testi, joka varmistaa että palautettujen blogien identifioivan kentän tulee olla nimeltään <i>id</i>,  oletusarvoisestihan tietokantaan talletettujen olioiden tunnistekenttä on <i>_id</i>. Olion kentän olemassaolon tarkastaminen onnistuu jestin matcherillä [toBeDefined](https://jestjs.io/docs/en/expect#tobedefined)
+Tee testi, joka varmistaa että palautettujen blogien identifioivan kentän tulee olla nimeltään <i>id</i>, oletusarvoisestihan tietokantaan talletettujen olioiden tunnistekenttä on <i>\_id</i>. Olion kentän olemassaolon tarkastaminen onnistuu jestin matcherillä [toBeDefined](https://jestjs.io/docs/en/expect#tobedefined)
 
-Muuta koodia siten, että testi menee läpi. Osassa 3 käsitelty [toJSON](/osa3/tietojen_tallettaminen_mongo_db_tietokantaan#tietokantaa-kayttava-backend) on sopiva paikka parametrin <i>id</i> määrittelyyn. 
+Muuta koodia siten, että testi menee läpi. Osassa 3 käsitelty [toJSON](/osa3/tietojen_tallettaminen_mongo_db_tietokantaan#tietokantaa-kayttava-backend) on sopiva paikka parametrin <i>id</i> määrittelyyn.
 
 #### 4.10: blogilistan testit, step3
 
@@ -961,13 +948,13 @@ Tee testi joka varmistaa että sovellukseen voi lisätä blogeja osoitteeseen <i
 
 Kun testi on valmis, refaktoroi operaatio käyttämään promisejen sijaan async/awaitia.
 
-#### 4.11*: blogilistan testit, step4
+#### 4.11\*: blogilistan testit, step4
 
 Tee testi joka varmistaa, että jos kentälle <i>likes</i> ei anneta arvoa, asetetaan sen arvoksi 0. Muiden kenttien sisällöstä ei tässä tehtävässä vielä välitetä.
 
 Laajenna ohjelmaa siten, että testi menee läpi.
 
-#### 4.12*: blogilistan testit, step5
+#### 4.12\*: blogilistan testit, step5
 
 Tee testit blogin lisäämiselle, eli osoitteeseen <i>/api/blogs</i> tapahtuvalle HTTP POST -pyynnölle, joka varmistaa, että jos uusi blogi ei sisällä kenttiä <i>title</i> ja <i>url</i>, pyyntöön vastataan statuskoodilla <i>400 Bad request</i>
 
@@ -984,144 +971,128 @@ Testit ovat tällä hetkellä osittain epätäydelliset, esim. reittejä <i>GET 
 Jossain määrin parannellut testit seuraavassa:
 
 ```js
-const supertest = require('supertest')
-const mongoose = require('mongoose')
-const helper = require('./test_helper')
-const app = require('../app')
-const api = supertest(app)
+const supertest = require("supertest");
+const mongoose = require("mongoose");
+const helper = require("./test_helper");
+const app = require("../app");
+const api = supertest(app);
 
-const Note = require('../models/note')
+const Note = require("../models/note");
 
-describe('when there is initially some notes saved', () => {
+describe("when there is initially some notes saved", () => {
   beforeEach(async () => {
-    await Note.deleteMany({})
+    await Note.deleteMany({});
 
-    const noteObjects = helper.initialNotes
-      .map(note => new Note(note))
-    const promiseArray = noteObjects.map(note => note.save())
-    await Promise.all(promiseArray)
-  })
+    const noteObjects = helper.initialNotes.map((note) => new Note(note));
+    const promiseArray = noteObjects.map((note) => note.save());
+    await Promise.all(promiseArray);
+  });
 
-  test('notes are returned as json', async () => {
+  test("notes are returned as json", async () => {
     await api
-      .get('/api/notes')
+      .get("/api/notes")
       .expect(200)
-      .expect('Content-Type', /application\/json/)
-  })
+      .expect("Content-Type", /application\/json/);
+  });
 
-  test('all notes are returned', async () => {
-    const response = await api.get('/api/notes')
+  test("all notes are returned", async () => {
+    const response = await api.get("/api/notes");
 
-    expect(response.body.length).toBe(helper.initialNotes.length)
-  })
+    expect(response.body.length).toBe(helper.initialNotes.length);
+  });
 
-  test('a specific note is within the returned notes', async () => {
-    const response = await api.get('/api/notes')
+  test("a specific note is within the returned notes", async () => {
+    const response = await api.get("/api/notes");
 
-    const contents = response.body.map(r => r.content)
+    const contents = response.body.map((r) => r.content);
     expect(contents).toContain(
-      'HTTP-protokollan tärkeimmät metodit ovat GET ja POST'
-    )
-  })
+      "HTTP-protokollan tärkeimmät metodit ovat GET ja POST"
+    );
+  });
 
-  describe('viewing a specific note', () => {
+  describe("viewing a specific note", () => {
+    test("succeeds with a valid id", async () => {
+      const notesAtStart = await helper.notesInDb();
 
-    test('succeeds with a valid id', async () => {
-      const notesAtStart = await helper.notesInDb()
-
-      const noteToView = notesAtStart[0]
+      const noteToView = notesAtStart[0];
 
       const resultNote = await api
         .get(`/api/notes/${noteToView.id}`)
         .expect(200)
-        .expect('Content-Type', /application\/json/)
+        .expect("Content-Type", /application\/json/);
 
-      expect(resultNote.body).toEqual(noteToView)
-    })
+      expect(resultNote.body).toEqual(noteToView);
+    });
 
-    test('fails with statuscode 404 if note does not exist', async () => {
-      const validNonexistingId = await helper.nonExistingId()
+    test("fails with statuscode 404 if note does not exist", async () => {
+      const validNonexistingId = await helper.nonExistingId();
 
-      console.log(validNonexistingId)
+      console.log(validNonexistingId);
 
-      await api
-        .get(`/api/notes/${validNonexistingId}`)
-        .expect(404)
-    })
+      await api.get(`/api/notes/${validNonexistingId}`).expect(404);
+    });
 
-    test('fails with statuscode 400 id is invalid', async () => {
-      const invalidId = '5a3d5da59070081a82a3445'
+    test("fails with statuscode 400 id is invalid", async () => {
+      const invalidId = "5a3d5da59070081a82a3445";
 
-      await api
-        .get(`/api/notes/${invalidId}`)
-        .expect(400)
-    })
-  })
+      await api.get(`/api/notes/${invalidId}`).expect(400);
+    });
+  });
 
-  describe('addition of a new note', () => {
-    test('succeeds with valid data', async () => {
+  describe("addition of a new note", () => {
+    test("succeeds with valid data", async () => {
       const newNote = {
-        content: 'async/await simplifies making async calls',
+        content: "async/await simplifies making async calls",
         important: true,
-      }
+      };
 
       await api
-        .post('/api/notes')
+        .post("/api/notes")
         .send(newNote)
         .expect(200)
-        .expect('Content-Type', /application\/json/)
+        .expect("Content-Type", /application\/json/);
 
+      const notesAtEnd = await helper.notesInDb();
+      expect(notesAtEnd.length).toBe(helper.initialNotes.length + 1);
 
-      const notesAtEnd = await helper.notesInDb()
-      expect(notesAtEnd.length).toBe(helper.initialNotes.length + 1)
+      const contents = notesAtEnd.map((n) => n.content);
+      expect(contents).toContain("async/await simplifies making async calls");
+    });
 
-      const contents = notesAtEnd.map(n => n.content)
-      expect(contents).toContain(
-        'async/await simplifies making async calls'
-      )
-    })
-
-    test('fails with status code 400 if data invalid', async () => {
+    test("fails with status code 400 if data invalid", async () => {
       const newNote = {
-        important: true
-      }
+        important: true,
+      };
 
-      await api
-        .post('/api/notes')
-        .send(newNote)
-        .expect(400)
+      await api.post("/api/notes").send(newNote).expect(400);
 
-      const notesAtEnd = await helper.notesInDb()
+      const notesAtEnd = await helper.notesInDb();
 
-      expect(notesAtEnd.length).toBe(helper.initialNotes.length)
-    })
-  })
+      expect(notesAtEnd.length).toBe(helper.initialNotes.length);
+    });
+  });
 
-  describe('deletion of a note', () => {
-    test('succeeds with status code 204 if id is valid', async () => {
-      const notesAtStart = await helper.notesInDb()
-      const noteToDelete = notesAtStart[0]
+  describe("deletion of a note", () => {
+    test("succeeds with status code 204 if id is valid", async () => {
+      const notesAtStart = await helper.notesInDb();
+      const noteToDelete = notesAtStart[0];
 
-      await api
-        .delete(`/api/notes/${noteToDelete.id}`)
-        .expect(204)
+      await api.delete(`/api/notes/${noteToDelete.id}`).expect(204);
 
-      const notesAtEnd = await helper.notesInDb()
+      const notesAtEnd = await helper.notesInDb();
 
-      expect(notesAtEnd.length).toBe(
-        helper.initialNotes.length - 1
-      )
+      expect(notesAtEnd.length).toBe(helper.initialNotes.length - 1);
 
-      const contents = notesAtEnd.map(r => r.content)
+      const contents = notesAtEnd.map((r) => r.content);
 
-      expect(contents).not.toContain(noteToDelete.content)
-    })
-  })
-})
+      expect(contents).not.toContain(noteToDelete.content);
+    });
+  });
+});
 
 afterAll(() => {
-  mongoose.connection.close()
-})
+  mongoose.connection.close();
+});
 ```
 
 Testien raportointi tapahtuu <i>describe</i>-lohkojen ryhmittelyn mukaan:
@@ -1148,7 +1119,7 @@ Käytä async/awaitia. Noudata operaation HTTP-rajapinnan suhteen [RESTful](/osa
 
 Saat toteuttaa ominaisuudelle testit jos haluat. Jos et, varmista ominaisuuden toimivuus esim. Postmanilla.
 
-#### 4.14* blogilistan laajennus, step2
+#### 4.14\* blogilistan laajennus, step2
 
 Toteuta sovellukseen mahdollisuus yksittäisen blogin muokkaamiseen.
 

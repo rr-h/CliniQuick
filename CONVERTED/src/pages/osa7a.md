@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-7.svg
+mainImage: "../../../images/part-7.svg"
 part: 7
 letter: a
 lang: fi
@@ -32,63 +32,72 @@ Navigaatiopalkki ja useita näkymiä sisältävä sovellus on erittäin helppo t
 Seuraavassa on eräs tapa:
 
 ```js
-import React, { useState } from 'react'
-import ReactDOM from 'react-dom'
+import React, { useState } from "react";
+import ReactDOM from "react-dom";
 
 const Home = () => (
-  <div> <h2>TKTL notes app</h2> </div>
-)
+  <div>
+    {" "}
+    <h2>TKTL notes app</h2>{" "}
+  </div>
+);
 
 const Notes = () => (
-  <div> <h2>Notes</h2> </div>
-)
+  <div>
+    {" "}
+    <h2>Notes</h2>{" "}
+  </div>
+);
 
 const Users = () => (
-  <div> <h2>Users</h2> </div>
-)
+  <div>
+    {" "}
+    <h2>Users</h2>{" "}
+  </div>
+);
 
 const App = () => {
-  const [page, setPage] = useState('home')
+  const [page, setPage] = useState("home");
 
- const  toPage = (page) => (event) => {
-    event.preventDefault()
-    setPage(page)
-  }
+  const toPage = (page) => (event) => {
+    event.preventDefault();
+    setPage(page);
+  };
 
   const content = () => {
-    if (page === 'home') {
-      return <Home />
-    } else if (page === 'notes') {
-      return <Notes />
-    } else if (page === 'users') {
-      return <Users />
+    if (page === "home") {
+      return <Home />;
+    } else if (page === "notes") {
+      return <Notes />;
+    } else if (page === "users") {
+      return <Users />;
     }
-  }
+  };
 
   const padding = {
-    padding: 5
-  }
+    padding: 5,
+  };
 
   return (
     <div>
       <div>
-        <a href="" onClick={toPage('home')} style={padding}>
+        <a href="" onClick={toPage("home")} style={padding}>
           home
         </a>
-        <a href="" onClick={toPage('notes')} style={padding}>
+        <a href="" onClick={toPage("notes")} style={padding}>
           notes
         </a>
-        <a href="" onClick={toPage('users')} style={padding}>
+        <a href="" onClick={toPage("users")} style={padding}>
           users
         </a>
       </div>
 
       {content()}
     </div>
-  )
-}
+  );
+};
 
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
 Eli jokainen näkymä on toteutettu omana komponenttinaan ja sovelluksen tilassa <i>page</i> pidetään tieto siitä, minkä näkymää vastaava komponentti menupalkin alla näytetään.
@@ -108,21 +117,29 @@ React routerin tarjoama reititys saadaan käyttöön muuttamalla sovellusta seur
 ```js
 import {
   BrowserRouter as Router,
-  Route, Link, Redirect, withRouter
-} from 'react-router-dom'
+  Route,
+  Link,
+  Redirect,
+  withRouter,
+} from "react-router-dom";
 
 const App = () => {
-
-  const padding = { padding: 5 }
+  const padding = { padding: 5 };
 
   return (
     <div>
       <Router>
         <div>
           <div>
-            <Link style={padding} to="/">home</Link>
-            <Link style={padding} to="/notes">notes</Link>
-            <Link style={padding} to="/users">users</Link>
+            <Link style={padding} to="/">
+              home
+            </Link>
+            <Link style={padding} to="/notes">
+              notes
+            </Link>
+            <Link style={padding} to="/users">
+              users
+            </Link>
           </div>
           <Route exact path="/" render={() => <Home />} />
           <Route path="/notes" render={() => <Notes />} />
@@ -130,8 +147,8 @@ const App = () => {
         </div>
       </Router>
     </div>
-  )
-}
+  );
+};
 ```
 
 Reititys, eli komponenttien ehdollinen, selaimen <i>urliin perustuva</i> renderöinti otetaan käyttöön sijoittamalla komponentteja <i>Router</i>-komponentin lapsiksi, eli <i>Router</i>-tagien sisälle.
@@ -141,8 +158,11 @@ Huomaa, että vaikka komponenttiin viitataan nimellä <i>Router</i> kyseessä on
 ```js
 import {
   BrowserRouter as Router,
-  Route, Link, Redirect, withRouter
-} from 'react-router-dom'
+  Route,
+  Link,
+  Redirect,
+  withRouter,
+} from "react-router-dom";
 ```
 
 Manuaalin mukaan
@@ -167,7 +187,7 @@ Selaimen urliin perustuen renderöitävät komponentit määritellään komponen
 
 määrittelee, että jos selaimen osoiteena on <i>/notes</i>, renderöidään komponentti <i>Notes</i>.
 
-Sovelluksen juuren, eli osoitteen  <code>/</code> määritellään renderöivän komponentti <i>Home</i>:
+Sovelluksen juuren, eli osoitteen <code>/</code> määritellään renderöivän komponentti <i>Home</i>:
 
 ```js
 <Route exact path="/" render={() => <Home />} />
@@ -192,14 +212,14 @@ const Notes = (props) => (
   <div>
     <h2>Notes</h2>
     <ul>
-      {props.notes.map(note =>
+      {props.notes.map((note) => (
         <li key={note.id}>
           <Link to={`/notes/${note.id}`}>{note.content}</Link>
         </li>
-      )}
+      ))}
     </ul>
   </div>
-)
+);
 ```
 
 Kun selain siirtyy muistiinpanon yksilöivään osoitteeseen, esim. <i>notes/3</i>, renderöidään komponentti <i>Note</i>:
@@ -209,9 +229,11 @@ const Note = ({ note }) => (
   <div>
     <h2>{note.content}</h2>
     <div>{note.user}</div>
-    <div><strong>{note.important ? 'important' : ''}</strong></div>
+    <div>
+      <strong>{note.important ? "important" : ""}</strong>
+    </div>
   </div>
-)
+);
 ```
 
 Tämä tapahtuu laajentamalla komponentissa <i>App</i> olevaa reititystä seuraavasti:
@@ -220,21 +242,24 @@ Tämä tapahtuu laajentamalla komponentissa <i>App</i> olevaa reititystä seuraa
 <Router>
   <div>
     <div>
-      <Link style={padding} to="/">home</Link>
-      <Link style={padding} to="/notes">notes</Link>
-      <Link style={padding} to="/users">users</Link>
+      <Link style={padding} to="/">
+        home
+      </Link>
+      <Link style={padding} to="/notes">
+        notes
+      </Link>
+      <Link style={padding} to="/users">
+        users
+      </Link>
     </div>
-
-    <Route exact path="/" render={() =>
-      <Home />
-    } />
+    <Route exact path="/" render={() => <Home />} />
     // highlight-start
-    <Route exact path="/notes" render={() =>
-      <Notes notes={notes} />
-    } />
-    <Route exact path="/notes/:id" render={({ match }) =>
-      <Note note={noteById(match.params.id)} />
-    } />
+    <Route exact path="/notes" render={() => <Notes notes={notes} />} />
+    <Route
+      exact
+      path="/notes/:id"
+      render={({ match }) => <Note note={noteById(match.params.id)} />}
+    />
   </div>
   // highlight-end
 </Router>
@@ -258,8 +283,7 @@ render={({ match }) =>
 Muuttujassa <i>match.params.id</i> olevaa id:tä vastaava muistiinpano selvitetään apufunktion _noteById_ avulla
 
 ```js
-const noteById = (id) =>
-  notes.find(note => note.id === Number(id))
+const noteById = (id) => notes.find((note) => note.id === Number(id));
 ```
 
 renderöityvä <i>Note</i>-komponentti saa siis propsina urlin yksilöivää osaa vastaavan muistiinpanon.
@@ -274,15 +298,17 @@ Mahdollisuus <i>Login</i>-näkymään navigointiin renderöidään menuun ehdoll
 <Router>
   <div>
     <div>
-      <Link style={padding} to="/">home</Link>
-      <Link style={padding} to="/notes">notes</Link>
-      <Link style={padding} to="/users">users</Link>
+      <Link style={padding} to="/">
+        home
+      </Link>
+      <Link style={padding} to="/notes">
+        notes
+      </Link>
+      <Link style={padding} to="/users">
+        users
+      </Link>
       // highlight-start
-      {user
-        ? <em>{user} logged in</em>
-
-        : <Link to="/login">login</Link>
-      }
+      {user ? <em>{user} logged in</em> : <Link to="/login">login</Link>}
       // highlight-end
     </div>
   </div>
@@ -298,15 +324,15 @@ Kirjautumisesta huolehtivan komponentin koodi seuraavassa
 ```js
 import {
   // ...
-  withRouter // highlight-line
-} from 'react-router-dom'
+  withRouter, // highlight-line
+} from "react-router-dom";
 
 const LoginNoHistory = (props) => {
   const onSubmit = (event) => {
-    event.preventDefault()
-    props.onLogin('mluukkai')
-    props.history.push('/') // highlight-line
-  }
+    event.preventDefault();
+    props.onLogin("mluukkai");
+    props.history.push("/"); // highlight-line
+  };
 
   return (
     <div>
@@ -316,15 +342,15 @@ const LoginNoHistory = (props) => {
           username: <input />
         </div>
         <div>
-          password: <input type='password' />
+          password: <input type="password" />
         </div>
         <button type="submit">login</button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-const Login = withRouter(LoginNoHistory) // highlight-line
+const Login = withRouter(LoginNoHistory); // highlight-line
 ```
 
 Lomakkeen toteutukseen liittyy muutama huomionarvoinen seikka.
@@ -337,9 +363,10 @@ Komponentti saa käyttöönsä propsin <i>history</i> siten, että se "käärit�
 Näkymän <i>Users</i> routeen liittyy vielä eräs mielenkiintoinen detalji:
 
 ```js
-<Route path="/users" render={() =>
-  user ? <Users /> : <Redirect to="/login" />
-} />
+<Route
+  path="/users"
+  render={() => (user ? <Users /> : <Redirect to="/login" />)}
+/>
 ```
 
 Jos käyttäjä ei ole kirjautuneena, ei renderöidäkään näkymää <i>Users</i> vaan sen sijaan <i>uudelleenohjataan</i> käyttäjä <i>Redirect</i>-komponentin avulla kirjautumisnäkymään
@@ -357,53 +384,52 @@ const App = () => {
   const [notes, setNotes] = useState([
     {
       id: 1,
-      content: 'HTML on helppoa',
+      content: "HTML on helppoa",
       important: true,
-      user: 'Matti Luukkainen'
+      user: "Matti Luukkainen",
     },
     // ...
-  ])
+  ]);
 
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(null);
 
   const login = (user) => {
-    setUser(user)
-  }
+    setUser(user);
+  };
 
-  const noteById = (id) =>
-    notes.find(note => note.id === Number(id))
+  const noteById = (id) => notes.find((note) => note.id === Number(id));
 
-  const padding = { padding: 5 }
+  const padding = { padding: 5 };
 
   return (
     <div>
       <Router>
         <div>
           <div>
-            <Link style={padding} to="/">home</Link>
-            <Link style={padding} to="/notes">notes</Link>
-            <Link style={padding} to="/users">users</Link>
-            {user
-              ? <em>{user} logged in</em>
-              : <Link to="/login">login</Link>
-            }
+            <Link style={padding} to="/">
+              home
+            </Link>
+            <Link style={padding} to="/notes">
+              notes
+            </Link>
+            <Link style={padding} to="/users">
+              users
+            </Link>
+            {user ? <em>{user} logged in</em> : <Link to="/login">login</Link>}
           </div>
 
-          <Route exact path="/" render={() =>
-            <Home />
-          } />
-          <Route exact path="/notes" render={() =>
-            <Notes notes={notes} />
-          } />
-          <Route exact path="/notes/:id" render={({ match }) =>
-            <Note note={noteById(match.params.id)} />
-          } />
-          <Route path="/users" render={() =>
-            user ? <Users /> : <Redirect to="/login" />
-          } />
-          <Route path="/login" render={() =>
-            <Login onLogin={login} />
-          } />
+          <Route exact path="/" render={() => <Home />} />
+          <Route exact path="/notes" render={() => <Notes notes={notes} />} />
+          <Route
+            exact
+            path="/notes/:id"
+            render={({ match }) => <Note note={noteById(match.params.id)} />}
+          />
+          <Route
+            path="/users"
+            render={() => (user ? <Users /> : <Redirect to="/login" />)}
+          />
+          <Route path="/login" render={() => <Login onLogin={login} />} />
         </div>
       </Router>
       <div>
@@ -411,11 +437,12 @@ const App = () => {
         <em>Note app, Department of Computer Science 2019</em>
       </div>
     </div>
-  )
-}
+  );
+};
 ```
 
 Komponentin sisällössä määritellään myös kokonaan <i>Router</i>:in ulkopuolella oleva nykyisille web-sovelluksille tyypillinen <i>footer</i>-elementti, eli sivuston pohjalla oleva osa, joka on näkyvillä riippumatta siitä mikä komponentti sovelluksen reititetyssä osassa näytetään.
+
 </div>
 <div class="tasks">
 

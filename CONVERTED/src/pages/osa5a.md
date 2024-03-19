@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-5.svg
+mainImage: "../../../images/part-5.svg"
 part: 5
 letter: a
 lang: fi
@@ -21,44 +21,40 @@ Komponentin <i>App</i> koodi näyttää seuraavalta:
 
 ```js
 const App = () => {
-  const [notes, setNotes] = useState([]) 
-  const [newNote, setNewNote] = useState('')
-  const [showAll, setShowAll] = useState(true)
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [notes, setNotes] = useState([]);
+  const [newNote, setNewNote] = useState("");
+  const [showAll, setShowAll] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
   // highlight-start
-  const [username, setUsername] = useState('') 
-  const [password, setPassword] = useState('') 
-// highlight-end
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  // highlight-end
 
   useEffect(() => {
-    noteService
-      .getAll().then(initialNotes => {
-        setNotes(initialNotes)
-      })
-  }, [])
+    noteService.getAll().then((initialNotes) => {
+      setNotes(initialNotes);
+    });
+  }, []);
 
   // ...
 
-// highlight-start
+  // highlight-start
   const handleLogin = (event) => {
-    event.preventDefault()
-    console.log('logging in with', username, password)
-  }
+    event.preventDefault();
+    console.log("logging in with", username, password);
+  };
   // highlight-end
 
   return (
     <div>
       <h1>Notes</h1>
-
       <Notification message={errorMessage} />
-
       <h2>Login</h2>
-
       // highlight-start
       <form onSubmit={handleLogin}>
         <div>
           username
-            <input
+          <input
             type="text"
             value={username}
             name="Username"
@@ -67,7 +63,7 @@ const App = () => {
         </div>
         <div>
           password
-            <input
+          <input
             type="password"
             value={password}
             name="Password"
@@ -76,23 +72,20 @@ const App = () => {
         </div>
         <button type="submit">login</button>
       </form>
-    // highlight-end
-
-      // ...
+      // highlight-end // ...
     </div>
-  )
-}
+  );
+};
 
-export default App
-
+export default App;
 ```
 
 Sovelluksen tämänhetkinen koodi on kokonaisuudessaan [githubissa](https://github.com/fullstackopen-2019/part2-notes/tree/part5-1), branchissa <i>part5-1</i>.
 
-Kirjautumislomakkeen käsittely noudattaa samaa periaatetta kuin [osassa 2](/osa2#lomakkeet). Lomakkeen kenttiä varten on lisätty komponentin tilaan  <i>username</i> ja <i>password</i>. Molemmille kentille on määritelty muutoksenkäsittelijä, joka synkronoi kenttään tehdyt muutokset komponentin <i>App</i> tilaan. Muutoksenkäsittelijä on yksinkertainen, se destrukturoi parametrina tulevasta oliosta kentän <i>target</i> ja asettaa sen arvon vastaavaan tilaan:
+Kirjautumislomakkeen käsittely noudattaa samaa periaatetta kuin [osassa 2](/osa2#lomakkeet). Lomakkeen kenttiä varten on lisätty komponentin tilaan <i>username</i> ja <i>password</i>. Molemmille kentille on määritelty muutoksenkäsittelijä, joka synkronoi kenttään tehdyt muutokset komponentin <i>App</i> tilaan. Muutoksenkäsittelijä on yksinkertainen, se destrukturoi parametrina tulevasta oliosta kentän <i>target</i> ja asettaa sen arvon vastaavaan tilaan:
 
 ```js
-({ target }) => setUsername(target.value)
+({ target }) => setUsername(target.value);
 ```
 
 Kirjautumislomakkeen lähettämisestä vastaava metodi _handleLogin_ ei tee vielä mitään.
@@ -102,50 +95,51 @@ Kirjautuminen tapahtuu tekemällä HTTP POST -pyyntö palvelimen osoitteeseen <i
 Käytetään nyt promisejen sijaan <i>async/await</i>-syntaksia HTTP-pyynnön tekemiseen:
 
 ```js
-import axios from 'axios'
-const baseUrl = '/api/login'
+import axios from "axios";
+const baseUrl = "/api/login";
 
-const login = async credentials => {
-  const response = await axios.post(baseUrl, credentials)
-  return response.data
-}
+const login = async (credentials) => {
+  const response = await axios.post(baseUrl, credentials);
+  return response.data;
+};
 
-export default { login }
+export default { login };
 ```
 
 Kirjautumisen käsittelystä huolehtiva metodi voidaan toteuttaa seuraavasti:
 
 ```js
-import loginService from './services/login' 
+import loginService from "./services/login";
 
 const App = () => {
   // ...
-  const [username, setUsername] = useState('') 
-  const [password, setPassword] = useState('') 
-// highlight-start
-  const [user, setUser] = useState(null)
-// highlight-end
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  // highlight-start
+  const [user, setUser] = useState(null);
+  // highlight-end
 
   const handleLogin = async (event) => {
-    event.preventDefault()
+    event.preventDefault();
     try {
       const user = await loginService.login({
-        username, password,
-      })
+        username,
+        password,
+      });
 
-      setUser(user)
-      setUsername('')
-      setPassword('')
+      setUser(user);
+      setUsername("");
+      setPassword("");
     } catch (exception) {
-      setErrorMessage('wrong credentials')
+      setErrorMessage("wrong credentials");
       setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+        setErrorMessage(null);
+      }, 5000);
     }
-  }
+  };
 
   // ...
-}
+};
 ```
 
 Kirjautumisen onnistuessa nollataan kirjautumislomakkeen kentät <i>ja</i> talletetaan palvelimen vastaus (joka sisältää <i>tokenin</i> sekä kirjautuneen käyttäjän tiedot) sovelluksen tilaan <i>user</i>.
@@ -181,7 +175,7 @@ const App = () => {
         />
       </div>
       <button type="submit">login</button>
-    </form>      
+    </form>
   )
 
   const noteForm = () => (
@@ -191,7 +185,7 @@ const App = () => {
         onChange={handleNoteChange}
       />
       <button type="submit">save</button>
-    </form>  
+    </form>
   )
 
   return (
@@ -245,7 +239,7 @@ Lomakkeiden ehdolliseen renderöintiin käytetään hyväksi aluksi hieman eriko
 
 ```js
 {
-  user === null && loginForm()
+  user === null && loginForm();
 }
 ```
 
@@ -257,22 +251,13 @@ Voimme suoraviivaistaa edellistä vielä hieman käyttämällä [kysymysmerkkiop
 return (
   <div>
     <h1>Notes</h1>
-
-    <Notification message={errorMessage}/>
-
+    <Notification message={errorMessage} />
     <h2>Login</h2>
-
-    {user === null ?
-      loginForm() :
-      noteForm()
-    }
-
+    {user === null ? loginForm() : noteForm()}
     <h2>Notes</h2>
-
     // ...
-
   </div>
-)
+);
 ```
 
 Eli jos _user === null_ on [truthy](https://developer.mozilla.org/en-US/docs/Glossary/Truthy), suoritetaan _loginForm_ ja muussa tapauksessa _noteForm_.
@@ -283,34 +268,27 @@ Tehdään vielä sellainen muutos, että jos käyttäjä on kirjautunut, render�
 return (
   <div>
     <h1>Notes</h1>
-
     <Notification message={errorMessage} />
-
     <h2>Login</h2>
-
-    {user === null ?
-      loginForm() :
+    {user === null ? (
+      loginForm()
+    ) : (
       <div>
         <p>{user.name} logged in</p>
         {noteForm()}
       </div>
-    }
-
+    )}
     <h2>Notes</h2>
-
     // ...
-
   </div>
-)
+);
 ```
 
-Ratkaisu näyttää hieman rumalta, mutta jätämme sen koodiin toistaiseksi. 
+Ratkaisu näyttää hieman rumalta, mutta jätämme sen koodiin toistaiseksi.
 
 Sovelluksemme pääkomponentti <i>App</i> on tällä hetkellä jo aivan liian laaja ja nyt tekemämme muutokset ovat ilmeinen signaali siitä, että lomakkeet olisi syytä refaktoroida omiksi komponenteikseen. Jätämme sen kuitenkin vapaaehtoiseksi harjoitustehtäväksi.
 
-
-Sovelluksen tämänhetkinen koodi on kokonaisuudessaan [githubissa](https://github.com/fullstackopen-2019/part2-notes/tree/part5-2), branchissa <i>part5-2</i>. 
-
+Sovelluksen tämänhetkinen koodi on kokonaisuudessaan [githubissa](https://github.com/fullstackopen-2019/part2-notes/tree/part5-2), branchissa <i>part5-2</i>.
 
 ### Muistiinpanojen luominen
 
@@ -318,19 +296,20 @@ Frontend on siis tallettanut onnistuneen kirjautumisen yhteydessä backendilta s
 
 ```js
 const handleLogin = async (event) => {
-  event.preventDefault()
+  event.preventDefault();
   try {
     const user = await loginService.login({
-      username, password,
-    })
+      username,
+      password,
+    });
 
-    setUser(user) // highlight-line
-    setUsername('')
-    setPassword('')
+    setUser(user); // highlight-line
+    setUsername("");
+    setPassword("");
   } catch (exception) {
     // ...
   }
-}
+};
 ```
 
 Korjataan uusien muistiinpanojen luominen siihen muotoon, mitä backend edellyttää, eli lisätään kirjautuneen käyttäjän token HTTP-pyynnön Authorization-headeriin.
@@ -338,39 +317,39 @@ Korjataan uusien muistiinpanojen luominen siihen muotoon, mitä backend edellytt
 <i>noteService</i>-moduuli muuttuu seuraavasti:
 
 ```js
-import axios from 'axios'
-const baseUrl = '/api/notes'
+import axios from "axios";
+const baseUrl = "/api/notes";
 
-let token = null // highlight-line
+let token = null; // highlight-line
 
 // highlight-start
-const setToken = newToken => {
-  token = `bearer ${newToken}`
-}
+const setToken = (newToken) => {
+  token = `bearer ${newToken}`;
+};
 // highlight-end
 
 const getAll = () => {
-  const request = axios.get(baseUrl)
-  return request.then(response => response.data)
-}
+  const request = axios.get(baseUrl);
+  return request.then((response) => response.data);
+};
 
-const create = async newObject => {
+const create = async (newObject) => {
   // highlight-start
   const config = {
     headers: { Authorization: token },
-  }
-// highlight-end
+  };
+  // highlight-end
 
-  const response = await axios.post(baseUrl, newObject, config) // highlight-line
-  return response.data
-}
+  const response = await axios.post(baseUrl, newObject, config); // highlight-line
+  return response.data;
+};
 
 const update = (id, newObject) => {
-  const request = axios.put(`${ baseUrl } /${id}`, newObject)
-  return request.then(response => response.data)
-}
+  const request = axios.put(`${baseUrl} /${id}`, newObject);
+  return request.then((response) => response.data);
+};
 
-export default { getAll, create, update, setToken } // highlight-line
+export default { getAll, create, update, setToken }; // highlight-line
 ```
 
 Moduulille on määritelty vain moduulin sisällä näkyvä muuttuja _token_, jolle voidaan asettaa arvo moduulin exporttaamalla funktiolla _setToken_. Async/await-syntaksiin muutettu _create_ asettaa moduulin tallessa pitämän tokenin <i>Authorization</i>-headeriin, jonka se antaa axiosille metodin <i>post</i> kolmantena parametrina.
@@ -379,20 +358,21 @@ Kirjautumisesta huolehtivaa tapahtumankäsittelijää pitää vielä viilata sen
 
 ```js
 const handleLogin = async (event) => {
-  event.preventDefault()
+  event.preventDefault();
   try {
     const user = await loginService.login({
-      username, password,
-    })
+      username,
+      password,
+    });
 
-    noteService.setToken(user.token) // highlight-line
-    setUser(user)
-    setUsername('')
-    setPassword('')
+    noteService.setToken(user.token); // highlight-line
+    setUser(user);
+    setUsername("");
+    setPassword("");
   } catch (exception) {
     // ...
   }
-}
+};
 ```
 
 Uusien muistiinpanojen luominen onnistuu taas!
@@ -406,7 +386,7 @@ Ongelma korjaantuu helposti tallettamalla kirjautumistiedot [local storageen](ht
 Local storage on erittäin helppokäyttöinen. Metodilla [setItem](https://developer.mozilla.org/en-US/docs/Web/API/Storage/setItem) talletetaan tiettyä <i>avainta</i> vastaava <i>arvo</i>, esim:
 
 ```js
-window.localStorage.setItem('name', 'juha tauriainen')
+window.localStorage.setItem("name", "juha tauriainen");
 ```
 
 tallettaa avaimen <i>name</i> arvoksi toisena parametrina olevan merkkijonon.
@@ -414,7 +394,7 @@ tallettaa avaimen <i>name</i> arvoksi toisena parametrina olevan merkkijonon.
 Avaimen arvo selviää metodilla [getItem](https://developer.mozilla.org/en-US/docs/Web/API/Storage/getItem):
 
 ```js
-window.localStorage.getItem('name')
+window.localStorage.getItem("name");
 ```
 
 ja [removeItem](https://developer.mozilla.org/en-US/docs/Web/API/Storage/removeItem) poistaa avaimen.
@@ -428,26 +408,25 @@ Koska storageen talletettavat arvot ovat [merkkijonoja](https://developer.mozill
 Kirjautumisen yhteyteen tehtävä muutos on seuraava:
 
 ```js
-  const handleLogin = async (event) => {
-    event.preventDefault()
-    try {
-      const user = await loginService.login({
-        username, password,
-      })
+const handleLogin = async (event) => {
+  event.preventDefault();
+  try {
+    const user = await loginService.login({
+      username,
+      password,
+    });
 
-      // highlight-start
-      window.localStorage.setItem(
-        'loggedNoteappUser', JSON.stringify(user)
-      ) 
-      // highlight-end
-      noteService.setToken(user.token)
-      setUser(user)
-      setUsername('')
-      setPassword('')
-    } catch (exception) {
-      // ...
-    }
+    // highlight-start
+    window.localStorage.setItem("loggedNoteappUser", JSON.stringify(user));
+    // highlight-end
+    noteService.setToken(user.token);
+    setUser(user);
+    setUsername("");
+    setPassword("");
+  } catch (exception) {
+    // ...
   }
+};
 ```
 
 Kirjautuneen käyttäjän tiedot tallentuvat nyt local storageen ja niitä voidaan tarkastella konsolista:
@@ -456,41 +435,39 @@ Kirjautuneen käyttäjän tiedot tallentuvat nyt local storageen ja niitä voida
 
 Sovellusta on vielä laajennettava siten, että kun sivulle tullaan uudelleen, esim. selaimen uudelleenlataamisen yhteydessä, tulee sovelluksen tarkistaa löytyykö local storagesta tiedot kirjautuneesta käyttäjästä. Jos löytyy, asetetaan ne sovelluksen tilaan ja <i>noteServicelle</i>.
 
-
-Oikea paikka asian hoitamiselle on [effect hook](https://reactjs.org/docs/hooks-effect.html), eli [osasta 2](/osa2/palvelimella_olevan_datan_hakeminen#effect-hookit) tuttu mekanismi, jonka avulla haemme frontendiin palvelimelle talletetut muistiinpanot. 
+Oikea paikka asian hoitamiselle on [effect hook](https://reactjs.org/docs/hooks-effect.html), eli [osasta 2](/osa2/palvelimella_olevan_datan_hakeminen#effect-hookit) tuttu mekanismi, jonka avulla haemme frontendiin palvelimelle talletetut muistiinpanot.
 
 Effect hookeja voi olla useita, joten tehdään oma hoitamaan kirjautuneen käyttäjän ensimmäinen sivun lataus:
 
 ```js
 const App = () => {
-  const [notes, setNotes] = useState([]) 
-  const [newNote, setNewNote] = useState('')
-  const [showAll, setShowAll] = useState(true)
-  const [errorMessage, setErrorMessage] = useState(null)
-  const [username, setUsername] = useState('') 
-  const [password, setPassword] = useState('') 
-  const [user, setUser] = useState(null) 
+  const [notes, setNotes] = useState([]);
+  const [newNote, setNewNote] = useState("");
+  const [showAll, setShowAll] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    noteService
-      .getAll().then(initialNotes => {
-        setNotes(initialNotes)
-      })
-  }, [])
+    noteService.getAll().then((initialNotes) => {
+      setNotes(initialNotes);
+    });
+  }, []);
 
   // highlight-start
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
+    const loggedUserJSON = window.localStorage.getItem("loggedNoteappUser");
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      noteService.setToken(user.token)
+      const user = JSON.parse(loggedUserJSON);
+      setUser(user);
+      noteService.setToken(user.token);
     }
-  }, [])
+  }, []);
   // highlight-end
 
   // ...
-}
+};
 ```
 
 Efektin parametrina oleva tyhjä taulukko varmistaa sen, että efekti suoritetaan ainoastaan kun komponentti renderöidään [ensimmäistä kertaa](https://reactjs.org/docs/hooks-reference.html#conditionally-firing-an-effect).
@@ -500,13 +477,13 @@ Nyt käyttäjä pysyy kirjautuneena sovellukseen ikuisesti. Sovellukseen olisiki
 Meille riittää se, että sovelluksesta on mahdollista kirjautua ulos kirjoittamalla konsoliin
 
 ```js
-window.localStorage.removeItem('loggedNoteappUser')
+window.localStorage.removeItem("loggedNoteappUser");
 ```
 
 tai local storagen tilan kokonaan nollaavan komennon
 
 ```js
-window.localStorage.clear()
+window.localStorage.clear();
 ```
 
 Sovelluksen tämänhetkinen koodi on kokonaisuudessaan [githubissa](https://github.com/fullstackopen-2019/part2-notes/tree/part5-3), branchissa <i>part5-3</i>.
@@ -602,7 +579,7 @@ Laajenna sovellusta siten, että kirjautunut käyttäjä voi luoda uusia blogeja
 
 Bloginluomislomakkeesta voi tehdä oman komponenttinsa, joka hallitsee lomakkeen kenttien sisältöä tilansa avulla. Kaiken blogin luomiseen liittyvän tilan voi toki tallettaa myös <i>App</i>-komponenttiin.
 
-#### 5.4*: blogilistan frontend, step4
+#### 5.4\*: blogilistan frontend, step4
 
 Toteuta sovellukseen notifikaatiot, jotka kertovat sovelluksen yläosassa onnistuneista ja epäonnistuneista toimenpiteistä. Esim. blogin lisäämisen yhteydessä voi antaa seuraavan notifikaation
 

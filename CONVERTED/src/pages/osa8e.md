@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-8.svg
+mainImage: "../../../images/part-8.svg"
 part: 8
 letter: e
 lang: fi
@@ -21,7 +21,7 @@ query {
     name
     phone
     address{
-      street 
+      street
       city
     }
   }
@@ -36,23 +36,23 @@ query {
     name
     phone
     address{
-      street 
+      street
       city
     }
   }
 }
 ```
 
-palauttavat molemmat henkilöitä. Valitessaan palautettavia kenttiä, molemmat kyselyt joutuvat määrittelemään täsmälleen samat kentät. 
+palauttavat molemmat henkilöitä. Valitessaan palautettavia kenttiä, molemmat kyselyt joutuvat määrittelemään täsmälleen samat kentät.
 
 Tällaisia tilanteita voidaan yksinkertaistaa [fragmenttien](https://graphql.org/learn/queries/#fragments) avulla. Määritellään kaikki henkilön tiedot valitseva fragmentti:
 
 ```js
 fragment PersonDetails on Person {
   name
-  phone 
+  phone
   address {
-    street 
+    street
     city
   }
 }
@@ -74,55 +74,55 @@ query {
 }
 ```
 
-Fragmentteja <i><strong>ei määritellä</strong></i> GraphQL:n skeemassa, vaan kyselyn tekevän clientin puolella. Fragmenttien tulee olla määriteltynä siinä vaiheessa kun client käyttää kyselyssään niitä. 
+Fragmentteja <i><strong>ei määritellä</strong></i> GraphQL:n skeemassa, vaan kyselyn tekevän clientin puolella. Fragmenttien tulee olla määriteltynä siinä vaiheessa kun client käyttää kyselyssään niitä.
 
 Voisimme periaatteessa määritellä fragmentin jokaisen kyselyn yhteydessä seuraavasti:
 
 ```js
 const ALL_PERSONS = gql`
-{
-  allPersons  {
-    ...PersonDetails
+  {
+    allPersons {
+      ...PersonDetails
+    }
   }
-}
-fragment PersonDetails on Person {
-  name
-  phone 
-  address {
-    street 
-    city
+  fragment PersonDetails on Person {
+    name
+    phone
+    address {
+      street
+      city
+    }
   }
-}
-`
+`;
 ```
 
 Huomattavasti järkevämpää on kuitenkin määritellä fragmentti kertaalleen ja sijoittaa se muuttujaan.
 
 ```js
 const PERSON_DETAILS = gql`
-fragment PersonDetails on Person {
-  id
-  name
-  phone 
-  address {
-    street 
-    city
+  fragment PersonDetails on Person {
+    id
+    name
+    phone
+    address {
+      street
+      city
+    }
   }
-}
-`
+`;
 ```
 
 Näin määritelty fragmentti voidaan upottaa kaikkiin sitä tarvitseviin kyselyihin ja mutaatioihin "prosenttiaaltosulku"-operaatiolla:
 
 ```js
 const ALL_PERSONS = gql`
-{
-  allPersons  {
-    ...PersonDetails
+  {
+    allPersons {
+      ...PersonDetails
+    }
   }
-}
-${PERSON_DETAILS}  
-`
+  ${PERSON_DETAILS}
+`;
 ```
 
 ### Subscriptiot eli tilaukset
@@ -142,7 +142,7 @@ Palvelimella ei ole tarvetta kovin monille muutoksille. Skeemaan tarvitaan seura
 ```js
 type Subscription {
   personAdded: Person!
-}    
+}
 ```
 
 Eli kun uusi henkilö luodaan, palautetaan henkilön tiedot kaikille tilaajille.
@@ -177,7 +177,7 @@ const pubsub = new PubSub() // highlight-line
       pubsub.publish('PERSON_ADDED', { personAdded: person })  // highlight-line
 
       return person
-    },  
+    },
   },
   // highlight-start
   Subscription: {
@@ -188,7 +188,7 @@ const pubsub = new PubSub() // highlight-line
   // highlight-end
 ```
 
-Tilausten yhteydessä kommunikaatio tapahtuu [publish-subscribe](https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern)-periaatteella käyttäen rajapinnan [PubSub](https://www.apollographql.com/docs/graphql-subscriptions/setup.html#setup) toteuttavaa olioa. Uuden henkilön lisäys <i>julkaisee</i> tiedon lisäyksestä kaikille muutokset tilanneille PubSubin metodilla _publish_. 
+Tilausten yhteydessä kommunikaatio tapahtuu [publish-subscribe](https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern)-periaatteella käyttäen rajapinnan [PubSub](https://www.apollographql.com/docs/graphql-subscriptions/setup.html#setup) toteuttavaa olioa. Uuden henkilön lisäys <i>julkaisee</i> tiedon lisäyksestä kaikille muutokset tilanneille PubSubin metodilla _publish_.
 
 Subscriptionin _personAdded_ resolveri rekisteröi tiedotteista kiinnostuneet clientit palauttamalla niille sopivan [iteraattoriolion](https://www.apollographql.com/docs/graphql-subscriptions/subscriptions-to-schema.html).
 
@@ -197,10 +197,11 @@ Muutetaan palvelimen käynnistävää koodia seuraavasti
 ```js
 // ...
 
-server.listen().then(({ url, subscriptionsUrl }) => { // highlight-line
-  console.log(`Server ready at ${url}`)
-  console.log(`Subscriptions ready at ${subscriptionsUrl}`) // highlight-line
-})
+server.listen().then(({ url, subscriptionsUrl }) => {
+  // highlight-line
+  console.log(`Server ready at ${url}`);
+  console.log(`Subscriptions ready at ${subscriptionsUrl}`); // highlight-line
+});
 ```
 
 Nyt näemme, että palvelin kuuntelee subscriptioita osoitteessa _ws://localhost:4000/graphql_
@@ -210,13 +211,13 @@ Server ready at http://localhost:4000/
 Subscriptions ready at ws://localhost:4000/graphql
 ```
 
-Muita muutoksia palvelimeen ei tarvita. 
+Muita muutoksia palvelimeen ei tarvita.
 
 Tilauksia on mahdollista testata GraphQL-playgroundin avulla seuraavasti:
 
 ![](../../images/8/31.png)
 
-Kun tilauksen "play"-painiketta painetaan, jää playground odottamaan tilaukseen tulevia vastauksia. 
+Kun tilauksen "play"-painiketta painetaan, jää playground odottamaan tilaukseen tulevia vastauksia.
 
 Backendin koodi on kokonaisuudessaan [githubissa](https://github.com/fullstackopen-2019/graphql-phonebook-backend/tree/part8-6), branchissa <i>part8-6</i>.
 
@@ -225,60 +226,60 @@ Backendin koodi on kokonaisuudessaan [githubissa](https://github.com/fullstackop
 Jotta saamme tilaukset käyttöön React-sovelluksessa, tarvitaan hieman enemmän muutoksia, erityisesti [konfiguraatioiden osalta](https://www.apollographql.com/docs/react/data/subscriptions/#client-setup). Tiedostossa <i>index.js</i> olevat konfiguraatiot on muokattava seuraavaan muotoon:
 
 ```js
-import React from 'react'
-import ReactDOM from 'react-dom'
-import App from './App'
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
 
-import { ApolloProvider } from '@apollo/react-hooks'
+import { ApolloProvider } from "@apollo/react-hooks";
 
-import { ApolloClient } from 'apollo-client'
-import { createHttpLink } from 'apollo-link-http'
-import { InMemoryCache } from 'apollo-cache-inmemory'
-import { setContext } from 'apollo-link-context'
+import { ApolloClient } from "apollo-client";
+import { createHttpLink } from "apollo-link-http";
+import { InMemoryCache } from "apollo-cache-inmemory";
+import { setContext } from "apollo-link-context";
 
-import { split } from 'apollo-link'
-import { WebSocketLink } from 'apollo-link-ws'
-import { getMainDefinition } from 'apollo-utilities'
+import { split } from "apollo-link";
+import { WebSocketLink } from "apollo-link-ws";
+import { getMainDefinition } from "apollo-utilities";
 
 const wsLink = new WebSocketLink({
   uri: `ws://localhost:4000/graphql`,
-  options: { reconnect: true }
-})
+  options: { reconnect: true },
+});
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000/graphql',
-})
+  uri: "http://localhost:4000/graphql",
+});
 
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem('phonenumbers-user-token')
+  const token = localStorage.getItem("phonenumbers-user-token");
   return {
     headers: {
       ...headers,
       authorization: token ? `bearer ${token}` : null,
-    }
-  }
-})
+    },
+  };
+});
 
 const link = split(
   ({ query }) => {
-    const { kind, operation } = getMainDefinition(query)
-    return kind === 'OperationDefinition' && operation === 'subscription'
+    const { kind, operation } = getMainDefinition(query);
+    return kind === "OperationDefinition" && operation === "subscription";
   },
   wsLink,
-  authLink.concat(httpLink),
-)
+  authLink.concat(httpLink)
+);
 
 const client = new ApolloClient({
   link,
-  cache: new InMemoryCache()
-})
+  cache: new InMemoryCache(),
+});
 
 ReactDOM.render(
   <ApolloProvider client={client}>
     <App />
   </ApolloProvider>,
-  document.getElementById('root')
-)
+  document.getElementById("root")
+);
 ```
 
 Jotta kaikki toimisi, on asennettava uusia riippuvuuksia:
@@ -292,21 +293,26 @@ Uusi konfiguraatio johtuu siitä, että sovelluksella tulee nyt olla HTTP-yhteyd
 ```js
 const wsLink = new WebSocketLink({
   uri: `ws://localhost:4000/graphql`,
-  options: { reconnect: true }
-})
+  options: { reconnect: true },
+});
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000/graphql',
-})
+  uri: "http://localhost:4000/graphql",
+});
 ```
 
-Tilaukset tehdään komponentin 
-[Subscription](https://www.apollographql.com/docs/react/data/subscriptions/#client-setup) tai  Apollo Client 3.0:n tarjoaman  hookin _useSubscription_ avulla. Käytämme jälleen hookeja.
+Tilaukset tehdään komponentin
+[Subscription](https://www.apollographql.com/docs/react/data/subscriptions/#client-setup) tai Apollo Client 3.0:n tarjoaman hookin _useSubscription_ avulla. Käytämme jälleen hookeja.
 
 Tehdään koodiin seuraavat muutokset:
 
 ```js
-import { useQuery, useMutation, useSubscription ,useApolloClient } from '@apollo/react-hooks'// highlight-line
+import {
+  useQuery,
+  useMutation,
+  useSubscription,
+  useApolloClient,
+} from "@apollo/react-hooks"; // highlight-line
 
 // ...
 
@@ -318,7 +324,7 @@ const PERSON_ADDED = gql`
     }
   }
   ${PERSON_DETAILS}
-`
+`;
 // highlight-end
 
 const App = () => {
@@ -326,19 +332,19 @@ const App = () => {
 
   useSubscription(PERSON_ADDED, {
     onSubscriptionData: ({ subscriptionData }) => {
-      console.log(subscriptionData)
-    }
-  })
+      console.log(subscriptionData);
+    },
+  });
 
   // ...
-}
+};
 ```
 
 Kun puhelinluetteloon nyt lisätään henkilöitä, tapahtuupa se mistä tahansa, tulostuvat clientin konsoliin lisätyn henkilön tiedot:
 
 ![](../../images/8/32e.png)
 
-Kun luetteloon lisätään uusi henkilö, palvelin lähettää siitä tiedot clientille ja attribuutin _onSubscriptionData_ arvoksi määriteltyä callback-funktiota kutsutaan antaen sille parametriksi palvelimelle lisätty henkilö. 
+Kun luetteloon lisätään uusi henkilö, palvelin lähettää siitä tiedot clientille ja attribuutin _onSubscriptionData_ arvoksi määriteltyä callback-funktiota kutsutaan antaen sille parametriksi palvelimelle lisätty henkilö.
 
 Laajennetaan ratkaisua vielä siten, että uuden henkilön tietojen saapuessa henkilö lisätään Apollon välimuistiin, jolloin se renderöityy heti ruudulle. Koodissa on jouduttu huomioimaan se, että sovelluksen itsensä lisäämää henkilöä ei saa lisätä välimuistiin kahteen kertaan:
 
@@ -347,35 +353,35 @@ const App = () => {
   // ...
 
   const updateCacheWith = (addedPerson) => {
-    const includedIn = (set, object) => 
-      set.map(p => p.id).includes(object.id)  
+    const includedIn = (set, object) =>
+      set.map((p) => p.id).includes(object.id);
 
-    const dataInStore = client.readQuery({ query: ALL_PERSONS })
+    const dataInStore = client.readQuery({ query: ALL_PERSONS });
     if (!includedIn(dataInStore.allPersons, addedPerson)) {
       client.writeQuery({
         query: ALL_PERSONS,
-        data: { allPersons : dataInStore.allPersons.concat(addedPerson) }
-      })
-    }   
-  }
+        data: { allPersons: dataInStore.allPersons.concat(addedPerson) },
+      });
+    }
+  };
 
   useSubscription(PERSON_ADDED, {
     onSubscriptionData: ({ subscriptionData }) => {
-      const addedPerson = subscriptionData.data.personAdded
-      notify(`${addedPerson.name} added`)
-      updateCacheWith(addedPerson)
-    }
-  })
+      const addedPerson = subscriptionData.data.personAdded;
+      notify(`${addedPerson.name} added`);
+      updateCacheWith(addedPerson);
+    },
+  });
 
   const [addPerson] = useMutation(CREATE_PERSON, {
     onError: handleError,
     update: (store, response) => {
-      updateCacheWith(response.data.addPerson)
-    }
-  })
+      updateCacheWith(response.data.addPerson);
+    },
+  });
 
   // ...
-}
+};
 ```
 
 Clientin lopullinen koodi [githubissa](https://github.com/fullstackopen-2019/graphql-phonebook-frontend/tree/part8-9), branchissa <i>part8-9</i>.
@@ -411,14 +417,14 @@ Koska _friendOf_ ei ole tietokannassa olevien <i>Person</i>-olioiden sarake, on 
 ```js
 Person: {
   address: (root) => {
-    return { 
+    return {
       street: root.street,
       city: root.city
     }
   },
   // highlight-start
   friendOf: (root) => {
-    // return list of users 
+    // return list of users
     return [
     ]
   }
@@ -426,7 +432,7 @@ Person: {
 },
 ```
 
-Resolverin parametrina _root_ on se henkilöolio jonka tuttavalista on selvityksen alla, eli etsimme olioista _User_ ne, joiden _friends_-listalle sisältyy root._id:
+Resolverin parametrina _root_ on se henkilöolio jonka tuttavalista on selvityksen alla, eli etsimme olioista _User_ ne, joiden _friends_-listalle sisältyy root.\_id:
 
 ```js
   Person: {
@@ -435,7 +441,7 @@ Resolverin parametrina _root_ on se henkilöolio jonka tuttavalista on selvityks
       const friends = await User.find({
         friends: {
           $in: [root._id]
-        } 
+        }
       })
 
       return friends
@@ -443,7 +449,7 @@ Resolverin parametrina _root_ on se henkilöolio jonka tuttavalista on selvityks
   },
 ```
 
-Sovellus toimii nyt. 
+Sovellus toimii nyt.
 
 Voimme samantien tehdä monimutkaisempiakin kyselyitä. On mahdollista selvittää esim. kaikkien henkilöiden tuttavat:
 
@@ -458,7 +464,7 @@ query {
 }
 ```
 
-Sovelluksessa on nyt kuitenkin yksi ongelma, tietokantakyselyjä tehdään kohtuuttoman paljon. Jos lisäämme palvelimen jokaiseen tietokantakyselyn tekevään kohtaan konsoliin tehtävän tulostuksen, huomaamme että jos tietokannassa on viisi henkilöä, tehdään seuraavat tietokantakyselyt: 
+Sovelluksessa on nyt kuitenkin yksi ongelma, tietokantakyselyjä tehdään kohtuuttoman paljon. Jos lisäämme palvelimen jokaiseen tietokantakyselyn tekevään kohtaan konsoliin tehtävän tulostuksen, huomaamme että jos tietokannassa on viisi henkilöä, tehdään seuraavat tietokantakyselyt:
 
 <pre>
 Person.find
@@ -483,38 +489,38 @@ const schema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    minlength: 5
+    minlength: 5,
   },
   phone: {
     type: String,
-    minlength: 5
+    minlength: 5,
   },
   street: {
     type: String,
     required: true,
-    minlength: 5
-  },  
+    minlength: 5,
+  },
   city: {
     type: String,
     required: true,
-    minlength: 5
+    minlength: 5,
   },
   // highlight-start
   friendOf: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User'
-    }
-  ], 
+      ref: "User",
+    },
+  ],
   // highlight-end
-})
+});
 ```
 
 Tällöin voisimme tehdä "liitoskyselyn", eli hakiessamme _Person_-oliot, voimme populoida niiden _friendOf_-kentät:
 
 ```js
 Query: {
-  allPersons: (root, args) => {    
+  allPersons: (root, args) => {
     console.log('Person.find')
     if (!args.phone) {
       return Person.find({}).populate('friendOf') // highlight-line
@@ -540,13 +546,13 @@ query {
 }
 ```
 
-Jos kyselyä _allPersons_ muokataan tekemään liitoskysely sen varalta, että se aiheuttaa välillä n+1-ongelman, tulee kyselystä hieman raskaampi niissäkin tapaukisssa, joissa henkilöihin liittyviä käyttäjiä ei tarvita. Käyttämällä resolverifunktioiden [neljättä parametria](https://www.apollographql.com/docs/apollo-server/data/data/#resolver-type-signature) olisi kyselyn toteutusta mahdollista optimoida vieläkin pidemmälle. Neljännen parametrin avulla on mahdollista tarkastella itse kyselyä, ja näin liitoskysely voitaisiin tehdä ainoastaan niissä tapauksissa, joissa on n+1-ongelman uhka. Tämänkaltaiseen optimointiin ei toki kannata lähteä ennen kun on varmaa, että se todellakin kannattaa. 
+Jos kyselyä _allPersons_ muokataan tekemään liitoskysely sen varalta, että se aiheuttaa välillä n+1-ongelman, tulee kyselystä hieman raskaampi niissäkin tapaukisssa, joissa henkilöihin liittyviä käyttäjiä ei tarvita. Käyttämällä resolverifunktioiden [neljättä parametria](https://www.apollographql.com/docs/apollo-server/data/data/#resolver-type-signature) olisi kyselyn toteutusta mahdollista optimoida vieläkin pidemmälle. Neljännen parametrin avulla on mahdollista tarkastella itse kyselyä, ja näin liitoskysely voitaisiin tehdä ainoastaan niissä tapauksissa, joissa on n+1-ongelman uhka. Tämänkaltaiseen optimointiin ei toki kannata lähteä ennen kun on varmaa, että se todellakin kannattaa.
 
 [Donald Knuthin sanoin](https://en.wikiquote.org/wiki/Donald_Knuth):
 
 > <i>Programmers waste enormous amounts of time thinking about, or worrying about, the speed of noncritical parts of their programs, and these attempts at efficiency actually have a strong negative impact when debugging and maintenance are considered. We should forget about small efficiencies, say about 97% of the time: <strong>premature optimization is the root of all evil.</strong></i>
 
-Erään varteenotettavan ratkaisun monien muiden seikkojen lisäksi n+1-ongelmaan tarjoaa 
+Erään varteenotettavan ratkaisun monien muiden seikkojen lisäksi n+1-ongelmaan tarjoaa
 Facebookin kehittämä [dataloader](https://github.com/facebook/dataloader)-kirjasto, dataloaderin käytöstä Apollo serverin kanssa [täällä](https://www.robinwieruch.de/graphql-apollo-server-tutorial/#graphql-server-data-loader-caching-batching) ja [täällä](http://www.petecorey.com/blog/2017/08/14/batching-graphql-queries-with-dataloader/).
 
 ### Loppusanat
@@ -581,7 +587,7 @@ Ratkaise haluamallasi menetelmällä seuraavaa kyselyä vaivaava n+1-ongelma:
 ```js
 query {
   allAuthors {
-    name 
+    name
     bookCount
   }
 }

@@ -1,5 +1,5 @@
 ---
-mainImage: ../../../images/part-7.svg
+mainImage: "../../../images/part-7.svg"
 part: 7
 letter: b
 lang: fi
@@ -36,12 +36,12 @@ Lisätään sitten sovelluksen tiedostoon <i>public/index.html</i> tagin <i>head
 
 ```js
 <head>
-<link
-  rel="stylesheet"
-  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-  integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
-  crossorigin="anonymous"
-/>
+  <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+    crossorigin="anonymous"
+  />
   // ...
 </head>
 ```
@@ -56,12 +56,8 @@ Bootstrapissa koko sivun sisältö renderöidään yleensä [container](https://
 const App = () => {
   // ...
 
-  return (
-    <div class="container"> // highlight-line
-      // ...
-    </div>
-  )
-}
+  return <div class="container"> // highlight-line // ...</div>;
+};
 ```
 
 Sovelluksen ulkoasu muuttuu siten, että sisältö ei ole enää yhtä kiinni selaimen reunoissa:
@@ -76,22 +72,18 @@ const Notes = (props) => (
     <h2>Notes</h2>
     <Table striped>
       <tbody>
-        {props.notes.map(note =>
+        {props.notes.map((note) => (
           <tr key={note.id}>
             <td>
-              <Link to={`/notes/${note.id}`}>
-                {note.content}
-              </Link>
+              <Link to={`/notes/${note.id}`}>{note.content}</Link>
             </td>
-            <td>
-              {note.user}
-            </td>
+            <td>{note.user}</td>
           </tr>
-        )}
+        ))}
       </tbody>
     </Table>
   </div>
-)
+);
 ```
 
 Ulkoasu on varsin tyylikäs:
@@ -101,7 +93,7 @@ Ulkoasu on varsin tyylikäs:
 Huomaa, että koodissa käytettävät React bootstrapin komponentit täytyy importata, eli koodiin on lisättävä:
 
 ```js
-import { Table } from 'react-bootstrap'
+import { Table } from "react-bootstrap";
 ```
 
 #### Lomake
@@ -119,27 +111,23 @@ let Login = (props) => {
       <Form onSubmit={onSubmit}>
         <Form.Group>
           <Form.Label>username:</Form.Label>
-          <Form.Control
-            type="text"
-            name="username"
-          />
+          <Form.Control type="text" name="username" />
           <Form.Label>password:</Form.Label>
-          <Form.Control
-            type="password"
-          />
+          <Form.Control type="password" />
           <Button variant="primary" type="submit">
             login
           </Button>
         </Form.Group>
       </Form>
     </div>
-)}
+  );
+};
 ```
 
 Importoitavien komponenttien määrä kasvaa:
 
 ```js
-import { Table, Form, Button } from 'react-bootstrap'
+import { Table, Form, Button } from "react-bootstrap";
 ```
 
 Lomake näyttää parantelun jälkeen seuraavalta:
@@ -158,22 +146,22 @@ Asetetaan notifikaatio kirjautumisen yhteydessä komponentin <i>App</i> tilan mu
 const App = () => {
   const [notes, setNotes] = useState([
     // ...
-  ])
+  ]);
 
-  const [user, setUser] = useState(null)
-  const [message, setMessage] = useState(null) // highlight-line
+  const [user, setUser] = useState(null);
+  const [message, setMessage] = useState(null); // highlight-line
 
   const login = (user) => {
-    setUser(user)
+    setUser(user);
     // highlight-start
-    setMessage(`welcome ${user}`)
+    setMessage(`welcome ${user}`);
     setTimeout(() => {
-      setMessage(null)
-    }, 10000)
+      setMessage(null);
+    }, 10000);
     // highlight-end
-  }
+  };
   // ...
-}
+};
 ```
 
 ja renderöidään viesti Bootstrapin [Alert](https://getbootstrap.com/docs/4.1/components/alerts/)-komponentin avulla. React bootstrap tarjoaa tähän jälleen valmiin [React-komponentin](https://react-bootstrap.github.io/components/alerts/):
@@ -203,20 +191,23 @@ Muutetaan vielä lopuksi sovelluksen navigaatiomenu käyttämään Bootstrapin [
   <Navbar.Collapse id="responsive-navbar-nav">
     <Nav className="mr-auto">
       <Nav.Link href="#" as="span">
-        <Link style={padding} to="/">home</Link>
+        <Link style={padding} to="/">
+          home
+        </Link>
       </Nav.Link>
       <Nav.Link href="#" as="span">
-        <Link style={padding} to="/notes">notes</Link>
+        <Link style={padding} to="/notes">
+          notes
+        </Link>
       </Nav.Link>
       <Nav.Link href="#" as="span">
-        <Link style={padding} to="/users">users</Link>
+        <Link style={padding} to="/users">
+          users
+        </Link>
       </Nav.Link>
       <Nav.Link href="#" as="span">
-        {user
-          ? <em>{user} logged in</em>
-          : <Link to="/login">login</Link>
-        }
-    </Nav.Link>
+        {user ? <em>{user} logged in</em> : <Link to="/login">login</Link>}
+      </Nav.Link>
     </Nav>
   </Navbar.Collapse>
 </Navbar>
@@ -235,7 +226,6 @@ Bootstrap ja valtaosa tarjolla olevista UI-frameworkeista tuottavat [responsiivi
 Chromen developer-konsolin avulla on mahdollista simuloida sovelluksen käyttöä erilaisilla mobiilipäätteillä
 
 ![](../../images/7/12.png)
-
 
 Esimerkin sovelluksen koodi kokonaisuudessaan [täällä](https://github.com/fullstackopen-2019/misc/blob/master/notes-bootstrap.js)
 
@@ -272,18 +262,14 @@ Semanticin dokumentaatio sisältää jokaisesta komponentista useita esimerkkiko
 Muutetaan komponentin App uloin <i>div</i>-elementti komponentiksi <i>Container</i>:
 
 ```js
-import { Container } from 'semantic-ui-react'
+import { Container } from "semantic-ui-react";
 
 // ...
 
 const App = () => {
   // ...
-  return (
-    <Container>
-      // ...
-    </Container>
-  )
-}
+  return <Container>// ...</Container>;
+};
 ```
 
 Sivun sisältö ei ole enää reunoissa kiinni.
@@ -324,27 +310,27 @@ Muistiinpanojen lista näyttää seuraavalta:
 Otetaan kirjautumissivulla käyttöön Semanticin [Form](https://react.semantic-ui.com/collections/form)-komponentti:
 
 ```js
-import { Form, Button } from 'semantic-ui-react'
+import { Form, Button } from "semantic-ui-react";
 
 let Login = (props) => {
   const onSubmit = (event) => {
     // ...
-  }
+  };
 
   return (
     <Form onSubmit={onSubmit}>
       <Form.Field>
         <label>username</label>
-        <input name='username' />
+        <input name="username" />
       </Form.Field>
       <Form.Field>
         <label>password</label>
-        <input type='password' />
+        <input type="password" />
       </Form.Field>
-      <Button type='submit'>login</Button>
+      <Button type="submit">login</Button>
     </Form>
-  )
-}
+  );
+};
 ```
 
 Ulkoasu näyttää seuraavalta:
@@ -362,18 +348,18 @@ Kuten edellisessä luvussa, asetetaan notifikaatio kirjautumisen yhteydessä kom
 ```js
 const App = () => {
   // ...
-  const [message, setMessage] = useState(null)
+  const [message, setMessage] = useState(null);
 
   const login = (user) => {
-    setUser(user)
-    setMessage(`welcome ${user}`)
+    setUser(user);
+    setMessage(`welcome ${user}`);
     setTimeout(() => {
-      setMessage(null)
-    }, 10000)
-  }
+      setMessage(null);
+    }, 10000);
+  };
 
   // ...
-}
+};
 ```
 
 ja renderöidään viesti käyttäen komponenttia [Message](https://react.semantic-ui.com/collections/message):
@@ -407,10 +393,7 @@ Navigaatiorakenne toteutetaan komponentin [Menu](https://react.semantic-ui.com/c
         <Link to="/users">users</Link>
       </Menu.Item>
       <Menu.Item link>
-        {user
-          ? <em>{user} logged in</em>
-          : <Link to="/login">login</Link>
-        }
+        {user ? <em>{user} logged in</em> : <Link to="/login">login</Link>}
       </Menu.Item>
     </Menu>
     // ...
@@ -433,17 +416,13 @@ Esimerkissä käytettiin UI-frameworkeja niiden React-integraatiot tarjoavien ki
 Sen sijaan että käytimme kirjastoa [React bootstrap](https://react-bootstrap.github.io/), olisimme voineet aivan yhtä hyvin käyttää Bootstrapia suoraan, liittämällä HTML-elementteihin CSS-luokkia. Eli sen sijaan että määrittelimme esim. taulukon komponentin <i>Table</i> avulla
 
 ```js
-<Table striped>
-  // ...
-</Table>
+<Table striped>// ...</Table>
 ```
 
 olisimme voineet käyttää normaalia HTML:n taulukkoa <i>table</i> ja CSS-luokkaa
 
 ```js
-<table className="table striped">
-  // ...
-</table>
+<table className="table striped">// ...</table>
 ```
 
 Taulukon määrittelyssä React bootstrapin tuoma etu ei ole suuri.
@@ -472,7 +451,7 @@ Mielenkiintoisen näkökulman tyylien määrittelyyn tarjoaa ES6:n [tagged templ
 Tehdään styled-componentsin avulla esimerkkisovellukseemme muutama tyylillinen muutos. Tehdään ensin kaksi tyylimäärittelyyn käytettävää komponenttia:
 
 ```js
-import styled from 'styled-components'
+import styled from "styled-components";
 
 const Button = styled.button`
   background: Bisque;
@@ -481,18 +460,18 @@ const Button = styled.button`
   padding: 0.25em 1em;
   border: 2px solid Chocolate;
   border-radius: 3px;
-`
+`;
 
 const Input = styled.input`
   margin: 0.25em;
-`
+`;
 ```
 
 Koodi luo HTML:n elementeistä <i>button</i> ja <i>input</i> tyyleillä rikastetut versiot ja sijoitetaan ne muuttujiin <i>Button</i> ja <i>Input</i>:
 
 Tyylien määrittelyn syntaksi on varsin mielenkiintoinen, css-määrittelyt asetetaan backtick-hipsujen sisään.
 
-Määritellyt komponentit toimivat kuten normaali <i>button</i> ja <i>input</i> ja sovelluksessa käytetään niitä  normaaliin tapaan:
+Määritellyt komponentit toimivat kuten normaali <i>button</i> ja <i>input</i> ja sovelluksessa käytetään niitä normaaliin tapaan:
 
 ```js
 const Login = (props) => {
@@ -507,13 +486,16 @@ const Login = (props) => {
         </div>
         <div>
           password:
-          <Input type='password' /> // highlight-line
+          <Input type="password" /> // highlight-line
         </div>
-        <Button type="submit" primary=''>login</Button> // highlight-line
+        <Button type="submit" primary="">
+          login
+        </Button>{" "}
+        // highlight-line
       </form>
     </div>
-  )
-}
+  );
+};
 ```
 
 Määritellään vielä seuraavat tyylien lisäämiseen tarkoitetut komponentit, jotka ovat kaikki rikastettuja versioita <i>div</i>-elementistä:
@@ -522,18 +504,18 @@ Määritellään vielä seuraavat tyylien lisäämiseen tarkoitetut komponentit,
 const Page = styled.div`
   padding: 1em;
   background: papayawhip;
-`
+`;
 
 const Navigation = styled.div`
   background: BurlyWood;
   padding: 1em;
-`
+`;
 
 const Footer = styled.div`
   background: Chocolate;
   padding: 1em;
   margin-top: 1em;
-`
+`;
 ```
 
 Otetaan uudet komponentit käyttöön sovelluksessa:
@@ -543,40 +525,48 @@ const App = () => {
   // ...
 
   return (
-    <Page> // highlight-line
+    <Page>
+      {" "}
+      // highlight-line
       <Router>
         <div>
-          <Navigation> // highlight-line
-            <Link style={padding} to="/">home</Link>
-            <Link style={padding} to="/notes">notes</Link>
-            <Link style={padding} to="/users">users</Link>
-            {user
-              ? <em>{user} logged in</em>
-              : <Link to="/login">login</Link>
-            }
+          <Navigation>
+            {" "}
+            // highlight-line
+            <Link style={padding} to="/">
+              home
+            </Link>
+            <Link style={padding} to="/notes">
+              notes
+            </Link>
+            <Link style={padding} to="/users">
+              users
+            </Link>
+            {user ? <em>{user} logged in</em> : <Link to="/login">login</Link>}
           </Navigation>
 
           <Route exact path="/" render={() => <Home />} />
-          <Route exact path="/notes" render={() =>
-            <Notes notes={notes} />}
+          <Route exact path="/notes" render={() => <Notes notes={notes} />} />
+          <Route
+            exact
+            path="/notes/:id"
+            render={({ match }) => <Note note={noteById(match.params.id)} />}
           />
-          <Route exact path="/notes/:id" render={({ match }) =>
-            <Note note={noteById(match.params.id)} />}
+          <Route
+            path="/users"
+            render={() => (user ? <Users /> : <Redirect to="/login" />)}
           />
-          <Route path="/users" render={() =>
-            user ? <Users /> : <Redirect to="/login" />
-          } />
-          <Route path="/login" render={() =>
-            <Login onLogin={login} />}
-          />
+          <Route path="/login" render={() => <Login onLogin={login} />} />
         </div>
       </Router>
-      <Footer> // highlight-line
+      <Footer>
+        {" "}
+        // highlight-line
         <em>Note app, Department of Computer Science 2019</em>
       </Footer>
     </Page>
-  )
-}
+  );
+};
 ```
 
 Lopputulos on seuraavassa:
@@ -594,7 +584,6 @@ Styled components on nostanut tasaisesti suosiotaan viime aikoina ja tällä het
 Tämän luvun asioihin liittyvät tehtävät ovat osan lopun [blogilistaa laajentavassa tehtäväsarjassa](/osa7/tehtavia_blogilistan_laajennus).
 
 </div>
-
 
 <!--
 
