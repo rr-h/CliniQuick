@@ -2,14 +2,14 @@
 // Define component props and scripts here
 ---
 <style global>
-@import "../../../styles/Arrow.scss";
+@import "../../styles/Arrow.scss";
 </style>
 
-import Element from '../../Element/Element.astro';
+import Element from '../Element/Element.astro';
 import { Link } from 'gatsby';
 import PropTypes from 'prop-types';
 import React from 'react';
-import colors from '../../colors';
+import colors from '../colors.json';
 
 const Arrow = ({
   className,

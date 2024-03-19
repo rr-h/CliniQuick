@@ -2,26 +2,26 @@
 // Define component props and scripts here
 ---
 <style global>
-@import "./PartIntroTemplate.scss";
+@import "../styles/PartIntroTemplate.scss";
 </style>
 
-import Arrow from '../components/Arrow/Arrow';
-import { Banner } from '../components/Banner/Banner';
-import Element from '../components/Element/Element';
-import Footer from '../components/Footer/Footer';
-import Layout from '../components/layout';
+import Arrow from '../components/Arrow/Arrow.astro';
+import { Banner } from '../components/Banner/Banner.astro';
+import Element from '../components/Element/Element.astro';
+import Footer from '../components/Footer/Footer.astro';
+import Layout from '../components/layout.astro';
 import Parser from 'html-react-parser';
-import PrevNext from '../components/PrevNext/PrevNext';
+import PrevNext from '../components/PrevNext/PrevNext.astro';
 import React from 'react';
-import SEO from '../components/seo';
-import colors from '../colors';
+import SEO from '../components/seo.astro';
+import colors from '../components/colors.json';
 import domToReact from 'html-react-parser/lib/dom-to-react';
 import { graphql } from 'gatsby';
 import isEmpty from 'lodash/fp/isEmpty';
-import mainSEOdescription from '../content/seo/mainSEOdescription';
-import mainSEOtags from '../content/seo/mainSEOtags';
-import navigation from '../content/partnavigation/partnavigation';
-import { partColors } from './partColors';
+import mainSEOdescription from '../content/seo/mainSEOdescription.astro';
+import mainSEOtags from '../content/seo/mainSEOtags.astro';
+import navigation from '../content/partnavigation/partnavigation.astro';
+import { partColors } from './partColors.astro';
 import path from 'path';
 import snakeCase from 'lodash/fp/snakeCase';
 

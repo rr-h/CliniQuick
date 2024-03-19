@@ -1,4 +1,4 @@
-@import '../common.scss';
+@import './common.scss';
 
 .arrow__container {
   position: relative;
@@ -12,7 +12,7 @@
 
       &::before {
         content: '';
-        background: url('../../images/arrow.svg') no-repeat;
+        background: url('../../public/images/arrow.svg') no-repeat;
         background-size: contain;
         position: absolute;
         top: 0;

@@ -2,15 +2,15 @@
 // Define component props and scripts here
 ---
 <style global>
-@import "../../../styles/ContentLiftup.scss";
+@import "../../styles/ContentLiftup.scss";
 </style>
 
-import { Image } from '../../Image/Image.astro';
+import { Image } from '../Image/Image.astro';
 import { Link } from 'gatsby';
 import { PropTypes } from 'prop-types';
 import React from 'react';
-import { TripleBorder } from '../../TripleBorder/TripleBorder.astro';
-import colors from '../../colors';
+import { TripleBorder } from '../TripleBorder/TripleBorder.astro';
+import colors from '../colors.json';
 
 const setSrcToChildrenImage = (event, src) => {
   event.currentTarget.firstElementChild.firstElementChild.firstElementChild.src = src;

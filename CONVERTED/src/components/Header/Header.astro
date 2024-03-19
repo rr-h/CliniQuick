@@ -2,14 +2,14 @@
 // Define component props and scripts here
 ---
 <style global>
-@import "../../../styles/Header.scss";
+@import "../../styles/Header.scss";
 </style>
 
 import React, { Component } from 'react';
 
 import { Link } from 'gatsby';
-import Navigation from '../../Navigation/Navigation.astro';
-import { TripleBorder } from '../../TripleBorder/TripleBorder.astro';
+import Navigation from '../Navigation/Navigation.astro';
+import { TripleBorder } from '../TripleBorder/TripleBorder.astro';
 
 class Header extends Component {
   constructor(props) {

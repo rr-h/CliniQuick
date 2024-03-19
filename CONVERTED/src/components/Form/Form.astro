@@ -2,13 +2,13 @@
 // Define component props and scripts here
 ---
 <style global>
-@import "../../../styles/Form.scss";
+@import "../../styles/Form.scss";
 </style>
 
 import React, { Component } from 'react';
 
-import { BodyText } from '../../BodyText/BodyText.astro';
-import Element from '../../Element/Element.astro';
+import { BodyText } from '../BodyText/BodyText.astro';
+import Element from '../Element/Element.astro';
 import axios from 'axios';
 
 const GOOGLE_FORM_ACTION_URL =

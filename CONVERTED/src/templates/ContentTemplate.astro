@@ -2,30 +2,30 @@
 // Define component props and scripts here
 ---
 <style global>
-@import "./ContentTemplate.scss";
+@import "../../src/styles/ContentTemplate.scss";
 </style>
 
 import React, { Component } from 'react';
 
-import Arrow from '../components/Arrow/Arrow';
-import ArrowToTop from '../images/up-arrow.svg';
-import { Banner } from '../components/Banner/Banner';
-import EditLink from '../components/EditLink/EditLink';
-import Element from '../components/Element/Element';
-import Footer from '../components/Footer/Footer';
-import Layout from '../components/layout';
+import Arrow from '../components/Arrow/Arrow.astro';
+import ArrowToTop from '../../public/images/up-arrow.svg';
+import { Banner } from '../components/Banner/Banner.astro';
+import EditLink from '../components/EditLink/EditLink.astro';
+import Element from '../components/Element/Element.astro';
+import Footer from '../components/Footer/Footer.astro';
+import Layout from '../components/layout.astro';
 import Parser from 'html-react-parser';
-import PrevNext from '../components/PrevNext/PrevNext';
+import PrevNext from '../components/PrevNext/PrevNext.astro';
 import SEO from '../components/seo';
 import ScrollNavigation from '../components/ScrollNavigation/ScrollNavigation';
-import { SubHeader } from '../components/SubHeader/SubHeader';
-import colors from '../colors';
+import { SubHeader } from '../components/SubHeader/SubHeader.astro;
+import colors from '../components/colors.json';
 import domToReact from 'html-react-parser/lib/dom-to-react';
 import { graphql } from 'gatsby';
-import mainSEOdescription from '../content/seo/mainSEOdescription';
-import mainSEOtags from '../content/seo/mainSEOtags';
-import navigation from '../content/partnavigation/partnavigation';
-import { partColors } from './partColors';
+import mainSEOdescription from '../content/seo/mainSEOdescription.astro';
+import mainSEOtags from '../content/seo/mainSEOtags.astro';
+import navigation from '../content/partnavigation/partnavigation.astro';
+import { partColors } from './partColors.astro';
 import path from 'path';
 import snakeCase from 'lodash/fp/snakeCase';
 

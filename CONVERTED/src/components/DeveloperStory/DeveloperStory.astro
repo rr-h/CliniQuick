@@ -2,16 +2,16 @@
 // Define component props and scripts here
 ---
 <style global>
-@import "../../../styles/DeveloperStory.scss";
+@import "../../styles/DeveloperStory.scss";
 </style>
 
 import React, { Component } from 'react';
 
-import { BodyText } from '../../BodyText/BodyText.astro';
-import Element from '../../Element/Element.astro';
-import { Image } from '../../Image/Image.astro';
+import { BodyText } from '../BodyText/BodyText.astro';
+import Element from '../Element/Element.astro';
+import { Image } from '../Image/Image.astro';
 import { PropTypes } from 'prop-types';
-import { TripleBorder } from '../../TripleBorder/TripleBorder.astro';
+import { TripleBorder } from '../TripleBorder/TripleBorder.astro';
 
 export class DeveloperStory extends Component {
   constructor(props) {
@@ -36,7 +36,7 @@ export class DeveloperStory extends Component {
           largeMargin
           class="developer-story__image col-3 col-7--mobile"
         >
-          <Image squareBig src={require(`../../images/${image}`)} alt={name} />
+          <Image squareBig src={require(`../../../public/images/${image}`)} alt={name} />
         </TripleBorder>
 
         <Element class="col-6 col-8--mobile spacing--mobile">
@@ -44,7 +44,7 @@ export class DeveloperStory extends Component {
             <img
               class="col-5--mobile"
               style={{ width: 'auto', maxHeight: '60px', objectFit: 'cover' }}
-              src={require(`../../images/story_logos/${companyLogo}`)}
+              src={require(`../../../public/images/${companyLogo}`)}
               alt={companyLogo.split('.')[0]}
             />
           )}

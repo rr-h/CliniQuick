@@ -2,17 +2,17 @@
 // Define component props and scripts here
 ---
 <style global>
-@import "../../../styles/ScrollNavigation.scss";
+@import "../../styles/ScrollNavigation.scss";
 </style>
 
 import React, { Component } from 'react';
 
-import Accordion from '../../Accordion/Accordion.astro';
-import Element from '../../Element/Element.astro';
+import Accordion from '../Accordion/Accordion.astro';
+import Element from '../Element/Element.astro';
 import { Link } from 'gatsby';
 import PropTypes from 'prop-types';
 import kebabCase from 'lodash/fp/kebabCase';
-import navigation from '../../../srcr/content/partnavigation/partnavigation.astro';
+import navigation from '../../../src/content/partnavigation/partnavigation.astro';
 import snakeCase from 'lodash/fp/snakeCase';
 
 class ScrollNavigation extends Component {
