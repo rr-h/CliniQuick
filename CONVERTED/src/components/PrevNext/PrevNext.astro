@@ -5,11 +5,11 @@
 @import "../../../styles/PrevNext.scss";
 </style>
 
-import Element from '../Element/Element';
+import Element from '../../Element/Element.astro';
 import { Link } from 'gatsby';
 import { PropTypes } from 'prop-types';
 import React from 'react';
-import navigation from '../../content/partnavigation/partnavigation';
+import navigation from '../../../src/content/partnavigation/partnavigation.astro';
 import snakeCase from 'lodash/fp/snakeCase';
 
 const prevChar = c => String.fromCharCode(c.charCodeAt(0) - 1);
