@@ -1,27 +1,27 @@
 ---
 // Define component props and scripts here
 ---
-import { BodyText } from '../components/BodyText/BodyText';
-import { CompaniesBanner } from '../components/CompaniesBanner/CompaniesBanner';
-import Element from '../components/Element/Element';
-import { Image } from './../components/Image/Image';
-import Layout from '../components/layout';
-import { PartBanner } from '../components/PartBanner/PartBanner';
+import { BodyText } from '../components/BodyText/BodyText.astro';
+import { CompaniesBanner } from '../components/CompaniesBanner/CompaniesBanner.astro';
+import Element from '../components/Element/Element.astro';
+import { Image } from '../components/Image/Image.astro';
+import Layout from '../components/layout.astro';
+import { PartBanner } from '../components/PartBanner/PartBanner.astro';
 import React from 'react';
-import SEO from '../components/seo';
-import { Some } from '../components/Some/Some';
-import { SubHeader } from '../components/SubHeader/SubHeader';
-import { TripleBorder } from '../components/TripleBorder/TripleBorder';
-import cc from '../images/cc.svg';
-import colors from '../colors';
+import SEO from '../components/seo.astro';
+import { Some } from '../components/Some/Some.astro';
+import { SubHeader } from '../components/SubHeader/SubHeader.astro';
+import { TripleBorder } from '../components/TripleBorder/TripleBorder.astro';
+import cc from '../../public/images/cc.svg';
+import colors from '../components/colors.json';
 import content from '../content/pages/main.json';
-import houstonLogo from '../images/Houston_big.svg';
-import landingImage from '../images/landing.svg';
-import licenceIcon from '../images/cc-logo.svg';
-import mainSEOdescription from '../content/seo/mainSEOdescription';
-import mainSEOtags from '../content/seo/mainSEOtags';
-import news from '../images/noun_news_1248039.svg';
-import yliopistoLogo from '../images/company_logos/uoh_centre.svg';
+import houstonLogo from '../public/images/Houston_big.svg';
+import landingImage from '../../public/images/landing.svg';
+import licenceIcon from '../../public/images/cc-logo.svg';
+import mainSEOdescription from '../content/seo/mainSEOdescription.astro';
+import mainSEOtags from '../content/seo/mainSEOtags.astro';
+import news from '../../public/images/noun_news_1248039.svg';
+import yliopistoLogo from '../../public/images/company_logos/uoh_centre.svg';
 
 const IndexPage = () => {
   const {
