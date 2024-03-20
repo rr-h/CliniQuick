@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "astro": "^4.5.6",
+    "astro": "^4.5.7",
     "reactjs": "^1.0.0"
   },
   "devDependencies": {
