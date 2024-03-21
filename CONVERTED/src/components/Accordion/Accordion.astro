@@ -1,107 +1,87 @@
 ---
-// Define component props and scripts here
----
-<style global>
-@import "../../styles/Accordion.scss";
-</style>
+// Define component imports and setup here
+import { useState, useEffect } from "react";
+import { BodyText } from "../BodyText/BodyText.astro";
+import { Link } from "gatsby";
+import PropTypes from "prop-types"; // Commented out as Astro does not use PropTypes
+import ReactGA from "react-ga"; // Adjust usage for initialization outside a component if necessary
 
-import React, { Component } from 'react';
+// Initialize Google Analytics
+ReactGA.initialize("UA-135975842-1");
 
-import { BodyText } from '../BodyText/BodyText.astro';
-import { Link } from 'gatsby';
-import PropTypes from 'prop-types';
-import ReactGA from 'react-ga';
+// Component Props (Astro.props are used to access props passed to the component)
+// Note: PropTypes are commented out because Astro does not use them directly like React
 
-ReactGA.initialize('UA-135975842-1');
+const Accordion = (props) => {
+  // States and Logic
+  const [isOpened, setIsOpened] = useState(false);
 
-class Accordion extends Component {
-  constructor(props) {
-    super(props);
+  // Commented out: React-specific lifecycle methods and state initialization
+  // useEffect(() => {
+  //   if (props.initiallyOpened) {
+  //     setIsOpened(true);
+  //   }
+  // }, []);
 
-    let state = reactive({
-      isOpened: false,
-    };
-  }
+  const handleClick = () => {
+    setIsOpened(!isOpened);
+    // Analytics tracking can be placed here if needed
+  };
 
-  onMount() {
-    this.props.initiallyOpened && state = { ...state, ...$1 };
-  }
+  // Extracting props
+  const { title, content, className, containerClassName, list, titleStyle } =
+    props;
 
-  handleClick() {
-    const { isOpened } = this.state;
-    const { title, track } = this.props;
-
-    state = { ...state, ...$1 };
-    });
-  }
-
-  render() {
-    const {
-      title,
-      content,
-      className,
-      containerClassName,
-      list,
-      titleStyle,
-    } = this.props;
-    const { isOpened } = this.state;
-
-    return (
-      <div
-        class={`accordion__container col-8 push-right-1 ${containerClassName}`}
+  // Render Component
+  return (
+    <div
+      class={`accordion__container col-8 push-right-1 ${containerClassName}`}
+    >
+      <button
+        class={`accordion accordion__title ${isOpened ? "active" : ""} ${className}`}
+        style={titleStyle}
+        onClick={handleClick}
       >
-        <button
-          class={`accordion accordion__title ${
-            isOpened ? 'active' : ''
-          } ${className}`}
-          style={titleStyle}
-          onClick={() => this.handleClick()}
-        >
-          {title}
-        </button>
-        <div
-          class="panel"
-          style={{
-            padding: `${isOpened ? '2rem 18px' : ''}`,
-            maxHeight: `${!isOpened ? 0 : 'unset'}`,
-            transition: 'max-height 0.2s ease-out',
-          }}
-        >
-          {content && (
-            <BodyText class="col-8 push-right-1" text={content} />
-          )}
-          {list && (
-            <ul>
-              {list.map(l => (
-                <li key={l.text}>
-                  <Link to={l.href}>{l.text}</Link>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+        {title}
+      </button>
+      <div
+        class="panel"
+        style={{
+          padding: isOpened ? "2rem 18px" : "",
+          maxHeight: !isOpened ? 0 : "unset",
+          transition: "max-height 0.2s ease-out",
+        }}
+      >
+        {content && <BodyText class="col-8 push-right-1" text={content} />}
+        {list && (
+          <ul>
+            {list.map((l) => (
+              <li key={l.text}>
+                <Link to={l.href}>{l.text}</Link>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
-    );
-  }
-}
-
-Accordion.propTypes = {
-  title: PropTypes.string.isRequired,
-  track: PropTypes.bool,
-  content: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-  list: PropTypes.array,
-  className: PropTypes.string,
-  containerClassName: PropTypes.string,
-  initiallyOpened: PropTypes.bool,
-  titleStyle: PropTypes.object,
-};
-
-Accordion.defaultProps = {
-  className: '',
-  track: false,
-  containerClassName: '',
-  initiallyOpened: false,
-  titleStyle: {},
+    </div>
+  );
 };
 
 export default Accordion;
+---
+
+<style global>
+  @import "../../styles/Accordion.scss";
+</style>
+
+<!-- The template part of the component -->
+<Accordion
+  title={Astro.props.title}
+  track={Astro.props.track}
+  content={Astro.props.content}
+  list={Astro.props.list}
+  className={Astro.props.className}
+  containerClassName={Astro.props.containerClassName}
+  initiallyOpened={Astro.props.initiallyOpened}
+  titleStyle={Astro.props.titleStyle}
+/>
