@@ -23,7 +23,6 @@ const navigation = {
 };
 
 // Functions for handling navigation state changes
-// These need to be client-side scripts since they manipulate the DOM
 const handleCloseMenu = `
   document.body.classList.remove('is-open--navigation');
 `;
@@ -39,7 +38,7 @@ const [navigationOpen, setNavigationOpen] = useState(false);
 ---
 
 <style global>
-@import "../../styles/Navigation.scss";
+  @import "../../styles/Navigation.scss";
 </style>
 
 <div class={`navigation__wrapper ${className}`}>
@@ -57,7 +56,7 @@ const [navigationOpen, setNavigationOpen] = useState(false);
       {navigation[lang].map((i) => (
         <NavigationItem key={i.path} {...i} onClick={Astro.client.hydrate(handleCloseMenu)} />
       ))}
-      
+
       <LanguageSwitcher lang={lang} />
     </ul>
   </nav>
@@ -68,7 +67,7 @@ const [navigationOpen, setNavigationOpen] = useState(false);
   Astro.client.hydrate(() => {
     const handleCloseMenu = ${handleCloseMenu};
     const handleHamburgerClick = ${handleHamburgerClick};
-    
+
     // Add any other client-side interactions here
   });
 </script>
