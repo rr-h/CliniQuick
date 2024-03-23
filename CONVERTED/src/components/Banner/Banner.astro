@@ -1,24 +1,30 @@
 ---
 // src/components/Banner.astro
+import { glob } from 'astro';
+import matter from 'gray-matter'; // Import gray-matter
 import '../../styles/Banner.scss'; // Import your SCSS file
 
-// Adjusted to remove async operations inside
 interface BannerProps {
   className?: string;
   backgroundColor?: string;
-  partNumber: number; 
+  partNumber: number;
   lang?: string;
-  partContent?: any; // Assume partContent is now passed as a prop
 }
 
-// Now a regular component function
-const Banner = ({ className = "", backgroundColor, partNumber, lang = 'en', partContent }: BannerProps) => {
+const Banner = async ({ className = "", backgroundColor, partNumber, lang = 'en' }: BannerProps) => {
+  // Fetch Markdown file
+  const partFiles = await glob(`./part-${partNumber}*.${lang}.md`);
+  const partContent = await partFiles[0].then((part) => part.content);
+
+  // Parse Markdown file with gray-matter
+  const { data } = matter(partContent);
+
   const backgroundStyle = backgroundColor ? `background-color: ${backgroundColor};` : '';
 
   return (
     <div class={`banner ${className}`} style={backgroundStyle}>
-      <img src={partContent?.mainImage} alt="Main Part Image" /> 
-      <p>{partContent?.intro}</p> 
+      <img src={data.mainImage} alt="Main Part Image" />
+      <p>{data.intro}</p>
     </div>
   );
 };

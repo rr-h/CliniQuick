@@ -10,7 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "@astrojs/svelte": "^5.2.0",
-    "astro": "^4.5.9"
+    "astro": "^4.5.9",
+    "gray-matter": "^4.0.3"
   },
   "devDependencies": {
     "sass": "^1.72.0"
