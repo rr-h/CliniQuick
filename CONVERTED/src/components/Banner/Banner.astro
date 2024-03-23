@@ -1,51 +1,67 @@
 ---
-// Import React for using JSX syntax
-import React from "react";
+---
+// Import the ability to read Markdown files
+import { glob } from 'astro';
 
-// Define the Banner component
-// PropType validations are not natively supported in Astro, hence commented out
-// import PropTypes from 'prop-types';
-
-export interface BannerProps {
+// Define props (With TypeScript)
+interface BannerProps {
   className?: string;
   backgroundColor?: string;
-  [propName: string]: any; // For additional props spread
+  partNumber: number; // For selecting the correct .md file
+  lang?: string; // If supporting multiple languages
 }
 
-const Banner = ({ className = "", backgroundColor, ...props }: BannerProps) => {
-  const background = backgroundColor
-    ? { backgroundColor: backgroundColor }
-    : null;
+const Banner = async ({ className = "", backgroundColor, partNumber, lang = 'en' }: BannerProps) => {
+  // Fetch the correct Markdown file based on partNumber and lang
+  const partFiles = await glob(`./part-${partNumber}*.${lang}.md`);
+  const partContent = await partFiles[0].then((part) => part.content);
 
-  return <div class={`banner ${className}`} style={background} {...props} />;
+  const background = backgroundColor ? { backgroundColor: backgroundColor } : null;
+
+  return (
+    <div class={`banner ${className}`} style={background}>
+      <p dangerouslySetInnerHTML={{ __html: partContent.mainImage }} />
+      <p>{partContent.intro}</p> 
+      
+interface BannerProps {
+  className?: string;
+  backgroundColor?: string;
+  initialText?: string; // For initial banner message
+  [propName: string]: any;
+}
+
+// Component logic
+const Banner = ({ className = "", backgroundColor, initialText, ...props }: BannerProps) => {
+  const background = backgroundColor ? { backgroundColor: backgroundColor } : null;
+  let bannerMessage = initialText ?? ''; // Set initial text with a fallback
+
+  return (
+    <div class={`banner ${className}`} style={background} {...props}>
+      <p>{bannerMessage}</p>
+
+      <button client:load onclick={() => (bannerMessage = 'New Message!')}>
+        Update Text
+      </button>    
+    </div>
+  );
 };
-
-// Default props and PropType validations would be managed outside of the Astro component if necessary
-// Banner.defaultProps = {
-//   className: '',
-// };
-//
-// Banner.propTypes = {
-//   className: PropTypes.string,
-// };
 ---
 
---- // Define component props and scripts here // Assuming this is the structure
-of your Banner.astro component const {(image, text)} = Astro.props; ---
-<div class="banner" style={{ backgroundImage: `url(${image})` }}>
-  {text.map((message, index) => <p key={index}>{message}</p>)}
-</div>
+<style>
+  /* Replicate your CSS from the Banner.scss file */
+  .banner {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    position: relative;
+    padding: $vertical-spacing * 2 0; /* Assuming you have this variable defined */
+    background-color: $main;
+  }
 
-<!-- Global style import, adjust the path as necessary for your project structure -->
-<style is:global>
-  @import "../../styles/Banner.scss";
+  @media (min-width: $desktop) { /* Adjust $desktop breakpoint as needed */
+    .banner {
+      padding: 3.444rem; 
+      padding-bottom: 4.444rem;
+    }
+  }
 </style>
-
-<!-- Render the Banner component using React-like JSX syntax -->
-<Banner client:load />
-
---- // Define component props and scripts here // Assuming this is the structure
-of your Banner.astro component const {(image, text)} = Astro.props; ---
-<div class="banner" style={{ backgroundImage: `url(${image})` }}>
-  {text.map((message, index) => <p key={index}>{message}</p>)}
-</div>
