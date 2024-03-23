@@ -125,7 +125,338 @@ declare module 'astro:content' {
 	>;
 
 	type ContentEntryMap = {
-		
+		"md": {
+"README.md": {
+	id: "README.md";
+  slug: "readme";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part0.md": {
+	id: "part0.md";
+  slug: "part0";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part0a.md": {
+	id: "part0a.md";
+  slug: "part0a";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part0b.md": {
+	id: "part0b.md";
+  slug: "part0b";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part1.md": {
+	id: "part1.md";
+  slug: "part1";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part1a.md": {
+	id: "part1a.md";
+  slug: "part1a";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part1b.md": {
+	id: "part1b.md";
+  slug: "part1b";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part1c.md": {
+	id: "part1c.md";
+  slug: "part1c";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part1d.md": {
+	id: "part1d.md";
+  slug: "part1d";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part2.md": {
+	id: "part2.md";
+  slug: "part2";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part2a.md": {
+	id: "part2a.md";
+  slug: "part2a";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part2b.md": {
+	id: "part2b.md";
+  slug: "part2b";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part2c.md": {
+	id: "part2c.md";
+  slug: "part2c";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part2d.md": {
+	id: "part2d.md";
+  slug: "part2d";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part2e.md": {
+	id: "part2e.md";
+  slug: "part2e";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part3.md": {
+	id: "part3.md";
+  slug: "part3";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part3a.md": {
+	id: "part3a.md";
+  slug: "part3a";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part3b.md": {
+	id: "part3b.md";
+  slug: "part3b";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part3c.md": {
+	id: "part3c.md";
+  slug: "part3c";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part3d.md": {
+	id: "part3d.md";
+  slug: "part3d";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part4.md": {
+	id: "part4.md";
+  slug: "part4";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part4a.md": {
+	id: "part4a.md";
+  slug: "part4a";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part4b.md": {
+	id: "part4b.md";
+  slug: "part4b";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part4c.md": {
+	id: "part4c.md";
+  slug: "part4c";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part4d.md": {
+	id: "part4d.md";
+  slug: "part4d";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part5.md": {
+	id: "part5.md";
+  slug: "part5";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part5a.md": {
+	id: "part5a.md";
+  slug: "part5a";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part5b.md": {
+	id: "part5b.md";
+  slug: "part5b";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part5c.md": {
+	id: "part5c.md";
+  slug: "part5c";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part5d.md": {
+	id: "part5d.md";
+  slug: "part5d";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part6.md": {
+	id: "part6.md";
+  slug: "part6";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part6a.md": {
+	id: "part6a.md";
+  slug: "part6a";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part6b.md": {
+	id: "part6b.md";
+  slug: "part6b";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part6c.md": {
+	id: "part6c.md";
+  slug: "part6c";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part7.md": {
+	id: "part7.md";
+  slug: "part7";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part7a.md": {
+	id: "part7a.md";
+  slug: "part7a";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part7b.md": {
+	id: "part7b.md";
+  slug: "part7b";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part7c.md": {
+	id: "part7c.md";
+  slug: "part7c";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part7d.md": {
+	id: "part7d.md";
+  slug: "part7d";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part7e.md": {
+	id: "part7e.md";
+  slug: "part7e";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part7f.md": {
+	id: "part7f.md";
+  slug: "part7f";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part8.md": {
+	id: "part8.md";
+  slug: "part8";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part8a.md": {
+	id: "part8a.md";
+  slug: "part8a";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part8b.md": {
+	id: "part8b.md";
+  slug: "part8b";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part8c.md": {
+	id: "part8c.md";
+  slug: "part8c";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part8d.md": {
+	id: "part8d.md";
+  slug: "part8d";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+"part8e.md": {
+	id: "part8e.md";
+  slug: "part8e";
+  body: string;
+  collection: "md";
+  data: any
+} & { render(): Render[".md"] };
+};
+
 	};
 
 	type DataEntryMap = {

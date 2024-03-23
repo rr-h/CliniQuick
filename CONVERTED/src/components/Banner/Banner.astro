@@ -1,25 +1,26 @@
 ---
 // src/components/Banner.astro
-import { glob } from 'astro';
 import '../../styles/Banner.scss'; // Import your SCSS file
 
-// Define props (With TypeScript)
+// Adjusted to remove async operations inside
 interface BannerProps {
   className?: string;
   backgroundColor?: string;
   partNumber: number; 
-  lang?: string; 
+  lang?: string;
+  partContent?: any; // Assume partContent is now passed as a prop
 }
 
-const Banner = async ({ className = "", backgroundColor, partNumber, lang = 'en' }: BannerProps) => {
-  // Fetch Markdown file
-  const partFiles = await glob(`./part-${partNumber}*.${lang}.md`);
-  const partContent = await partFiles[0].then((part) => part.content);
-
-  const background = backgroundColor ? { backgroundColor: backgroundColor } : null;
+// Now a regular component function
+const Banner = ({ className = "", backgroundColor, partNumber, lang = 'en', partContent }: BannerProps) => {
+  const backgroundStyle = backgroundColor ? `background-color: ${backgroundColor};` : '';
 
   return (
-    <div class={`banner ${className}`} style={background}>
-      <img src={partContent.mainImage} alt="Main Part Image" /> 
-      <p>{partContent.intro}</p> 
+    <div class={`banner ${className}`} style={backgroundStyle}>
+      <img src={partContent?.mainImage} alt="Main Part Image" /> 
+      <p>{partContent?.intro}</p> 
     </div>
+  );
+};
+
+export default Banner;
