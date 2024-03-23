@@ -1,122 +1,106 @@
 ---
 // Define component props and scripts here
----
-<style global>
-@import "../../styles/ContentLiftup.scss";
-</style>
+import { Image } from "../Image/Image.astro";
+// Commented out unused imports for manual review
+// import { Link } from 'gatsby'; // Not directly usable in Astro, will need alternative handling
+// import { PropTypes } from 'prop-types'; // Astro does not use PropTypes
+// import React from 'react'; // Not needed in Astro components
+import { TripleBorder } from "../TripleBorder/TripleBorder.astro";
+import colors from "../colors.json";
 
-import { Image } from '../Image/Image.astro';
-import { Link } from 'gatsby';
-import { PropTypes } from 'prop-types';
-import React from 'react';
-import { TripleBorder } from '../TripleBorder/TripleBorder.astro';
-import colors from '../colors.json';
-
+// Astro components use frontmatter script for logic
 const setSrcToChildrenImage = (event, src) => {
-  event.currentTarget.firstElementChild.firstElementChild.firstElementChild.src = src;
-
+  event.currentTarget.firstElementChild.firstElementChild.firstElementChild.src =
+    src;
   return;
 };
 
-export const ContentLiftup = ({
+// Defining props directly in the component function in Astro
+const ContentLiftup = ({
   image,
   hoverImageSrc,
-  background = 'main',
+  background = "main",
   name,
   summary,
   path,
   companyPath,
   small,
-  className,
+  className = "", // defaultProps handling
 }) => {
   const classes = [];
 
-  small && classes.push('content-liftup--small');
-
-  return path ? (
-    <div class={`content-liftup ${className} ${classes.join(' ')}`}>
-      <TripleBorder largeMargin>
-        <Link
-          to={path}
-          onMouseOver={e => {
-            setSrcToChildrenImage(e, hoverImageSrc ? hoverImageSrc : image.src);
-          }}
-          onMouseOut={e => {
-            setSrcToChildrenImage(e, image.src);
-          }}
-        >
-          <Image
-            {...image}
-            class="content-liftup__image image--square-big"
-            overlay={colors[background]}
-          />
-        </Link>
-      </TripleBorder>
-
-      <p class="content-liftup__name">{name}</p>
-
-      <p class="content-liftup__summary">{summary}</p>
-    </div>
-  ) : (
+  small && classes.push("content-liftup--small");
+  return (
     <>
-      {companyPath ? (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href={companyPath}
-          class={`content-liftup ${className} ${classes.join(
-            ' '
-          )} no-hover`}
-        >
-          <Image
-            {...image}
-            contain
-            squareBig
-            class="content-liftup__image"
-          />
+      <style global>@import "../../styles/ContentLiftup.scss";</style>
 
-          {name && <p class="content-liftup__name">{name}</p>}
-
-          {summary && <p class="content-liftup__summary">{summary}</p>}
-        </a>
-      ) : (
-        <div
-          class={`content-liftup ${className} ${classes.join(
-            ' '
-          )} no-hover`}
-        >
-          <Image
-            {...image}
-            contain
-            class="content-liftup__image image--square-big"
-          />
-
-          {name && <p class="content-liftup__name">{name}</p>}
-
-          {summary && <p class="content-liftup__summary">{summary}</p>}
+      {path ? (
+        <div class={`content-liftup ${className} ${classes.join(" ")}`}>
+          <TripleBorder largeMargin>
+            <a
+              href={path}
+              onMouseOver={(e) => {
+                setSrcToChildrenImage(
+                  e,
+                  hoverImageSrc ? hoverImageSrc : image.src
+                );
+              }}
+              onMouseOut={(e) => {
+                setSrcToChildrenImage(e, image.src);
+              }}
+            >
+              <Image
+                {...image}
+                class="content-liftup__image image--square-big"
+                overlay={colors[background]}
+              />
+            </a>
+          </TripleBorder>
+          <p class="content-liftup__name">{name}</p>
+          <p class="content-liftup__summary">{summary}</p>
         </div>
+      ) : (
+        <>
+          {companyPath ? (
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={companyPath}
+              class={`content-liftup ${className} ${classes.join(" ")} no-hover`}
+            >
+              <Image
+                {...image}
+                contain
+                squareBig
+                class="content-liftup__image"
+              />
+              {name && <p class="content-liftup__name">{name}</p>}
+              {summary && <p class="content-liftup__summary">{summary}</p>}
+            </a>
+          ) : (
+            <div
+              class={`content-liftup ${className} ${classes.join(" ")} no-hover`}
+            >
+              <Image
+                {...image}
+                contain
+                class="content-liftup__image image--square-big"
+              />
+              {name && <p class="content-liftup__name">{name}</p>}
+              {summary && <p class="content-liftup__summary">{summary}</p>}
+            </div>
+          )}
+        </>
       )}
     </>
   );
 };
+---
 
-ContentLiftup.defaultProps = {
-  className: '',
-  published: '',
-  path: '',
-  companyPath: '',
-};
-
-ContentLiftup.propTypes = {
-  className: PropTypes.string,
-  image: PropTypes.shape({
-    alt: PropTypes.string.isRequired,
-    src: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
-  }),
-  hoverImageSrc: PropTypes.string,
-  name: PropTypes.string,
-  summary: PropTypes.string,
-  path: PropTypes.string,
-  companyPath: PropTypes.string,
-  small: PropTypes.bool,
-};
+// Use the component with props as you would in a React environment
+<ContentLiftup
+  image={/* image object */}
+  name="Example Name"
+  summary="Example Summary"
+  path="/example-path"
+/>

@@ -1,24 +1,43 @@
----
-// Define component props and scripts here
----
-import { shallow } from 'enzyme';
-import React from 'react';
+// Import necessary testing libraries
+import { expect } from 'vitest';
+import { render } from '@testing-library/astro';
+import '@testing-library/jest-dom';
 
-import { Banner } from './Banner';
+// Import the Astro component
+// Adjust the import path as necessary to point to your Banner.astro component
+import Banner from '../components/Banner.astro';
 
 describe('Banner', () => {
-  let banner;
+  it('Renders', async () => {
+    const { findByText } = render(Banner, {
+      // Pass props directly as the second argument to `render`
+      props: { image: '/test/path', text: ['Test message'] },
+    });
 
-  const props = {
-    image: '/test/path',
-    text: ['Test message'],
-  };
-
-  beforeEach(() => {
-    banner = shallow(<Banner {...props} />);
+    // Use findByText to assert that the text is rendered
+    const messageElement = await findByText('Test message');
+    expect(messageElement).toBeInTheDocument();
   });
+});
 
-  it('Renders', () => {
-    expect(banner.find('.banner').exists()).toBe(true);
+// Import necessary testing libraries
+import { expect } from 'vitest';
+import { render } from '@testing-library/astro';
+import '@testing-library/jest-dom';
+
+// Import the Astro component
+// Adjust the import path as necessary to point to your Banner.astro component
+import Banner from '../components/Banner.astro';
+
+describe('Banner', () => {
+  it('Renders', async () => {
+    const { findByText } = render(Banner, {
+      // Pass props directly as the second argument to `render`
+      props: { image: '/test/path', text: ['Test message'] },
+    });
+
+    // Use findByText to assert that the text is rendered
+    const messageElement = await findByText('Test message');
+    expect(messageElement).toBeInTheDocument();
   });
 });

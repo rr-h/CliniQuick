@@ -1,6 +1,6 @@
 ---
 // Import React for using JSX syntax
-import React from 'react';
+import React from "react";
 
 // Define the Banner component
 // PropType validations are not natively supported in Astro, hence commented out
@@ -12,14 +12,12 @@ export interface BannerProps {
   [propName: string]: any; // For additional props spread
 }
 
-const Banner = ({ className = '', backgroundColor, ...props }: BannerProps) => {
+const Banner = ({ className = "", backgroundColor, ...props }: BannerProps) => {
   const background = backgroundColor
     ? { backgroundColor: backgroundColor }
     : null;
 
-  return (
-    <div class={`banner ${className}`} style={background} {...props} />
-  );
+  return <div class={`banner ${className}`} style={background} {...props} />;
 };
 
 // Default props and PropType validations would be managed outside of the Astro component if necessary
@@ -32,10 +30,22 @@ const Banner = ({ className = '', backgroundColor, ...props }: BannerProps) => {
 // };
 ---
 
+--- // Define component props and scripts here // Assuming this is the structure
+of your Banner.astro component const {(image, text)} = Astro.props; ---
+<div class="banner" style={{ backgroundImage: `url(${image})` }}>
+  {text.map((message, index) => <p key={index}>{message}</p>)}
+</div>
+
 <!-- Global style import, adjust the path as necessary for your project structure -->
 <style global>
-@import "../../styles/Banner.scss";
+  @import "../../styles/Banner.scss";
 </style>
 
 <!-- Render the Banner component using React-like JSX syntax -->
 <Banner client:load />
+
+--- // Define component props and scripts here // Assuming this is the structure
+of your Banner.astro component const {(image, text)} = Astro.props; ---
+<div class="banner" style={{ backgroundImage: `url(${image})` }}>
+  {text.map((message, index) => <p key={index}>{message}</p>)}
+</div>

@@ -1,38 +1,38 @@
 ---
-// Define component props and scripts here
+// Import the Element component
+import Element from "../Element/Element.astro";
+
+// Define the component's props directly in the Astro frontmatter
+// React and PropTypes imports are no longer needed in Astro, but are kept commented for review
+// import React from 'react';
+// import PropTypes from 'prop-types';
 ---
-<style global>
-@import "../../styles/EditLink.scss";
-</style>
 
-import Element from '../Element/Element.astro';
-import PropTypes from 'prop-types';
-import React from 'react';
+<!-- Global styles, adjust the path as necessary -->
+<link rel="stylesheet" href="/styles/EditLink.scss" />
 
-const EditLink = ({ part, letter, lang }) => {
-  const link = lang === 'en' ? `part${part}` : `osa${part}`;
+<Element flex class="container spacing" centered>
+  <a
+    class="edit-link"
+    target="__BLANK"
+    href={`https://github.com/fullstackopen-2019/fullstackopen-2019.github.io/edit/source/src/content/${Astro.props.part}/${Astro.props.lang}/osa${Astro.props.part}${Astro.props.letter}.md`}
+  >
+    <span>
+      {
+        Astro.props.lang === "en"
+          ? "Propose changes to material"
+          : "Ehdota muutosta materiaalin sisältöön"
+      }
+    </span>
+  </a>
+</Element>
 
-  return (
-    <Element flex class="container spacing" centered>
-      <a
-        class="edit-link"
-        target="__BLANK"
-        href={`https://github.com/fullstackopen-2019/fullstackopen-2019.github.io/edit/source/src/content/${part}/${lang}/${link}${letter}.md`}
-      >
-        <span>
-          {lang === 'en'
-            ? 'Propose changes to material'
-            : 'Ehdota muutosta materiaalin sisältöön'}
-        </span>
-      </a>
-    </Element>
-  );
-};
-
+<!--
+PropType validations are not used in Astro components directly,
+but you can implement prop validation in a script tag if needed.
 EditLink.propTypes = {
   part: PropTypes.number.isRequired,
   letter: PropTypes.string.isRequired,
   lang: PropTypes.string.isRequired,
 };
-
-export default EditLink;
+-->

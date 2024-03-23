@@ -1,83 +1,79 @@
 ---
-// Define component props and scripts here
----
-<style global>
-@import "../../styles/BodyText.scss";
-</style>
+// Astro component script
+// Import statements for modules. Uncomment if needed.
+// import Parser from 'html-react-parser';
+// import PropTypes from 'prop-types';
 
-import Parser from 'html-react-parser';
-import PropTypes from 'prop-types';
-import React from 'react';
+// Define the component's props
+interface BodyTextProps {
+  text?: string | string[];
+  className?: string;
+  heading?: { title: string; level: string };
+  headingFontSize?: string;
+  bold?: boolean;
+  centered?: boolean;
+  noPadding?: boolean;
+  headingFont?: boolean;
+}
 
-export const BodyText = ({
-  text,
-  className,
-  heading,
-  headingFontSize,
-  bold,
-  centered,
-  noPadding,
-  headingFont,
-  ...props
-}) => {
-  const classes = [];
-
-  centered && classes.push('centered');
-  bold && classes.push('bold');
-  noPadding && classes.push('body-text--no-padding');
-  headingFont && classes.push('heading-font');
-
-  const getHeading = () => {
-    if (heading) {
-      const Heading = heading.level;
-      return (
-        <Heading
-          class="body-text__title"
-          style={headingFontSize ? { fontSize: headingFontSize } : {}}
-        >
-          {heading.title}
-        </Heading>
-      );
-    } else {
-      return null;
-    }
-  };
-
-  return (
-    <div class={`body-text ${className}`} {...props}>
-      {heading.title && getHeading()}
-      {text && typeof text === 'string' ? (
-        <p class={`body-text__content ${classes.join(' ')}`}>{text}</p>
-      ) : (
-        text &&
-        text.map(p => (
-          <div key={p} class={`body-text__content ${classes.join(' ')}`}>
-            {Parser(p)}
-          </div>
-        ))
-      )}
-    </div>
-  );
-};
-
-BodyText.defaultProps = {
-  heading: { title: '', level: 'h2' },
-  text: '',
-  className: '',
+const defaultProps: BodyTextProps = {
+  heading: { title: "", level: "h2" },
+  text: "",
+  className: "",
   centered: false,
   bold: false,
   noPadding: false,
 };
 
-BodyText.propTypes = {
-  heading: PropTypes.shape({
-    text: PropTypes.string,
-    level: PropTypes.string,
-  }),
-  headingFontSize: PropTypes.string,
-  text: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-  className: PropTypes.string,
-  centered: PropTypes.bool,
-  bold: PropTypes.bool,
-  noPadding: PropTypes.bool,
+// Component logic
+const getClasses = ({
+  centered,
+  bold,
+  noPadding,
+  headingFont,
+}: BodyTextProps) => {
+  const classes = [];
+  if (centered) classes.push("centered");
+  if (bold) classes.push("bold");
+  if (noPadding) classes.push("body-text--no-padding");
+  if (headingFont) classes.push("heading-font");
+  return classes.join(" ");
 };
+
+const getHeading = ({ heading, headingFontSize }: BodyTextProps) => {
+  if (heading && heading.title) {
+    const Heading = heading.level;
+    return (
+      <Heading class="body-text__title" style={{ fontSize: headingFontSize }}>
+        {heading.title}
+      </Heading>
+    );
+  }
+  return null;
+};
+
+// Astro components use the `.astro` extension and can embed other components or raw HTML.
+---
+
+<style global>
+  @import "../../styles/BodyText.scss";
+</style>
+
+<div class={`body-text ${Astro.props.className ?? ""}`} {...Astro.props}>
+  {Astro.props.heading?.title && getHeading(Astro.props)}
+  {
+    Astro.props.text && typeof Astro.props.text === "string" ? (
+      <p class={`body-text__content ${getClasses(Astro.props)}`}>
+        {Astro.props.text}
+      </p>
+    ) : (
+      Astro.props.text &&
+      Astro.props.text.map((p: string) => (
+        <div key={p} class={`body-text__content ${getClasses(Astro.props)}`}>
+          {/* Parser(p) */}
+          {p} {/* Use Parser here if needed and uncomment import */}
+        </div>
+      ))
+    )
+  }
+</div>
