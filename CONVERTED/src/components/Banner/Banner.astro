@@ -1,7 +1,7 @@
 ---
 // src/components/Banner.astro
 import { glob } from 'astro';
-import './Banner.scss'; // Import your SCSS file
+import '../../styles/Banner.scss'; // Import your SCSS file
 
 // Define props (With TypeScript)
 interface BannerProps {
@@ -19,7 +19,7 @@ const Banner = async ({ className = "", backgroundColor, partNumber, lang = 'en'
   const background = backgroundColor ? { backgroundColor: backgroundColor } : null;
 
   return (
-    <div className={`banner ${className}`} style={background}>
+    <div class={`banner ${className}`} style={background}>
       <img src={partContent.mainImage} alt="Main Part Image" /> 
       <p>{partContent.intro}</p> 
     </div>

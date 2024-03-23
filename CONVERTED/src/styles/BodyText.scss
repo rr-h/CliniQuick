@@ -1,4 +1,6 @@
 @import './common.scss';
+@import './mixins.scss';
+@import './variables.scss';
 
 .body-text:not(:last-of-type) {
   margin-bottom: 2.5 * $vertical-spacing;
@@ -25,6 +27,14 @@
 
 .body-text--no-padding {
   padding: 0 !important;
+}
+
+.body-text__content {
+  font-size: 2rem;
+
+  @include from($tablet) {
+    font-size: 3rem; 
+  }
 }
 
 .companies__main-title {

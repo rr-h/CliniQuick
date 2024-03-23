@@ -1,6 +1,6 @@
 ---
 // Astro component frontmatter script
-import Header from './Header/Header.astro';
+import Header from '../components/Header/Header.astro';
 // Although Astro does not directly use PropTypes, you can use TypeScript for type checking if necessary.
 // Keeping the unused import commented for review as requested.
 // import PropTypes from 'prop-types';
@@ -19,13 +19,14 @@ const siteLanguage = getSiteLanguage(Astro.request.url.pathname);
 <style is:global>
 @import "../styles/layout.css";
 @import "../styles/index.scss";
-@import "../styles/global.scss"
+@import "../styles/global.scss";
 </style>
 
 <!-- Layout Component -->
 <div class="main-wrapper">
   <Header lang={siteLanguage} />
-  
+  <script src="/src/theme.js" type="module"></script>
+
   <!-- Slot for child components -->
   <slot />
 </div>

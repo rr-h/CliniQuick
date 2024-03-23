@@ -1,23 +1,31 @@
-@use 'variables';
-@use 'mixins';
+@use 'variables'; // Import your variables file
+@use 'mixins'; // Import your mixins file
 
-:root {
-  --light-background: variables.$white;
-  --light-text: variables.$black;
-  --dark-background: variables.$black;
-  --dark-text: variables.$white;
+// Default light mode styles
+body {
+  background: var(--light-background); 
+  color: var(--light-text); 
 }
 
+// Other general styles 
+// ... add any other global styles as needed
+
+// Dark mode styles (using conditional classes)
+.dark-mode-background {
+  background: var(--dark-background); 
+}
+
+.dark-mode-text { 
+  color: var(--dark-text);
+}
+
+// Media query for dark mode preference
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: var(--dark-background);
-    --text: var(--dark-text);
-  }
+  .dark-mode .dm-background { 
+    background: var(--dark-background); 
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    --background: var(--light-background);
-    --text: var(--light-text);
-  }
+.dark-mode .dm-text { 
+    color: var(--dark-text); 
+}
 }
