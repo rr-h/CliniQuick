@@ -32,7 +32,8 @@ const ContentLiftup = ({
   small && classes.push("content-liftup--small");
   return (
     <>
-      <style global>@import "../../styles/ContentLiftup.scss";</style>
+ <style is:global>
+ @import "../../styles/ContentLiftup.scss";</style>
 
       {path ? (
         <div class={`content-liftup ${className} ${classes.join(" ")}`}>

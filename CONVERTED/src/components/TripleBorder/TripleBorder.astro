@@ -23,7 +23,7 @@ const defaultProps: Partial<TripleBorderProps> = {
 const props = Astro.props as TripleBorderProps & typeof defaultProps;
 ---
 
-<style global>
+<style is:global>
 @import "../../styles/TripleBorder.scss";
 </style>
 

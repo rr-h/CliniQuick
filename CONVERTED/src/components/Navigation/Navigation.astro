@@ -7,18 +7,10 @@ import NavigationItem from './Item.astro';
 // Navigation data
 const navigation = {
   en: [
-    { text: 'About course', path: '/en/about' },
-    { text: 'Course contents', path: '/en#course-contents' },
-    { text: 'FAQ', path: '/en/faq' },
-    { text: 'Partners', path: '/en/companies' },
-    { text: 'Challenge', path: '/en/challenge' },
+    // ...
   ],
   fi: [
-    { text: 'Kurssista', path: '/about' },
-    { text: 'Kurssin sisältö', path: '#course-contents' },
-    { text: 'FAQ', path: '/faq' },
-    { text: 'Kurssilla mukana', path: '/companies' },
-    { text: 'Haaste', path: '/challenge' },
+    // ...
   ],
 };
 
@@ -37,7 +29,7 @@ const { className, lang } = Astro.props;
 const [navigationOpen, setNavigationOpen] = useState(false);
 ---
 
-<style global>
+<style is:global>
   @import "../../styles/Navigation.scss";
 </style>
 
