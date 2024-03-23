@@ -14,7 +14,8 @@
     "reactjs": "^1.0.0"
   },
   "devDependencies": {
-    "prettier-plugin-astro": "^0.13.0"
+    "prettier-plugin-astro": "^0.13.0",
+    "sass": "^1.72.0"
   },
   "description": ""
 }

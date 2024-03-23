@@ -1,78 +1,34 @@
----
-// Astro component script
-// Import statements for modules. Uncomment if needed.
-// import Parser from 'html-react-parser';
-// import PropTypes from 'prop-types';
-
-// Define the component's props
-interface BodyTextProps {
-  text?: string | string[];
-  className?: string;
-  heading?: { title: string; level: string };
-  headingFontSize?: string;
-  bold?: boolean;
-  centered?: boolean;
-  noPadding?: boolean;
-  headingFont?: boolean;
-}
-
-const defaultProps: BodyTextProps = {
-  heading: { title: "", level: "h2" },
-  text: "",
-  className: "",
-  centered: false,
-  bold: false,
-  noPadding: false,
-};
-
-// Component logic
-const getClasses = ({
-  centered,
-  bold,
-  noPadding,
-  headingFont,
-}: BodyTextProps) => {
-  const classes = [];
-  if (centered) classes.push("centered");
-  if (bold) classes.push("bold");
-  if (noPadding) classes.push("body-text--no-padding");
-  if (headingFont) classes.push("heading-font");
-  return classes.join(" ");
-};
-
-const getHeading = ({ heading, headingFontSize }: BodyTextProps) => {
-  if (heading && heading.title) {
-    const Heading = heading.level;
-    return (
-      <Heading class="body-text__title" style={{ fontSize: headingFontSize }}>
-        {heading.title}
-      </Heading>
-    );
-  }
-  return null;
-};
-
----
-
-<style is:global>
-  @import "../../styles/BodyText.scss";
+<style>
+ @import "../../styles/BodyText.scss";
 </style>
 
-<div class={`body-text ${Astro.props.className ?? ""}`} {...Astro.props}>
-  {Astro.props.heading?.title && getHeading(Astro.props)}
-  {
-    Astro.props.text && typeof Astro.props.text === "string" ? (
-      <p class={`body-text__content ${getClasses(Astro.props)}`}>
-        {Astro.props.text}
-      </p>
-    ) : (
-      Astro.props.text &&
-      Astro.props.text.map((p: string) => (
-        <div key={p} class={`body-text__content ${getClasses(Astro.props)}`}>
-          {/* Parser(p) */}
-          {p} {/* Use Parser here if needed and uncomment import */}
-        </div>
-      ))
-    )
-  }
+// Simplifies class names concatenation using a function
+const getClasses = (props) => [
+ props.centered ? "centered" : "",
+ props.bold ? "bold" : "",
+ props.noPadding ? "no-padding" : "",
+ props.headingFont ? "heading-font" : "",
+].filter(Boolean).join(" ");
+
+<div class={`body-text ${Astro.props.className ?? ""}`}>
+ {
+  Astro.props.heading?.title && (
+   <div class={`body-text__title ${Astro.props.heading.level}`} style={{ fontSize: Astro.props.headingFontSize }}>
+    {Astro.props.heading.title}
+   </div>
+  )
+ }
+ {
+  typeof Astro.props.text === 'string' ? (
+   <p class={`body-text__content ${getClasses(Astro.props)}`}>
+    {Astro.props.text}
+   </p>
+  ) : (
+   Astro.props.text?.map((text, index) => (
+    <div key={index} class={`body-text__content ${getClasses(Astro.props)}`}>
+     {text}
+    </div>
+   ))
+  )
+ }
 </div>
