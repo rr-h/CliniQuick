@@ -1,8 +1,6 @@
-// astro.config.mjs
 import { defineConfig } from 'astro/config';
-import markdown from '@astrojs/markdown-remark';
-import svelte from '@astrojs/svelte';
+import svelte from '@astrojs/svelte'; // Import your integrations
 
 export default defineConfig({
-  integrations: [markdown(), svelte()],
+  integrations: [svelte()] // Add your integrations
 });
