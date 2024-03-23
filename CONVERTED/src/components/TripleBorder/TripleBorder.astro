@@ -1,47 +1,17 @@
 ---
 // Define component props and scripts here
----
-<style global>
-@import "../../styles/TripleBorder.scss";
-</style>
+// import PropTypes from 'prop-types'; // Astro does not use PropTypes
+// React import is not needed since we are using Astro's syntax
+interface TripleBorderProps {
+  children: Astro.JSX.Element | Astro.JSX.Element[];
+  largeMargin?: boolean;
+  className?: string;
+  childrenClassName?: string;
+  backgroundColor?: string;
+  hover?: boolean;
+}
 
-import PropTypes from 'prop-types';
-import React from 'react';
-
-export const TripleBorder = ({
-  children,
-  largeMargin,
-  className,
-  childrenClassName,
-  backgroundColor,
-  props,
-  hover,
-}) => (
-  <div
-    class={`triple-border ${className} ${
-      largeMargin ? 'triple-border--large-margin' : ''
-    }`}
-    style={
-      hover
-        ? {
-            backgroundColor: 'black',
-            color: 'white',
-            padding: largeMargin ? '' : '0.2em',
-          }
-        : { padding: largeMargin ? '' : '0.2em' }
-    }
-    {...props}
-  >
-    <div
-      class={`triple-border__container ${childrenClassName}`}
-      style={{ backgroundColor: backgroundColor, zIndex: 10 }}
-    >
-      {children}
-    </div>
-  </div>
-);
-
-TripleBorder.defaultProps = {
+const defaultProps: Partial<TripleBorderProps> = {
   className: '',
   childrenClassName: '',
   largeMargin: false,
@@ -49,6 +19,32 @@ TripleBorder.defaultProps = {
   backgroundColor: 'transparent',
 };
 
+// Props are defined using Astro's define:props directive
+const props = Astro.props as TripleBorderProps & typeof defaultProps;
+---
+
+<style global>
+@import "../../styles/TripleBorder.scss";
+</style>
+
+<div
+  class={`triple-border ${props.className} ${props.largeMargin ? 'triple-border--large-margin' : ''}`}
+  style={props.hover ? {
+    backgroundColor: 'black',
+    color: 'white',
+    padding: props.largeMargin ? '' : '0.2em',
+  } : { padding: props.largeMargin ? '' : '0.2em' }}
+>
+  <div
+    class={`triple-border__container ${props.childrenClassName}`}
+    style={{ backgroundColor: props.backgroundColor, zIndex: 10 }}
+  >
+    {props.children}
+  </div>
+</div>
+
+<!--
+// PropTypes are not supported in Astro as it is primarily used during development in React
 TripleBorder.propTypes = {
   children: PropTypes.node.isRequired,
   className: PropTypes.string,
@@ -57,3 +53,4 @@ TripleBorder.propTypes = {
   backgroundColor: PropTypes.string,
   hover: PropTypes.bool,
 };
+-->

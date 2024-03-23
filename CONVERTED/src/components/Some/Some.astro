@@ -1,26 +1,28 @@
 ---
-// Define component props and scripts here
----
-<style global>
-@import "../../styles/Some.scss";
-</style>
+// Astro component frontmatter script
+import {Astro} from 'astro';
 
-import React from 'react';
-
+// Define our URLs
 const urls = {
   github: 'https://github.com/fullstackopen-2019/fullstackopen-2019.github.io',
   twitter: 'https://twitter.com/moocfi',
   facebook: 'https://www.facebook.com/Moocfi',
-  youtube:
-    'https://www.youtube.com/watch?v=BZexOyQZMMc&list=PLumQiZ25uijis31zaRL7rhzLalSwLqUtm',
+  youtube: 'https://www.youtube.com/watch?v=BZexOyQZMMc&list=PLumQiZ25uijis31zaRL7rhzLalSwLqUtm',
 };
 
-export const Some = ({ iconName }) => (
-  <a target="__blank" href={urls[iconName]} class="some-logo__link">
-    <img
-      class="some-logo__image"
-      alt={iconName}
-      src={require(`../../images/some-logo__${iconName}.svg`)}
-    />
-  </a>
-);
+// This function helps to dynamically import images based on `iconName`
+// Note: Astro handles static files differently; adjust paths as needed
+const getImageSrc = (iconName) => new URL(`../../images/some-logo__${iconName}.svg`, import.meta.url).href;
+---
+
+<!-- Style Import: For global styles, consider placing them in the src/styles folder and importing them in astro.config.mjs -->
+<link rel="stylesheet" href={Astro.resolve('../../styles/Some.scss')} />
+
+<!-- Component Template -->
+<a target="__blank" href={urls[Astro.props.iconName]} class="some-logo__link">
+  <img
+    class="some-logo__image"
+    alt={Astro.props.iconName}
+    src={getImageSrc(Astro.props.iconName)}
+  />
+</a>

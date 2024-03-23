@@ -1,31 +1,51 @@
 ---
-// Define component props and scripts here
----
-<style global>
-@import "../../styles/Element.scss";
-</style>
+// Import the necessary styles globally. In Astro, global styles can be imported directly in the frontmatter script.
+import "../../styles/Element.scss";
 
-import PropTypes from 'prop-types';
-import React from 'react';
+// Define props for the Astro component. Astro supports TypeScript for props definition directly.
+type ElementProps = {
+  Tag?: string;
+  className?: string;
+  flex?: boolean;
+  dirColumn?: boolean;
+  spaceAround?: boolean;
+  spaceBetween?: boolean;
+  centered?: boolean;
+  autoMargin?: boolean;
+  autoBottomMargin?: boolean;
+  horizontalHalf?: boolean;
+  flexStart?: boolean;
+  noWrap?: boolean;
+  centeredInDesktop?: boolean;
+  relative?: boolean;
+  children?: any;
+};
 
-const Element = ({
-  Tag,
-  children,
-  className,
-  flex,
-  dirColumn,
-  spaceAround,
-  spaceBetween,
-  centered,
-  autoMargin,
-  autoBottomMargin,
-  horizontalHalf,
-  flexStart,
-  noWrap,
-  centeredInDesktop,
-  relative,
-  ...props,
-}) => {
+const defaultProps = {
+  Tag: 'div',
+  className: '',
+};
+
+// Define your Astro component using the frontmatter script.
+const Element = (props: ElementProps & typeof defaultProps) => {
+  const {
+    Tag = 'div',
+    children,
+    className,
+    flex,
+    dirColumn,
+    spaceAround,
+    spaceBetween,
+    centered,
+    autoMargin,
+    autoBottomMargin,
+    horizontalHalf,
+    flexStart,
+    noWrap,
+    centeredInDesktop,
+    relative,
+  } = { ...defaultProps, ...props };
+
   const classes = [];
 
   flex && classes.push('element--flex');
@@ -48,27 +68,10 @@ const Element = ({
   );
 };
 
-Element.defaultProps = {
-  className: '',
-  Tag: 'div',
-};
-
-Element.propTypes = {
-  Tag: PropTypes.string,
-  children: PropTypes.node,
-  className: PropTypes.string,
-  flex: PropTypes.bool,
-  spaceAround: PropTypes.bool,
-  spaceBetween: PropTypes.bool,
-  dirColumn: PropTypes.bool,
-  centered: PropTypes.bool,
-  horizontalHalf: PropTypes.bool,
-  autoMargin: PropTypes.bool,
-  autoBottomMargin: PropTypes.bool,
-  flexStart: PropTypes.bool,
-  noWrap: PropTypes.bool,
-  centeredInDesktop: PropTypes.bool,
-  relative: PropTypes.bool,
-};
-
 export default Element;
+---
+
+// Here, we use the component with JSX-like syntax in the template part of the Astro file.
+<Element Tag="section" className="custom-element" flex centered>
+  {/* Your content here */}
+</Element>

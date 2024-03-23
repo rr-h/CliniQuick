@@ -1,17 +1,11 @@
 ---
-// Define component props and scripts here
----
-<style global>
-@import "../../styles/Navigation.scss";
-</style>
-
-import React, { Component } from 'react';
-
+// Astro component setup
+import { useState } from 'react';
 import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher.astro';
-import { NavigationItem } from './Item.astro';
-import PropTypes from 'prop-types';
+import NavigationItem from './Item.astro';
 
-export const navigation = {
+// Navigation data
+const navigation = {
   en: [
     { text: 'About course', path: '/en/about' },
     { text: 'Course contents', path: '/en#course-contents' },
@@ -28,55 +22,53 @@ export const navigation = {
   ],
 };
 
-const handleCloseMenu = () =>
+// Functions for handling navigation state changes
+// These need to be client-side scripts since they manipulate the DOM
+const handleCloseMenu = `
   document.body.classList.remove('is-open--navigation');
-
-const handleHamburgerClick = () => {
+`;
+const handleHamburgerClick = `
   document.body.classList.toggle('is-open--navigation');
-};
+`;
 
-class Navigation extends Component {
-  constructor(props) {
-    super(props);
-    let state = reactive({
-      navigationOpen: false,
-    };
-  }
-  render() {
-    const { className } = this.props;
-    return (
-      <div class={`navigation__wrapper ${className}`}>
-        <button
-          aria-label="Navigation menu"
-          aria-expanded={this.state.navigationOpen}
-          onClick={() => {
-            state = { ...state, ...$1 };
-            handleHamburgerClick();
-          }}
-          class="navigation__toggle"
-        >
-          <div class="navigation__toggle-icon" />
-        </button>
-        <nav>
-          <ul class="navigation">
-            {navigation[this.props.lang].map(i => (
-              <NavigationItem key={i.path} {...i} onClick={handleCloseMenu} />
-            ))}
+// Pass props to the component using Astro.props
+const { className, lang } = Astro.props;
 
-            <LanguageSwitcher lang={this.props.lang} />
-          </ul>
-        </nav>
-      </div>
-    );
-  }
-}
+// Using useState for client-side interactivity in Astro
+const [navigationOpen, setNavigationOpen] = useState(false);
+---
 
-Navigation.propTypes = {
-  className: PropTypes.string,
-};
+<style global>
+@import "../../styles/Navigation.scss";
+</style>
 
-Navigation.defaultProps = {
-  className: '',
-};
+<div class={`navigation__wrapper ${className}`}>
+  <button
+    aria-label="Navigation menu"
+    aria-expanded={navigationOpen}
+    onClick={() => setNavigationOpen(!navigationOpen)}
+    class="navigation__toggle"
+  >
+    <div class="navigation__toggle-icon" />
+  </button>
+  <nav>
+    <ul class="navigation">
+      {/* Map through navigation items based on the lang prop */}
+      {navigation[lang].map((i) => (
+        <NavigationItem key={i.path} {...i} onClick={Astro.client.hydrate(handleCloseMenu)} />
+      ))}
+      
+      <LanguageSwitcher lang={lang} />
+    </ul>
+  </nav>
+</div>
 
-export default Navigation;
+<script>
+  // Including client-side JavaScript for handling navigation state
+  Astro.client.hydrate(() => {
+    const handleCloseMenu = ${handleCloseMenu};
+    const handleHamburgerClick = ${handleHamburgerClick};
+    
+    // Add any other client-side interactions here
+  });
+</script>

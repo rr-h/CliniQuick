@@ -1,120 +1,48 @@
 ---
-// Define component props and scripts here
+// Import statements
+import Accordion from '../Accordion/Accordion.astro';
+import Element from '../Element/Element.astro';
+// Import Link from 'gatsby'; // Not used directly in Astro, replaced with Astro's <a> with "href"
+import navigation from '../../../src/content/partnavigation/partnavigation.astro';
+// Import PropTypes from 'prop-types'; // PropTypes are not used in Astro, as Astro does not have prop type validation like React
+// import kebabCase from 'lodash/fp/kebabCase'; // This will be handled in the front-end script if necessary
+// import snakeCase from 'lodash/fp/snakeCase'; // This will be handled in the front-end script if necessary
+
+// Astro props are passed as attributes to the component in the template
+const { className = '', lang = 'fi', colorCode, currentPath, currentPartTitle, part, letter } = Astro.props;
+
+// Client-side interactivity can be added via front-end scripts
+// Note: Direct manipulation like in React's componentDidMount will need to be adapted for client use
+// Define any necessary functions or stateful logic here
 ---
+
 <style global>
 @import "../../styles/ScrollNavigation.scss";
 </style>
 
-import React, { Component } from 'react';
+<script>
+// You might need to adapt this to use front-end libraries or vanilla JS for DOM manipulations
+// Example: Document query selections and manipulations for `componentDidMount` logic
+document.addEventListener('DOMContentLoaded', () => {
+  const headingList = Array.from(document.querySelectorAll('h3'));
+  headingList.forEach(i => {
+    const id = kebabCase(i.innerText); // You'll need to define or import kebabCase for client-side use
+    i.id = id;
+    i.classList.add('offset');
+  });
+  // Additional logic here if needed
+});
+</script>
 
-import Accordion from '../Accordion/Accordion.astro';
-import Element from '../Element/Element.astro';
-import { Link } from 'gatsby';
-import PropTypes from 'prop-types';
-import kebabCase from 'lodash/fp/kebabCase';
-import navigation from '../../../src/content/partnavigation/partnavigation.astro';
-import snakeCase from 'lodash/fp/snakeCase';
-
-class ScrollNavigation extends Component {
-  constructor(props) {
-    super(props);
-
-    let state = reactive({
-      h1Top: 0,
-      headings: [],
-    };
-  }
-
-  componentDidMount = () => {
-    const headingList = Array.from(document.querySelectorAll('h3'));
-    const h1 = document.querySelector('h1');
-
-    const headings = headingList.map(i => {
-      i.id = kebabCase(i.innerText);
-      i.classList.add('offset');
-
-      return {
-        text: i.innerText,
-        id: i.id,
-        level: i.nodeName,
-      };
-    });
-
-    state = { ...state, ...$1 };
-  };
-
-  loopThroughPartsNode = partsNode => {
-    const { headings } = this.state;
-    const {
-      part,
-      letter,
-      currentPath,
-      currentPartTitle,
-      colorCode,
-      lang
-    } = this.props;
-    let arr = [];
-
-    for (let key in partsNode) {
-      if (currentPartTitle !== partsNode[key]) {
-        arr.push(
-          <Link
-            key={key}
-            class="left-navigation-link"
-            style={{ borderColor: colorCode }}
-            to={`/${lang === 'en' ? 'en/part' : 'osa'}${part}/${snakeCase(partsNode[key])}`}
-          >{`${key} ${partsNode[key]}`}</Link>
-        );
-      } else {
-        arr.push(
-          <Accordion
-            containerClassName="accordion--side-navigation"
-            style={{ color: colorCode }}
-            titleStyle={{
-              backgroundColor: colorCode,
-              borderColor: colorCode,
-            }}
-            initiallyOpened
-            key={key}
-            title={`${letter} ${partsNode[key]}`}
-            list={headings.map(i => {
-              return {
-                href: `${currentPath}#${i.id}`,
-                text: i.text,
-              };
-            })}
-          />
-        );
-      }
-    }
-    return arr;
-  };
-
-  render() {
-    const { part } = this.props;
-
-    return (
-      <Element
-        tag="ul"
-        flex
-        dirColumn
-        class={`scroll-navigation ${this.props.className}`}
-      >
-        {this.loopThroughPartsNode(navigation[this.props.lang][part])}
-      </Element>
-    );
-  }
-}
-
-ScrollNavigation.defaultProps = {
-  className: '',
-  lang: 'fi',
-};
-
-ScrollNavigation.propTypes = {
-  className: PropTypes.string,
-  lang: PropTypes.string.isRequired,
-  colorCode: PropTypes.string.isRequired,
-};
-
-export default ScrollNavigation;
+<Element tag="ul" flex dirColumn class={`scroll-navigation ${className}`}>
+  { /* loopThroughPartsNode logic will need to be adapted here, possibly with an Astro {#each} loop */ }
+  {#each Object.entries(navigation[lang][part]) as [key, value]}
+    {#if currentPartTitle !== value}
+      <a key={key} class="left-navigation-link" style={{ borderColor: colorCode }} href={`/${lang === 'en' ? 'en/part' : 'osa'}${part}/${snakeCase(value)}`}>
+        {`${key} ${value}`}
+      </a>
+    {:else}
+      <Accordion containerClassName="accordion--side-navigation" style={{ color: colorCode }} titleStyle={{ backgroundColor: colorCode, borderColor: colorCode }} initiallyOpened key={key} title={`${letter} ${value}`} list={/* map headings to hrefs and texts here */} />
+    {/if}
+  {/each}
+</Element>

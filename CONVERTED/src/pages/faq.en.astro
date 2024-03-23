@@ -1,51 +1,42 @@
 ---
-// Define component props and scripts here
----
+// Astro component frontmatter script
 import Accordion from '../components/Accordion/Accordion.astro';
 import Element from '../components/Element/Element.astro';
 import Footer from '../components/Footer/Footer.astro';
-import Layout from '../components/layout.astro';
-import React from 'react';
-import SEO from '../components/seo.astro';
+import Layout from '../components/Layout/Layout.astro'; // Ensure correct path
+import SEO from '../components/SEO/SEO.astro';
 import { SubHeader } from '../components/SubHeader/SubHeader.astro';
-import content from 'faq.json';
-import mainSEOtags from '../content/seo/mainSEOtags.astro';
+// Assuming faq.json is placed appropriately in the project structure. Adjust the path as necessary.
+import content from '../content/faq.json';
+import mainSEOtags from '../content/seo/mainSEOtags.json'; // Adjust if mainSEOtags is actually JSON
 
-const FAQ = () => (
-  <Layout>
-    <SEO
-      lang="en"
-      title="FAQ | Full Stack Open 2019"
-      description="Frequently asked questions"
-      keywords={[
-        ...mainSEOtags,
-        'faq',
-        'frequently asked questions',
-        'ukk',
-        'usein kysytyt kysymykset',
-      ]}
+// React import is commented out as it's not directly used in Astro components.
+// import React from 'react';
+---
+
+<Layout>
+  <SEO
+    lang="en"
+    title="FAQ | Full Stack Open 2019"
+    description="Frequently asked questions"
+    keywords={[...mainSEOtags, 'faq', 'frequently asked questions', 'ukk', 'usein kysytyt kysymykset']}
+  />
+
+  <Element class="container link spacing spacing--after">
+    <SubHeader
+      class="spacing--after-small"
+      headingLevel="h1"
+      text="Frequently asked questions"
     />
-
-    <Element class="container link spacing spacing--after">
-      <SubHeader
-        class="spacing--after-small"
-        headingLevel="h1"
-        text="Frequently asked questions"
+    {content.en.map((item) => (
+      <Accordion
+        track
+        key={item.title}
+        title={item.title}
+        content={item.text}
       />
-      {content.en.map(item => {
-        return (
-          <Accordion
-            track
-            key={item.title}
-            title={item.title}
-            content={item.text}
-          />
-        );
-      })}
-    </Element>
+    ))}
+  </Element>
 
-    <Footer lang="en" />
-  </Layout>
-);
-
-export default FAQ;
+  <Footer lang="en" />
+</Layout>

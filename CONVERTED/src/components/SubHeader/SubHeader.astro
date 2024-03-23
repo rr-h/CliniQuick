@@ -1,40 +1,31 @@
 ---
-// Define component props and scripts here
+// Import statements are commented out since Astro handles styles differently and prop-types are not used directly in Astro.
+// import PropTypes from 'prop-types';
+// React import is not needed because Astro does not use React by default.
+// import React from 'react';
+
+// Define your component's props here. Astro components receive `Astro.props`.
+interface SubHeaderProps {
+  className?: string;
+  headingLevel?: string;
+  headingFontSize?: string;
+  text: string; // text is required
+}
+
+const { className = '', headingLevel = 'h2', headingFontSize, text } = Astro.props as SubHeaderProps;
+
+// Custom logic or functions can be defined here.
+
+// Style import, adjusted for Astro. You need to ensure the path is correct based on your project's structure.
+const styles = Astro.resolve('../../styles/SubHeader.scss');
 ---
+
+<!-- Astro component template starts here -->
+<!-- You can use the `set:html` directive to dynamically set HTML properties -->
 <style global>
-@import "../../styles/SubHeader.scss";
+  @import {styles};
 </style>
 
-import PropTypes from 'prop-types';
-import React from 'react';
-
-export const SubHeader = ({
-  className,
-  headingLevel = 'h2',
-  headingFontSize,
-  text,
-  ...props
-}) => {
-  const Heading = headingLevel;
-
-  return (
-    <Heading
-      class={`sub-header ${className}`}
-      style={headingFontSize ? { fontSize: headingFontSize } : {}}
-      {...props}
-    >
-      {text}
-    </Heading>
-  );
-};
-
-SubHeader.propTypes = {
-  className: PropTypes.string,
-  headingLevel: PropTypes.string,
-  text: PropTypes.string.isRequired,
-  headingFontSize: PropTypes.string,
-};
-
-SubHeader.defaultProps = {
-  className: '',
-};
+<${headingLevel} class={`sub-header ${className}`} style={headingFontSize ? `font-size: ${headingFontSize};` : ''}>
+  {text}
+</${headingLevel}>

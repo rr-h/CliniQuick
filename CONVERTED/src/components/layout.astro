@@ -1,45 +1,30 @@
 ---
-// Define component props and scripts here
+// Astro component frontmatter script
+import Header from './Header/Header.astro';
+// Although Astro does not directly use PropTypes, you can use TypeScript for type checking if necessary.
+// Keeping the unused import commented for review as requested.
+// import PropTypes from 'prop-types';
+
+// Function to determine site language; this assumes static generation.
+// For dynamic language changes, consider client-side scripts.
+const getSiteLanguage = (urlPath) => {
+  return urlPath.indexOf('/en') !== -1 ? 'en' : 'fi';
+};
+
+// Accessing the request URL from Astro global
+const siteLanguage = getSiteLanguage(Astro.request.url.pathname);
 ---
+
+<!-- Global styles -->
 <style global>
 @import "../styles/layout.css";
-</style>
-<style global>
 @import "../styles/index.scss";
 </style>
 
-import React, { Component } from 'react';
-
-import Header from './Header/Header.astro';
-import PropTypes from 'prop-types';
-
-class Layout extends Component {
-  state = {
-    siteLanguage: 'fi',
-  };
-
-  onMount() {
-    const siteLanguage =
-      window.location.pathname.indexOf('/en') !== -1 ? 'en' : 'fi';
-
-    state = { ...state, ...$1 };
-  }
-
-  render() {
-    const { siteLanguage } = this.state;
-
-    return (
-      <div class="main-wrapper">
-        <Header lang={siteLanguage} />
-
-        {this.props.children}
-      </div>
-    );
-  }
-}
-
-Layout.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-export default Layout;
+<!-- Layout Component -->
+<div class="main-wrapper">
+  <Header lang={siteLanguage} />
+  
+  <!-- Slot for child components -->
+  <slot />
+</div>

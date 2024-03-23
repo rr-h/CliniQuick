@@ -1,14 +1,10 @@
 ---
 // Define component props and scripts here
----
-<style global>
-@import "../../styles/Footer.scss";
-</style>
-
 import Element from '../Element/Element.astro';
 import { Image } from '../Image/Image.astro';
-import { Link } from 'gatsby';
-import React from 'react';
+// The 'gatsby' and 'react' imports are not used in Astro as it has a different way of handling links and does not use React for templating
+// import { Link } from 'gatsby';
+// import React from 'react';
 import houston from '../../../public/images/houston.svg';
 import { navigation } from '../Navigation/Navigation.astro';
 import yliopisto from '../../../public/images/uoh_centre.svg';
@@ -26,46 +22,55 @@ const images = [
   },
 ];
 
-const Footer = ({ lang }) => (
+interface Props {
+  lang: string;
+}
+const Footer = ({ lang }: Props) => {
+  return { images, navigation, lang };
+};
+---
+
+<!-- Scoped styles can be defined within a <style> tag. -->
+<!-- To import global styles, use a <link> tag with rel="stylesheet". -->
+<link rel="stylesheet" href="../../styles/Footer.scss">
+
+<Element
+  id="footer"
+  class="container spacing--after-small spacing--mobile"
+  flex
+>
   <Element
-    id="footer"
-    class="container spacing--after-small spacing--mobile"
+    class="col-5 push-right-3 col-10--mobile order-2--mobile order-2--tablet footer__links"
     flex
+    spaceBetween
   >
-    <Element
-      class="col-5 push-right-3 col-10--mobile order-2--mobile order-2--tablet footer__links"
-      flex
-      spaceBetween
-    >
-      {images.map(image => (
+    {images.map((image) => (
+      <a
+        key={image.alt}
+        href={image.href}
+        class="col-5 col-4--mobile spacing--mobile"
+      >
+        <Image contain src={image.src} alt={image.alt} class="col-6" />
+      </a>
+    ))}
+  </Element>
+
+  <Element
+    flex
+    class="col-5 col-5--mobile order-1--mobile order-1--tablet footer__navigation"
+  >
+    <div class="footer__navigation-link-container">
+      {navigation[lang].map((item) => (
+        <!-- Since Astro does not use the Link component from Gatsby, use a standard <a> tag for navigation. -->
         <a
-          key={image.alt}
-          href={image.href}
-          class="col-5 col-4--mobile spacing--mobile"
+          key={item.path}
+          href={item.path}
+          class="footer__navigation-link nav-item-hover"
+          style="margin-left: 4.5rem;"
         >
-          <Image contain src={image.src} alt={image.alt} class="col-6" />
+          {item.text}
         </a>
       ))}
-    </Element>
-
-    <Element
-      flex
-      class="col-5 col-5--mobile order-1--mobile order-1--tablet footer__navigation"
-    >
-      <div class="footer__navigation-link-container">
-        {navigation[lang].map(item => (
-          <Link
-            key={item.path}
-            to={item.path}
-            class="footer__navigation-link nav-item-hover"
-            style={{ marginLeft: '4.5rem' }}
-          >
-            {item.text}
-          </Link>
-        ))}
-      </div>
-    </Element>
+    </div>
   </Element>
-);
-
-export default Footer;
+</Element>

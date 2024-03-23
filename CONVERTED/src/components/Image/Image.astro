@@ -1,31 +1,33 @@
 ---
 // Define component props and scripts here
----
-<style global>
-@import "../../styles/Image.scss";
-</style>
+// Importing React and PropTypes is not necessary in Astro as we're not using these specific functionalities in the same way
+// import PropTypes from 'prop-types';
+// import React from 'react';
+const defaults = {
+  src: '',
+  alt: '',
+  overlay: '',
+  className: '',
+};
+const Image = (props) => {
+  const {
+    src = defaults.src,
+    alt = defaults.alt,
+    hover, // hover is declared but not used in the component logic provided
+    className = defaults.className,
+    overlay = defaults.overlay,
+    contain,
+    circle,
+    extraSmall,
+    small,
+    medium,
+    large,
+    fullWidth,
+    actualSize,
+    squareBig,
+  } = props;
 
-import PropTypes from 'prop-types';
-import React from 'react';
-
-export const Image = ({
-  src,
-  alt,
-  hover,
-  className,
-  overlay,
-  contain,
-  circle,
-  extraSmall,
-  small,
-  medium,
-  large,
-  fullWidth,
-  actualSize,
-  squareBig,
-  ...props
-}) => {
-  const classes = [];
+  let classes = [];
 
   contain && classes.push('image--contain');
   fullWidth && classes.push('image--full-width');
@@ -35,42 +37,22 @@ export const Image = ({
   medium && classes.push('image--medium');
   large && classes.push('image--large');
   squareBig && classes.push('image--square-big');
-  actualSize && classes.push('image--acctual-size');
+  actualSize && classes.push('image--actual-size');
 
-  return (
-    <div class={`image ${className} ${classes.join(' ')}`} {...props}>
-      <div class="image__container">
-        <img
-          style={{ backgroundColor: overlay, backgroundOpacity: '0.5' }}
-          class="image__content"
-          src={src}
-          alt={alt}
-        />
-      </div>
-    </div>
-  );
+  return classes;
 };
+---
+<style global>
+@import "../../styles/Image.scss";
+</style>
 
-Image.defaultProps = {
-  src: '',
-  alt: '',
-  overlay: '',
-  className: '',
-};
-
-Image.propTypes = {
-  overlay: PropTypes.string,
-  src: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  alt: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-  hover: PropTypes.string,
-  className: PropTypes.string,
-  contain: PropTypes.bool,
-  circle: PropTypes.bool,
-  extraSmall: PropTypes.bool,
-  small: PropTypes.bool,
-  medium: PropTypes.bool,
-  large: PropTypes.bool,
-  squareBig: PropTypes.bool,
-  fullWidth: PropTypes.bool,
-  actualSize: PropTypes.bool,
-};
+<div class={`image ${className} ${Image(props).join(' ')}`} {...props}>
+  <div class="image__container">
+    <img
+      style={`background-color: ${overlay}; background-opacity: 0.5;`}
+      class="image__content"
+      src={src}
+      alt={alt}
+    />
+  </div>
+</div>

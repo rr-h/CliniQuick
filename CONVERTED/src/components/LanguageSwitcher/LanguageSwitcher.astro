@@ -1,14 +1,16 @@
 ---
 // Define component props and scripts here
----
-<style global>
-@import "../../styles/LanguageSwitcher.scss";
-</style>
-
-import PropTypes from 'prop-types';
+import { useState } from 'react';
+// PropTypes import is commented out as Astro components use TypeScript for prop types.
+// import PropTypes from 'prop-types';
 import React from 'react';
 
-const Language = ({ language, active }) => {
+interface LanguageProps {
+  language: string;
+  active: string;
+}
+
+const Language = ({ language, active }: LanguageProps) => {
   return language === active ? (
     <span class="language-switcher__active-language">{language}</span>
   ) : (
@@ -16,7 +18,11 @@ const Language = ({ language, active }) => {
   );
 };
 
-const LanguageSwitcher = ({ lang }) => {
+interface LanguageSwitcherProps {
+  lang: string;
+}
+
+const LanguageSwitcher = ({ lang }: LanguageSwitcherProps) => {
   return (
     <div class="language-switcher">
       <Language language="fi" active={lang} />
@@ -26,12 +32,17 @@ const LanguageSwitcher = ({ lang }) => {
   );
 };
 
-LanguageSwitcher.defaultProps = {
-  lang: 'fi',
-};
-
-LanguageSwitcher.propTypes = {
-  lang: PropTypes.string.isRequired,
-};
+// Default props and PropTypes are not used in Astro in the same way as in React.
+// Default props can be handled in the component function directly.
+// PropTypes validation can be replaced by TypeScript interfaces.
 
 export default LanguageSwitcher;
+---
+
+<style global>
+@import "../../styles/LanguageSwitcher.scss";
+</style>
+
+<div>
+  <LanguageSwitcher lang="fi" />
+</div>

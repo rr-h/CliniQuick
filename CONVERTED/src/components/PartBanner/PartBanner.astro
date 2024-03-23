@@ -1,62 +1,60 @@
 ---
-// Define component props and scripts here
+// Import Astro components
+import Banner from '../../Banner/Banner.astro';
+import ContentLiftup from '../../ContentLiftup/ContentLiftup.astro';
+// Commenting out React import as it's not used directly in Astro components
+// import React from 'react'; 
+// Assuming navigation is an Astro component or a JS/TS file, adjust the path accordingly
+// import navigation from '../../../src/content/partnavigation/partnavigation.astro';
+
+const lang = Astro.props.lang; // Assuming 'lang' is passed as a prop to this component
+
+// Placeholder for your navigation object, replace with your actual import or logic
+// const navigation = {
+//   en: { /* Your navigation structure for 'en' */ },
+//   fi: { /* Your navigation structure for 'fi' */ },
+// };
+
+const parts = Object.keys(navigation[lang]);
+
+const partNames = lang === 'en' ? [
+    'Fundamentals of Web apps',
+    'Introduction to React',
+    'Communicating with server',
+    'Programming a server with NodeJS and Express',
+    'Testing Express servers, user administration',
+    'Testing React apps, custom hooks',
+    'State management with Redux',
+    'React router, styling app with CSS and webpack',
+    'GraphQL'
+  ] : [
+    'Web-sovellusten toiminnan perusteet',
+    'Reactin perusteet',
+    'Palvelimen kanssa tapahtuva kommunikointi',
+    'Palvelimen ohjelmointi NodeJS:n Express-kirjastolla',
+    'Express-sovellusten testaaminen, käyttäjänhallinta',
+    'React-sovelluksen testaaminen, custom hookit',
+    'Sovelluksen tilan hallinta Redux-kirjastolla',
+    'React router, tyylikirjastot ja webpack',
+    'GraphQL',
+  ];
 ---
-import { Banner } from '../../Banner/Banner.astro';
-import { ContentLiftup } from '../../ContentLiftup/ContentLiftup.astro';
-import React from 'react';
-import navigation from '../../../src/content/partnavigation/partnavigation.astro';
 
-export const PartBanner = ({ lang }) => {
-  const parts = Object.keys(navigation[lang]);
-
-  return (
-    <Banner
-      class="spacing spacing--after-small spacing--after-mobile offset"
-      id="course-contents"
-    >
-      <div class="container spacing flex-fix-aligning col-7--mobile">
-        {parts.map(part => {
-          const partNames =
-            lang === 'en'
-              ? [
-                  'Fundamentals of Web apps',
-                  'Introduction to React',
-                  'Communicating with server',
-                  'Programming a server with NodeJS and Express',
-                  'Testing Express servers, user administration',
-                  'Testing React apps, custom hooks',
-                  'State management with Redux',
-                  'React router, styling app with CSS and webpack',
-                  'GraphQL'
-                ]
-              : [
-                  'Web-sovellusten toiminnan perusteet',
-                  'Reactin perusteet',
-                  'Palvelimen kanssa tapahtuva kommunikointi',
-                  'Palvelimen ohjelmointi NodeJS:n Express-kirjastolla',
-                  'Express-sovellusten testaaminen, käyttäjänhallinta',
-                  'React-sovelluksen testaaminen, custom hookit',
-                  'Sovelluksen tilan hallinta Redux-kirjastolla',
-                  'React router, tyylikirjastot ja webpack',
-                  'GraphQL',
-                ];
-
-          return (
-            <ContentLiftup
-              key={partNames[part]}
-              class="col-3 col-10--mobile col-4--tablet"
-              image={{
-                src: require(`../../images/thumbnails/part-${part}.svg`),
-                alt: partNames[part],
-              }}
-              hoverImageSrc={require(`../../images/thumbnails/part-${part}_ovr.svg`)}
-              name={`${lang === 'en' ? 'Part' : 'Osa'} ${part}`}
-              summary={partNames[part]}
-              path={lang === 'en' ? `/en/part${part}` : `/osa${part}`}
-            />
-          );
-        })}
-      </div>
-    </Banner>
-  );
-};
+<Banner class="spacing spacing--after-small spacing--after-mobile offset" id="course-contents">
+  <div class="container spacing flex-fix-aligning col-7--mobile">
+    {parts.map((part, index) => (
+      <ContentLiftup
+        key={partNames[index]}
+        class="col-3 col-10--mobile col-4--tablet"
+        image={{
+          src: `/images/thumbnails/part-${part}.svg`, // Adjusted from require to a static path
+          alt: partNames[index],
+        }}
+        hoverImageSrc={`/images/thumbnails/part-${part}_ovr.svg`} // Adjusted from require to a static path
+        name={`${lang === 'en' ? 'Part' : 'Osa'} ${part}`}
+        summary={partNames[index]}
+        path={lang === 'en' ? `/en/part${part}` : `/osa${part}`}
+      />
+    ))}
+  </div>
+</Banner>

@@ -1,26 +1,43 @@
 ---
-// Define component props and scripts here
+// Astro component frontmatter script
+// Define your imports and component logic here
+
+// Importing a link component from a router library that works with Astro
+// Adjust the import based on your specific setup
+// Example: import { Link } from '@astrojs/router';
+// Note: Astro doesn't have a direct equivalent to Gatsby's Link, so you might need to adjust routing logic
+// Commenting out unused imports instead of removing them, per your request
+// import PropTypes from 'prop-types';
+import React from 'react'; // Not used in Astro directly, commenting out for review
+
+// Defining props in Astro. Astro passes props directly into the component function.
+// However, we handle default props and prop types differently (or use TypeScript for type safety).
+
+// Component props can be typed and defaulted using TypeScript or handled manually in the component
+
+// Commenting out PropTypes as Astro does not use this for prop validation
+// NavigationItem.propTypes = {
+//   text: PropTypes.string.isRequired,
+//   path: PropTypes.string.isRequired,
+//   className: PropTypes.string,
+// };
+
+// NavigationItem.defaultProps = {
+//   className: '',
+// };
 ---
-import { Link } from 'gatsby';
-import PropTypes from 'prop-types';
-import React from 'react';
 
-export const NavigationItem = ({ text, path, className, ...props }) => {
-  return (
-    <li {...props} class={`navigation__item ${className}`}>
-      <Link class="nav-item-hover" to={path}>
-        {text}
-      </Link>
-    </li>
-  );
-};
+<template>
+  <!-- Your component template goes here -->
+  <!-- Assuming you're using a link component compatible with Astro -->
+  <!-- Replace `Link` and `to` attribute with your chosen routing solution -->
+  <li class={`navigation__item ${className}`}>
+    <a href={path} class="nav-item-hover">
+      {text}
+    </a>
+  </li>
+</template>
 
-NavigationItem.propTypes = {
-  text: PropTypes.string.isRequired,
-  path: PropTypes.string.isRequired,
-  className: PropTypes.string,
-};
-
-NavigationItem.defaultProps = {
-  className: '',
-};
+<script>
+// You can include client-side scripts here if necessary
+</script>

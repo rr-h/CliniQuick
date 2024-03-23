@@ -1,62 +1,41 @@
 ---
-// Define component props and scripts here
----
+// Astro component frontmatter script
 import { BodyText } from '../components/BodyText/BodyText.astro';
-import { DeveloperStory } from '../components/DeveloperStory.astro/DeveloperStory';
+import DeveloperStory from '../components/DeveloperStory/DeveloperStory.astro'; // Adjusted import path
 import Element from '../components/Element/Element.astro';
 import Footer from '../components/Footer/Footer.astro';
-import Layout from '../components/layout.astro';
-import React from 'react';
-import SEO from '../components/seo.astro';
-import mainSEOtags from '../content/seo/mainSEOtags.astro';
-import stories from 'stories.json';
+import Layout from '../components/Layout/Layout.astro'; // Ensure correct path
+import SEO from '../components/SEO/SEO.astro';
+import mainSEOtags from '../content/seo/mainSEOtags.json'; // Adjusted for Astro's handling of JSON
+import stories from '../content/stories.json'; // Ensure the path to stories.json is correct
 
-const Companies = () => (
-  <Layout>
-    <SEO
-      lang="en"
-      title="Partner companies | Full Stack Open 2019"
-      description="Full stack development in partner companies"
-      keywords={[
-        ...mainSEOtags,
-        'houston',
-        'houston inc',
-        'software development',
-        'frontend',
-        'elisa',
-        'terveystalo',
-        'konecranes',
-        'k-ryhmä',
-        'unity technologies',
-        'unity',
-        'kesko',
-        'sympa',
-        'funktionaalinen ohjelmointi',
-        'functional programming',
-        'mikropalveluarkkitehtuuri',
-        'micro service architecture',
-        'micro service',
-      ]}
+// React import is commented out as it's not directly used in Astro components.
+// import React from 'react';
+---
+
+<Layout>
+  <SEO
+    lang="en"
+    title="Partner companies | Full Stack Open 2019"
+    description="Full stack development in partner companies"
+    keywords={[...mainSEOtags, 'houston', 'houston inc', 'software development', 'frontend', 'elisa', 'terveystalo', 'konecranes', 'k-ryhmä', 'unity technologies', 'unity', 'kesko', 'sympa', 'funktionaalinen ohjelmointi', 'functional programming', 'mikropalveluarkkitehtuuri', 'micro service architecture', 'micro service']}
+  />
+
+  <Element class="container">
+    <BodyText
+      class="col-10 spacing"
+      heading={{
+        title: 'Developer stories from our partners',
+        level: 'h1',
+      }}
     />
 
-    <Element class="container">
-      <BodyText
-        class="col-10 spacing"
-        heading={{
-          title: 'Developer stories from our partners',
-          level: 'h1',
-        }}
-      />
+    {stories.en.map((story, index) => (
+      <DeveloperStory key={index} {...story} lang="en" />
+    ))}
 
-      {stories.en.map(story => (
-        <DeveloperStory key={story.name} {...story} lang="en" />
-      ))}
+    <Element class="spacing" />
+  </Element>
 
-      <Element class="spacing" />
-    </Element>
-
-    <Footer lang="en" />
-  </Layout>
-);
-
-export default Companies;
+  <Footer lang="en" />
+</Layout>

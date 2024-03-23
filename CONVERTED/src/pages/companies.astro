@@ -1,62 +1,61 @@
 ---
-// Define component props and scripts here
----
-import { BodyText } from '../components/BodyText/BodyText.astro';
-import { DeveloperStory } from '../components/DeveloperStory/DeveloperStory.astro';
+// Astro component frontmatter script
+import BodyText from '../components/BodyText/BodyText.astro';
+import DeveloperStory from '../components/DeveloperStory/DeveloperStory.astro';
 import Element from '../components/Element/Element.astro';
-import Footer from '../components/Footer/Footer';
-import Layout from '../components/layout.astro';
-import React from 'react';
-import SEO from '../components/seo.astro';
-import mainSEOtags from '../content/seo/mainSEOtags.astro';
-import stories from '../pages/stories.json';
+// Footer component import adjusted for Astro syntax
+import Footer from '../components/Footer/Footer.astro';
+import Layout from '../components/Layout/Layout.astro'; // Ensure path casing matches your file structure
+import SEO from '../components/SEO/SEO.astro';
+import mainSEOtags from '../content/seo/mainSEOtags.json'; // Adjusted for JSON import
+import stories from '../pages/stories.json'; // Ensure JSON is properly imported
 
-const Companies = () => (
-  <Layout>
-    <SEO
-      lang="fi"
-      title="Yritysesittelyt | Full Stack Open 2019"
-      description="Kurssin yhteistyöyritysten devaajat esittäytyvät"
-      keywords={[
-        ...mainSEOtags,
-        'houston',
-        'houston inc',
-        'sovelluskehitys',
-        'frontend',
-        'elisa',
-        'terveystalo',
-        'konecranes',
-        'k-ryhmä',
-        'unity technologies',
-        'unity',
-        'kesko',
-        'sympa',
-        'funktionaalinen ohjelmointi',
-        'functional programming',
-        'mikropalveluarkkitehtuuri',
-        'micro service architecture',
-        'micro service',
-      ]}
+// React import is commented out as it's not directly used in Astro components.
+// import React from 'react';
+---
+
+<Layout>
+  <SEO
+    lang="fi"
+    title="Yritysesittelyt | Full Stack Open 2019"
+    description="Kurssin yhteistyöyritysten devaajat esittäytyvät"
+    keywords={[
+      ...mainSEOtags,
+      'houston',
+      'houston inc',
+      'sovelluskehitys',
+      'frontend',
+      'elisa',
+      'terveystalo',
+      'konecranes',
+      'k-ryhmä',
+      'unity technologies',
+      'unity',
+      'kesko',
+      'sympa',
+      'funktionaalinen ohjelmointi',
+      'functional programming',
+      'mikropalveluarkkitehtuuri',
+      'micro service architecture',
+      'micro service',
+    ]}
+  />
+
+  <Element class="container">
+    <BodyText
+      class="col-10 spacing"
+      heading={{
+        title: 'Devaaja-tarinoita yhteistyökumppaneiltamme',
+        level: 'h1',
+      }}
     />
 
-    <Element class="container">
-      <BodyText
-        class="col-10 spacing"
-        heading={{
-          title: 'Devaaja-tarinoita yhteistyökumppaneiltamme',
-          level: 'h1',
-        }}
-      />
+    {stories.fi.map((story) => (
+      <DeveloperStory key={story.name} {...story} lang="fi" />
+    ))}
 
-      {stories.fi.map(story => (
-        <DeveloperStory key={story.name} {...story} lang="fi" />
-      ))}
+    <Element class="spacing" />
+  </Element>
 
-      <Element class="spacing" />
-    </Element>
-
-    <Footer lang="fi" />
-  </Layout>
-);
-
-export default Companies;
+  <Footer lang="fi" />
+</Layout>

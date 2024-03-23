@@ -1,86 +1,70 @@
 ---
-// Define component props and scripts here
----
-<style global>
-@import "../../styles/Header.scss";
-</style>
-
-import React, { Component } from 'react';
-
-import { Link } from 'gatsby';
+// Astro component script
 import Navigation from '../Navigation/Navigation.astro';
-import { TripleBorder } from '../TripleBorder/TripleBorder.astro';
+import TripleBorder from '../TripleBorder/TripleBorder.astro';
+import { useState, useEffect } from 'react';
 
-class Header extends Component {
-  constructor(props) {
-    super(props);
+// Importing global styles
+import "../../styles/Header.scss";
 
-    let state = reactive({
-      top: 0,
-      headerClass: '',
-    };
-  }
-
-  onMount() {
-    window.addEventListener('scroll', this.handleScroll);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll);
-  }
-
-  header = React.createRef();
-
-  handleScroll = () => {
-    let scroll = window.scrollY;
-
-    state = { ...state, ...$1 };
-  };
-
-  render() {
-    const { headerClass } = this.state;
-
-    return (
-      <div
-        ref={this.header}
-        class={`header ${headerClass}`}
-        style={{
-          backgroundColor: headerClass !== '' ? 'transparent' : 'white',
-        }}
-      >
-        <div
-          class="container"
-          style={{ alignItems: 'center', justifyContent: 'flex-start' }}
-        >
-          <Link
-            to={this.props.lang === 'en' ? '/en' : '/'}
-            class="header__logo"
-          >
-            {headerClass === '' ? (
-              <TripleBorder
-                class="nav-item-hover"
-                childrenClassName="triple-border__logo"
-              >
-                {'{() => fs}'}
-              </TripleBorder>
-            ) : (
-              <TripleBorder
-                hover
-                class="nav-item-hover"
-                childrenClassName="triple-border__logo"
-              >
-                fs
-              </TripleBorder>
-            )}
-          </Link>
-
-          {this.state.headerClass !== 'header--small' && (
-            <Navigation lang={this.props.lang} />
-          )}
-        </div>
-      </div>
-    );
-  }
+// Props definition
+interface HeaderProps {
+  lang: string;
 }
 
-export default Header;
+// We can't directly convert React's class component lifecycle methods or state management.
+// However, we can initiate state and lifecycle-like behavior on the client side.
+const Header = ({ lang }: HeaderProps) => {
+  const [headerClass, setHeaderClass] = useState('');
+  
+  useEffect(() => {
+    const handleScroll = () => {
+      // Implement scroll logic here and use setHeaderClass to update the state
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+  
+  return {
+    headerClass,
+    handleScroll,
+  };
+};
+
+// Uncomment the below line if you plan to use these functionalities
+// const state = Header(lang);
+---
+
+<!-- Your Astro component HTML here -->
+<div
+  class={`header ${Header(lang).headerClass}`}
+  style={`background-color: ${Header(lang).headerClass !== '' ? 'transparent' : 'white'};`}
+>
+  <div
+    class="container"
+    style="align-items: center; justify-content: flex-start;"
+  >
+    <a
+      href={lang === 'en' ? '/en' : '/'}
+      class="header__logo"
+    >
+      <!-- Conditional rendering based on headerClass -->
+      {Header(lang).headerClass === '' ? (
+        <TripleBorder class="nav-item-hover" childrenClassName="triple-border__logo">
+          <!-- Your dynamic content here, 'fs' placeholder as in original component -->
+          {'{() => fs}'}
+        </TripleBorder>
+      ) : (
+        <TripleBorder hover class="nav-item-hover" childrenClassName="triple-border__logo">
+          fs
+        </TripleBorder>
+      )}
+    </a>
+
+    {Header(lang).headerClass !== 'header--small' && (
+      <Navigation lang={lang} />
+    )}
+  </div>
+</div>

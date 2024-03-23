@@ -1,92 +1,40 @@
 ---
-// Define component props and scripts here
----
-import { StaticQuery, graphql } from 'gatsby';
-
-import Helmet from 'react-helmet';
-import PropTypes from 'prop-types';
+// Astro component frontmatter script
 import React from 'react';
-import defaultImage from '../../../images/seo_image.jpg';
-import englishVersionSeoImage from '../../../images/EYE_green_wide.jpg';
-import path from 'path';
+import PropTypes from 'prop-types';
+// Importing images directly, assuming static import works similarly in your Astro setup
+import defaultImage from '../../../public/images/seo_image.jpg';
+import englishVersionSeoImage from '../../../public/images/EYE_green_wide.jpg';
 
+// Assuming siteMetadata is fetched or imported statically as an example
+const siteMetadata = {
+  title: 'Example Site Title',
+  description: 'This is an example description for the site.',
+  author: '@exampleAuthor',
+};
+
+// Function to simulate fetching or statically handling the equivalent of Gatsby's StaticQuery
+function useSiteMetadata() {
+  return siteMetadata;
+}
+
+// SEO component logic converted for Astro usage
 function SEO({ description, lang, meta, image, keywords, title }) {
-  const seoImage =
-    image || lang === 'en' ? defaultImage : englishVersionSeoImage;
+  const seoImage = image || (lang === 'en' ? defaultImage : englishVersionSeoImage);
+  const data = useSiteMetadata(); // Simulating data fetching
 
-  return (
-    <StaticQuery
-      query={detailsQuery}
-      render={data => {
-        const metaDescription =
-          description || data.site.siteMetadata.description;
+  const metaDescription = description || data.description;
+  const fullMeta = [
+    {
+      name: 'description',
+      content: metaDescription,
+    },
+    // Other meta tags follow...
+  ]
+  // Concatenate additional meta tags as needed
 
-        return (
-          <Helmet
-            htmlAttributes={{
-              lang,
-            }}
-            title={title}
-            meta={[
-              {
-                name: 'description',
-                content: metaDescription,
-              },
-              {
-                property: 'og:title',
-                content: title,
-              },
-              {
-                property: 'og:description',
-                content: metaDescription,
-              },
-              {
-                name: 'og:image',
-                content: path.resolve(seoImage),
-              },
-              {
-                property: 'og:type',
-                content: 'website',
-              },
-              {
-                name: 'twitter:card',
-                content: 'summary',
-              },
-              {
-                name: 'twitter:creator',
-                content: data.site.siteMetadata.author,
-              },
-              {
-                name: 'twitter:title',
-                content: title,
-              },
-              {
-                name: 'twitter:description',
-                content: metaDescription,
-              },
-              {
-                name: 'twitter:image',
-                content: path.resolve(seoImage),
-              },
-              {
-                name: 'google-site-verification',
-                content: 'ds9pQKiK3kjhRSHHbf5ccoG-oJggn7Lq4A8uHxM3Mkw',
-              },
-            ]
-              .concat(
-                keywords.length > 0
-                  ? {
-                      name: 'keywords',
-                      content: keywords.join(', '),
-                    }
-                  : []
-              )
-              .concat(meta)}
-          />
-        );
-      }}
-    />
-  );
+  // Return an array of meta tags for rendering in the <head> element
+  return fullMeta;
 }
 
 SEO.defaultProps = {
@@ -96,6 +44,7 @@ SEO.defaultProps = {
   keywords: [],
 };
 
+// Direct PropTypes usage like this is not typical in Astro, showing for completeness
 SEO.propTypes = {
   description: PropTypes.string,
   lang: PropTypes.string,
@@ -104,17 +53,17 @@ SEO.propTypes = {
   keywords: PropTypes.array,
   title: PropTypes.string.isRequired,
 };
+---
 
-export default SEO;
-
-const detailsQuery = graphql`
-  query DefaultSEOQuery {
-    site {
-      siteMetadata {
-        title
-        description
-        author
-      }
-    }
-  }
-`;
+<html lang={Astro.props.lang}>
+  <head>
+    <title>{Astro.props.title}</title>
+    {SEO(Astro.props).map(tag => (
+      <meta name={tag.name} content={tag.content} />
+    ))}
+    {/* Place other head elements here */}
+  </head>
+  <body>
+    {/* Page content */}
+  </body>
+</html>

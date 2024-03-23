@@ -1,8 +1,5 @@
 ---
-// Define component props and scripts here
----
-import React, { Component } from 'react';
-
+// Import statements
 import Arrow from '../components/Arrow/Arrow.astro';
 import Element from '../components/Element/Element.astro';
 import Footer from '../components/Footer/Footer.astro';
@@ -10,51 +7,35 @@ import Layout from '../components/layout.astro';
 import SEO from '../components/seo.astro';
 import colors from '../components/colors.json';
 
-class NotFoundPage extends Component {
-  state = {
-    siteLanguage: 'en',
-  };
+// Since we're moving from a React class component to Astro, we cannot directly use state and lifecycle methods.
+// Astro handles interactivity on the client side, so we can use a script tag for anything that needs to be dynamic.
 
-  onMount() {
-    const siteLanguage =
-      window.location.pathname.indexOf('/en') !== -1 ? 'en' : 'fi';
+let siteLanguage = 'en'; // Default language
 
-    state = { ...state, ...$1 };
-  }
+// Client-side JavaScript to determine the language based on the URL path
+const getSiteLanguage = () => {
+  return window.location.pathname.indexOf('/en') !== -1 ? 'en' : 'fi';
+};
+---
 
-  render() {
-    const title =
-      this.state.siteLanguage === 'en' ? 'Page not found' : 'Sivua ei löytynyt';
+<!-- Client-side script to set language dynamically -->
+<script>
+  siteLanguage = getSiteLanguage();
+</script>
 
-    return (
-      <Layout>
-        <SEO
-          title={`${title} | Full Stack Open 2019`}
-          lang={this.state.siteLanguage}
-        />
+<Layout>
+  <SEO title={`${siteLanguage === 'en' ? 'Page not found' : 'Sivua ei löytynyt'} | Full Stack Open 2019`} lang={siteLanguage} />
 
-        <Element class="container spacing--large spacing--after">
-          <h1>404 - {title}</h1>
+  <Element class="container spacing--large spacing--after">
+    <h1>404 - {siteLanguage === 'en' ? 'Page not found' : 'Sivua ei löytynyt'}</h1>
 
-          <p class="col-10 spacing--small spacing--after">
-            Uncaught ReferenceError: unknown is not defined
-          </p>
+    <p class="col-10 spacing--small spacing--after">
+      Uncaught ReferenceError: unknown is not defined
+    </p>
 
-          <Arrow
-            class="col-10 arrow__container--with-link"
-            bold
-            thickBorder
-            link={this.state.siteLanguage === 'en' ? '/en' : '/'}
-            content={[
-              { backgroundColor: colors['main'], text: 'Go back home' },
-            ]}
-          />
-        </Element>
+    <Arrow class="col-10 arrow__container--with-link" bold thickBorder link={siteLanguage === 'en' ? '/en' : '/'} content={[{ backgroundColor: colors['main'], text: 'Go back home' }]} />
+  </Element>
 
-        <Footer lang={this.state.siteLanguage} />
-      </Layout>
-    );
-  }
-}
+  <Footer lang={siteLanguage} />
+</Layout>
 
-export default NotFoundPage;
