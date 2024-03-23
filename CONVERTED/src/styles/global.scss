@@ -1,0 +1,23 @@
+@use 'variables';
+@use 'mixins';
+
+:root {
+  --light-background: variables.$white;
+  --light-text: variables.$black;
+  --dark-background: variables.$black;
+  --dark-text: variables.$white;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: var(--dark-background);
+    --text: var(--dark-text);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --background: var(--light-background);
+    --text: var(--light-text);
+  }
+}

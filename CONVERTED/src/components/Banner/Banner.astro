@@ -1,5 +1,7 @@
-// Import for Markdown files
+---
+// src/components/Banner.astro
 import { glob } from 'astro';
+import './Banner.scss'; // Import your SCSS file
 
 // Define props (With TypeScript)
 interface BannerProps {
@@ -21,25 +23,3 @@ const Banner = async ({ className = "", backgroundColor, partNumber, lang = 'en'
       <img src={partContent.mainImage} alt="Main Part Image" /> 
       <p>{partContent.intro}</p> 
     </div>
-  );
-};
-<style>
-  /* Replicate your CSS from the Banner.scss file */
-  .banner {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    position: relative;
-    /* Assuming you have a prop for padding */
-    padding: var(--vertical-spacing) * 2 0;
-    /* Assuming you have a prop for background color */
-    background-color: var(--main-color);
-  }
-
-  @media (min-width: var(--desktop-breakpoint)) { /* Adjust desktop breakpoint as needed */
-    .banner {
-      padding: 3.444rem; 
-      padding-bottom: 4.444rem;
-    }
-  }
-</style>
