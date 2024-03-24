@@ -1,0 +1,21 @@
+{
+  "name": "@reuther-hols/cliniquick-ui",
+  "main": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./components/*": "./dist/components/*.js"
+  },
+  "dependencies": {
+    "@reuther-hols/cliniquick-ui": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2"
+  },
+  "scripts": {
+  "test": "jest"
+}
+
+  
+}
