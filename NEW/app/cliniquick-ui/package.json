@@ -1,6 +1,6 @@
 {
   "name": "@reuther-hols/cliniquick-ui",
-  "version": "0.4.6",
+  "version": "1.0.0",
   "description": "CliniQuick is your clinical buddy, educating, facilitating and innovating your practice",
   "repository": {
     "type": "git",
@@ -33,7 +33,7 @@
     "medical-resources",
     "healthcare-studies",
     "medical-training",
-    "medical-knowledge",
+    "medical-knowledge"
   ],
   "author": {
     "name": "Ricardo Reuther-Hols",

@@ -3,3 +3,7 @@ export { default as ActualButton } from './src/components/ActualButton.astro';
 export { default as Card } from './src/components/Card.astro';
 export { default as Pill } from './src/components/Pill.astro';
 export { default as Config } from './src/config';
+export function printMsg() {
+    console.log("This is a message from the demo package");
+}
+

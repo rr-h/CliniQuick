@@ -8,9 +8,11 @@ declare module "@reuther-hols/cliniquick-ui" {
 	export function Card(props: DefaultColorProps): any;
 	export function Pill(props: DefaultColorProps): any;
 
-	type BrutalConfiguration = {
+	export function printMsg(): void;
+
+	type CliniQuickConfiguration = {
 		colors: string[];
 	};
 
-	export function Config(): BrutalConfiguration;
+	export function Config(): CliniQuickConfiguration;
 }
