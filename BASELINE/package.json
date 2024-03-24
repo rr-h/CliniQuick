@@ -1,0 +1,28 @@
+{
+  "name": "baseline",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@astrojs/react": "^3.1.0",
+    "@astrojs/tailwind": "^5.1.0",
+    "@types/react": "^18.2.69",
+    "@types/react-dom": "^18.2.22",
+    "astro": "^4.5.9",
+    "cross-env": "^7.0.3",
+    "env": "^0.0.2",
+    "nodejs": "^0.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^3.4.1"
+  },
+  "devDependencies": {
+    "sass": "^1.72.0"
+  },
+  "description": ""
+}
