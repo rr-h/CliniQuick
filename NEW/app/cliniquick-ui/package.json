@@ -1,0 +1,59 @@
+{
+  "name": "@reuther-hols/cliniquick-ui",
+  "version": "0.4.6",
+  "description": "CliniQuick is your clinical buddy, educating, facilitating and innovating your practice",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rr-h/CliniQuick.git"
+  },
+  "type": "module",
+  "main": "index.ts",
+  "module": "index.ts",
+  "exports": {
+    ".": {
+      "import": "./index.ts",
+      "require": null
+    }
+  },
+  "types": "index.d.ts",
+  "files": [
+    "index.ts",
+    "index.d.ts",
+    "src"
+  ],
+  "keywords": [
+    "clinical",
+    "evidence based practice",
+    "medical-education",
+    "medical-practice",
+    "healthcare-learning",
+    "clinical-skills",
+    "medical-students",
+    "medical-information",
+    "medical-resources",
+    "healthcare-studies",
+    "medical-training",
+    "medical-knowledge",
+  ],
+  "author": {
+    "name": "Ricardo Reuther-Hols",
+    "email": "ric.rh.work@gmail.com",
+    "url": "https://github.com/rr-h/CliniQuick/blob/main/NEW/app/src/pages/index.astro"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rr-h/CliniQuick"
+  },
+  "homepage": "https://github.com/rr-h/CliniQuick/blob/main/NEW/app/src/pages/index.astro",
+  "scripts": {
+    "changeset:add": "changeset add",
+    "changeset:version": "changeset version",
+    "changeset:release": "changeset publish"
+  },
+  "devDependencies": {
+    "astro": "^4.0.6"
+  },
+  "dependencies": {
+    "@changesets/cli": "^2.27.1"
+  }
+}
