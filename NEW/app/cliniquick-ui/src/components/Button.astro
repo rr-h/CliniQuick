@@ -1,10 +1,10 @@
 ---
-interface Props extends HTMLAttributes<'a'> {
+interface Props extends HTMLAttributes<"a"> {
   color?: string | undefined;
 }
 
-import type { HTMLAttributes } from 'astro/types';
-import colors from '../config/colors.json';
+import type { HTMLAttributes } from "astro/types";
+import colors from "../config/colors.json";
 
 if (Astro.props.color === undefined) {
   Astro.props.color = colors[Math.floor(Math.random() * colors.length)];
@@ -14,7 +14,7 @@ const { color, ...rest } = Astro.props;
 ---
 
 <style define:vars={{ color: color }}>
-  a.brutal-btn {
+  a.cliniquick-btn {
     filter: drop-shadow(5px 5px 0 rgb(0 0 0 / 1));
     background-color: white;
     display: inline-block;
@@ -23,14 +23,14 @@ const { color, ...rest } = Astro.props;
     transition: all;
     transition-duration: 0.5s;
     animation: ease-in-out;
-    font-family: 'Sanchez', serif;
+    font-family: "Sanchez", serif;
   }
-  a.brutal-btn:hover {
+  a.cliniquick-btn:hover {
     filter: drop-shadow(3px 3px 0 rgb(0 0 0 / 1));
     background-color: var(--color);
   }
 </style>
 
-<a {...rest} class='cliniquick-btn'>
+<a {...rest} class="cliniquick-btn">
   <slot />
 </a>

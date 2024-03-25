@@ -8,7 +8,7 @@
     "email": "hello@elian.codes",
     "url": "https://www.elian.codes/"
   },
-  "homepage": "https://brutal.elian.codes",
+  "homepage": "https://cliniquick.elian.codes",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
