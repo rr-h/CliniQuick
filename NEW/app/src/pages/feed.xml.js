@@ -15,6 +15,6 @@ export async function GET(context) {
       link: `/blog/${post.slug}/`,
     })),
     customData: '<language>en-us</language>',
-    canonicalUrl: 'https://cliniquick.elian.codes',
+    canonicalUrl: 'https://cliniquick.s',
   });
 }
