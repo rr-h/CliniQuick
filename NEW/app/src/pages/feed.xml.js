@@ -5,7 +5,7 @@ export async function GET(context) {
   const blog = await getCollection('blog');
   return rss({
     title: 'CliniQuick Blog',
-    description: 'CliniQuick is a theme for Astro',
+    description: 'CliniQuick is a ',
     stylesheet: false,
     site: context.site,
     items: blog.map((post) => ({

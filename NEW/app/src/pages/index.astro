@@ -7,26 +7,28 @@ import { Button } from "@reuther-hols/cliniquick-ui";
 import { Card } from "@reuther-hols/cliniquick-ui";
 
 const builtWith = [
-  { name: "Astro", url: "https://astro.build/" },
-  { name: "UnoCSS", url: "https://uno.antfu.me/" },
-  {
-    name: "Content Collections",
-    url: "https://docs.astro.build/en/guides/content-collections/",
-  },
-  { name: "RSS", url: "https://docs.astro.build/en/guides/rss/" },
-  {
-    name: "Sitemap",
-    url: "https://docs.astro.build/en/guides/integrations-guide/sitemap/",
-  },
-  { name: "Vercel", url: "https://vercel.com" },
-  { name: "TypeScript", url: "https://www.typescriptlang.org/" },
+  { name: "Cardiology", url: "https:///" },
+  { name: "Dermatology", url: "https:/" },
+  { name: "ENT", url: "https://do/" },
+  { name: "Gastroenterology", url: "https://" },
+  { name: "Genetics", url: "https://docs.ast/" },
+  { name: "Immunology", url: "https:///" },
+  { name: "MSK", url: "https:/" },
+  { name: "Nephrology", url: "https://do/" },
+  { name: "Neurology", url: "https://" },
+  { name: "OBGyn", url: "https://docs.ast/" },
+  { name: "Pulmonology", url: "https:///" },
+  { name: "Rheumatology", url: "https:/" },
+  { name: "Urology", url: "https://do/" },
+  { name: "?Oncology/Haematology", url: "https://" },
+  { name: "?Paediatrics", url: "https://docs.ast/" },
 ];
 ---
 
 <Layout
   title="Home"
-  pageTitle="CliniQuick Theme | Home"
-  description="CliniQuick is a minimalistic, neocliniquickism theme for Astro."
+  pageTitle="CliniQuick | Home"
+  description="CliniQuick... your clinical mentor"
 >
   <main class="bg-pink p-6">
     <MobileSocials />
@@ -36,14 +38,32 @@ const builtWith = [
         <Card>
           <div class="flex flex-col justify-between items-start gap-4">
             <p class="mt-4 outfit text-2xl md:text-5xl lg:text-7xl">
-              CliniQuick theme for <a
+              CliniQuick is your <a
                 class="text-white"
                 target="_blank"
-                href="https://astro.build/">Astro</a
+                href="httpsmore/">personal mentor</a
               >
             </p>
             <p class="mt-2 outfit text-xl md:text-3xl lg:text-5xl">
-              A minimalistic, neocliniquickism theme for Astro.
+              covering key topics within the fields of:
+              <ul class="flex gap-4 flex-wrap">
+                {
+                  builtWith.map((item) => (
+                    <li>
+                      <Pill>
+                        <a
+                          class="sanchez"
+                          href={item.url}
+                          target="_blank"
+                          title={`Go to ${item.name}`}
+                        >
+                          {item.name}
+                        </a>
+                      </Pill>
+                    </li>
+                  ))
+                }
+              </ul>
             </p>
             <Button target={"_self"} href="/blog/">
               Check out the blog &rarr;
@@ -53,39 +73,20 @@ const builtWith = [
       </div>
       <div class="col-span-2">
         <Card>
-          <h2 class="text-2xl md:text-4xl lg:text-6xl mb-8 dm-serif">
+          <h2 class="text-2xl md:text-3xl lg:text-6xl mb-8 dm-serif">
             CliniQuick is built with
           </h2>
-          <ul class="flex gap-4 flex-wrap">
-            {
-              builtWith.map((item) => (
-                <li>
-                  <Pill>
-                    <a
-                      class="sanchez"
-                      href={item.url}
-                      target="_blank"
-                      title={`Go to ${item.name}`}
-                    >
-                      {item.name}
-                    </a>
-                  </Pill>
-                </li>
-              ))
-            }
-          </ul>
         </Card>
       </div>
       <div class="col-span-2">
         <Card>
-          <h2 class="text-2xl md:text-4xl lg:text-6xl mb-4 dm-serif">
+          <h2 class="text-2xl md:text-3xl lg:text-6xl mb-4 dm-serif">
             What is CliniQuick?
           </h2>
           <p class="poppins">
-            CliniQuick is a theme built with Astro, UnoCSS by <a
+            CliniQuick is a rg <a
               href="https://www.s/">LINK</a
-            >. It's a simple, fast, and modern theme that is easy to use and
-            customize. Mainly meant to power blogs and personal websites.
+            >. It'es.
           </p>
         </Card>
       </div>
