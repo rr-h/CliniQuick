@@ -1,0 +1,92 @@
+[
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "shutil",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "shutil",
+        "description": "shutil",
+        "detail": "shutil",
+        "documentation": {}
+    },
+    {
+        "label": "re",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "re",
+        "description": "re",
+        "detail": "re",
+        "documentation": {}
+    },
+    {
+        "label": "argparse",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "argparse",
+        "description": "argparse",
+        "detail": "argparse",
+        "documentation": {}
+    },
+    {
+        "label": "logging",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "logging",
+        "description": "logging",
+        "detail": "logging",
+        "documentation": {}
+    },
+    {
+        "label": "move_md_files",
+        "kind": 2,
+        "importPath": "CONVERTED.src.mdSorter",
+        "description": "CONVERTED.src.mdSorter",
+        "peekOfCode": "def move_md_files(src_dir, target_dir):\n    # Check if the source directory exists\n    if not os.path.exists(src_dir):\n        print(f\"The source directory {src_dir} does not exist.\")\n        return\n    # Create the target directory if it does not exist\n    os.makedirs(target_dir, exist_ok=True)\n    # Loop through the files in the source directory\n    for filename in os.listdir(src_dir):\n        # Construct the full file path",
+        "detail": "CONVERTED.src.mdSorter",
+        "documentation": {}
+    },
+    {
+        "label": "find_files",
+        "kind": 2,
+        "importPath": "MISC.crawlersorter",
+        "description": "MISC.crawlersorter",
+        "peekOfCode": "def find_files(directory, extensions, exclude_dirs=None, case_insensitive=True, return_relative=False):\n    \"\"\"Recursively finds all files within the directory that match the specified extensions.\"\"\"\n    exclude_dirs = set(exclude_dirs) if exclude_dirs else set()\n    extensions = {ext.lower() if case_insensitive else ext for ext in extensions}\n    for root, dirs, files in os.walk(directory, topdown=True):\n        dirs[:] = [d for d in dirs if d not in exclude_dirs]\n        for file in files:\n            file_ext = os.path.splitext(file)[1]\n            if case_insensitive:\n                file_ext = file_ext.lower()",
+        "detail": "MISC.crawlersorter",
+        "documentation": {}
+    },
+    {
+        "label": "build_component_map",
+        "kind": 2,
+        "importPath": "MISC.crawlersorter",
+        "description": "MISC.crawlersorter",
+        "peekOfCode": "def build_component_map(directory, extensions, naming_convention=None, handle_duplicates='list'):\n    \"\"\"Builds a map of component names to their file paths.\"\"\"\n    component_map = {}\n    for file_path in find_files(directory, extensions):\n        filename = os.path.basename(file_path)\n        component_name = naming_convention(filename) if naming_convention else os.path.splitext(filename)[0]\n        if handle_duplicates == 'unique':\n            unique_key = os.path.join(os.path.relpath(os.path.dirname(file_path), directory), component_name)\n            component_map[unique_key] = file_path\n        elif handle_duplicates == 'list':",
+        "detail": "MISC.crawlersorter",
+        "documentation": {}
+    },
+    {
+        "label": "update_import_paths",
+        "kind": 2,
+        "importPath": "MISC.crawlersorter",
+        "description": "MISC.crawlersorter",
+        "peekOfCode": "def update_import_paths(file_path, file_content, component_map, import_regex, create_backup=True):\n    \"\"\"Updates import paths in the given file content.\"\"\"\n    if create_backup:\n        backup_path = f\"{file_path}.bak\"\n        shutil.copyfile(file_path, backup_path)\n        logging.info(f\"Backup created at {backup_path}\")\n    updated_content = file_content\n    for match in re.finditer(import_regex, file_content):\n        component_name, static_path, dynamic_path, css_import, css_url = match.groups()\n        search_path = static_path or dynamic_path or css_import or css_url",
+        "detail": "MISC.crawlersorter",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "MISC.crawlersorter",
+        "description": "MISC.crawlersorter",
+        "peekOfCode": "def main(project_directory, extensions, import_regex_pattern, dry_run=False):\n    component_map = build_component_map(project_directory, extensions)\n    for file_path in find_files(project_directory, extensions):\n        try:\n            with open(file_path, 'r', encoding='utf-8') as file:\n                content = file.read()\n            updated_content = update_import_paths(file_path, content, component_map, import_regex_pattern)\n            if content != updated_content and not dry_run:\n                with open(file_path, 'w', encoding='utf-8') as file:\n                    file.write(updated_content)",
+        "detail": "MISC.crawlersorter",
+        "documentation": {}
+    }
+]
