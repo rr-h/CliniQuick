@@ -1,6 +1,6 @@
 ---
 title: Blogpost 4
-author: Elian Van Cutsem
+author: Ricardo Reuther-Hols
 pubDate: 2023-02-15 12:00
 tags:
   - Astro

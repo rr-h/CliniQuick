@@ -1,7 +1,7 @@
 ---
 title: Blogpost 2
 pubDate: 12/31/2022 12:05
-author: "Elian Van Cutsem"
+author: "Ricardo Reuther-Hols"
 tags:
   - Astro
   - WebDev

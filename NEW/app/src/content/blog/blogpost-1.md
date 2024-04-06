@@ -1,7 +1,7 @@
 ---
 title: Blogpost 1
 pubDate: 11/09/2022 14:25
-author: "Elian Van Cutsem"
+author: "Ricardo Reuther-Hols"
 tags:
   - JavaScript
   - Astro
