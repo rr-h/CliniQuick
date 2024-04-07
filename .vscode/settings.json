@@ -1,3 +1,12 @@
 {
-    "terminal.integrated.cwd": "${workspaceFolder}/NEW/app"
+    "terminal.integrated.cwd": "${workspaceFolder}/NEW/app",
+    "editor.fontSize": 13,
+    "screencastMode.fontSize": 26,
+    "debug.console.fontSize": 12,
+    "scm.inputFontSize": 12,
+    "terminal.integrated.fontSize": 12,
+    "chat.editor.fontSize": 12,
+    "markdown.preview.fontSize": 12,
+    "preview.preview.fontSize": 12,
+    "mssql.resultsFontSize": 12
 }
